@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<FlowPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="720.0" prefWidth="1080.0" vgap="50.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="Zimdim Football">
+         <font>
+            <Font size="36.0" />
+         </font></Label>
+      <FlowPane orientation="VERTICAL" vgap="20.0">
+         <children>
+            <Label text="Pseudo">
+               <font>
+                  <Font size="24.0" />
+               </font></Label>
+            <TextField>
+               <font>
+                  <Font size="14.0" />
+               </font></TextField>
+            <Label text="Mot de passe">
+               <font>
+                  <Font size="24.0" />
+               </font></Label>
+            <PasswordField>
+               <font>
+                  <Font size="14.0" />
+               </font></PasswordField>
+            <FlowPane alignment="CENTER" hgap="40.0" maxHeight="-Infinity" maxWidth="-Infinity">
+               <children>
+                  <Button mnemonicParsing="false" text="Se connecter">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Separator orientation="VERTICAL" prefHeight="48.0" prefWidth="0.0">
+                     <FlowPane.margin>
+                        <Insets left="2.0" />
+                     </FlowPane.margin>
+                  </Separator>
+                  <Button mnemonicParsing="false" text="S'inscrire">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
+               </children>
+               <FlowPane.margin>
+                  <Insets top="40.0" />
+               </FlowPane.margin>
+            </FlowPane>
+         </children>
+      </FlowPane>
+   </children>
+</FlowPane>
