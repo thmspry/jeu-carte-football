@@ -1,0 +1,120 @@
+package com.javafootball;
+
+import com.javafootball.Model.Utilisateur;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+
+import java.io.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Scanner;
+
+public class ConnexionController implements Initializable {
+
+    final private String cheminVersFichierData = "utilisateur.csv";
+    List<Utilisateur> lesUtilisateur;
+
+    @FXML
+    TextField pseudoField;
+    @FXML
+    PasswordField motDePasseField;
+    @FXML
+    Label errorLbl;
+
+
+    private boolean enregistrerUtilisateur(Utilisateur nouvelUtilisateur) {
+        this.lesUtilisateur.add(nouvelUtilisateur);
+        try {
+            FileWriter fw = new FileWriter(cheminVersFichierData, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(nouvelUtilisateur.toString());
+            bw.newLine();
+            bw.close();
+            return true;
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+            return true;
+        }
+    }
+
+    @FXML
+    protected void incription() {
+        if(enregistrerUtilisateur(new Utilisateur(pseudoField.getText(), motDePasseField.getText()))) {
+            errorLbl.setText("Inscription réussie");
+        } else {
+            errorLbl.setText("Une erreur dans la création du compte est survenue");
+        }
+    }
+
+    /**
+     * Vérifie le couple de pseudo mot de passe dans la liste de l'utilisateur
+     * @param pseudo : le pseudo de l'utilisateur
+     * @param motDePasse : le mot de passe de l'utilisateur
+     * @return -1 si le pseudo n'apparait pas dans la liste
+     *          0 si le pseudo apparait, mais le mot de passe n'est pas bon
+     *          1 si le couple est bon
+     */
+    private int verifCoupleLogin(String pseudo, String motDePasse) {
+        for (Utilisateur u: this.lesUtilisateur) {
+            if(u.pseudo.equals(pseudo)) {
+                if(u.motDePasse.equals(motDePasse)) {
+                    return 1;
+                }
+                return 0;
+            }
+        }
+        return -1;
+    }
+
+    @FXML
+    protected void connexion() {
+        int resultatRecherche = verifCoupleLogin(pseudoField.getText(), motDePasseField.getText());
+        switch(resultatRecherche) {
+            case -1:
+                errorLbl.setText("Ce compte n'existe pas");
+                break;
+            case 0:
+                errorLbl.setText("Le mot de passe n'est pas le bon");
+                break;
+
+            case 1:
+                // aller à la fenêtre suivante
+                break;
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.lesUtilisateur = new ArrayList<>();
+        try {
+            File dataFile = new File(cheminVersFichierData);
+            if (dataFile.createNewFile()) {
+                System.out.println("Le fichier " + dataFile.getName() + " à été créé");
+            } else {
+                System.out.println("Le fichier de bd sur le utilisateur est déjà présent.");
+                try {
+                    Scanner myReader = new Scanner(dataFile);
+                    while (myReader.hasNextLine()) {
+                        String row = myReader.nextLine();
+                        String [] splittedRow = row.split(";");
+                        lesUtilisateur.add(new Utilisateur(splittedRow[0], splittedRow[1], Integer.parseInt(splittedRow[2])));
+                    }
+                    System.out.println("utilisateurs :" + lesUtilisateur.toString());
+                    myReader.close();
+                } catch (FileNotFoundException e) {
+                    System.out.println("An error occurred.");
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Une erreur est survenue dans la création du fichier de sauvegarde des utilisateurs.");
+            e.printStackTrace();
+        }
+    }
+}
