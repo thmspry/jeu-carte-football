@@ -1,11 +1,16 @@
 package com.javafootball;
 
 import com.javafootball.Model.Utilisateur;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
@@ -27,6 +32,11 @@ public class ConnexionController implements Initializable {
     Label errorLbl;
 
 
+    /**
+     * Ajoute un utilisateur dans la liste d'utilisateur, ainsi que le fichier de sauvegarde
+     * @param nouvelUtilisateur : l'utilisateur à ajouter
+     * @return true si ça c'est bien passé, false sinon
+     */
     private boolean enregistrerUtilisateur(Utilisateur nouvelUtilisateur) {
         this.lesUtilisateur.add(nouvelUtilisateur);
         try {
@@ -39,7 +49,7 @@ public class ConnexionController implements Initializable {
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
-            return true;
+            return false;
         }
     }
 
@@ -73,19 +83,19 @@ public class ConnexionController implements Initializable {
     }
 
     @FXML
-    protected void connexion() {
+    protected void connexion(ActionEvent event) throws IOException {
         int resultatRecherche = verifCoupleLogin(pseudoField.getText(), motDePasseField.getText());
-        switch(resultatRecherche) {
-            case -1:
-                errorLbl.setText("Ce compte n'existe pas");
-                break;
-            case 0:
-                errorLbl.setText("Le mot de passe n'est pas le bon");
-                break;
-
-            case 1:
-                // aller à la fenêtre suivante
-                break;
+        switch (resultatRecherche) {
+            case -1 -> errorLbl.setText("Ce compte n'existe pas");
+            case 0 -> errorLbl.setText("Le mot de passe n'est pas le bon");
+            case 1 -> {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Jeu.fxml"));
+                Scene scene = new Scene(fxmlLoader.load(), 1080, 720);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setTitle("Zimdim Football");
+                stage.setScene(scene);
+                stage.show();
+            }
         }
     }
 
