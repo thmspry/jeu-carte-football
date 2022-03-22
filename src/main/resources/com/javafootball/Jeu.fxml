@@ -13,26 +13,23 @@
    <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="400.0" prefHeight="100.0" prefWidth="200.0">
       <Label text="Zimdim">
          <font>
-            <Font size="36.0"/>
+            <Font size="36.0" />
          </font>
       </Label>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="100.0">
          <Label fx:id="pseudo" text="pseudo">
             <font>
-               <Font size="24.0"/>
+               <Font size="24.0" />
             </font>
          </Label>
-         <FlowPane alignment="CENTER_RIGHT" columnHalignment="RIGHT" maxWidth="-Infinity" minWidth="-Infinity"
-                   prefHeight="50.0" prefWidth="161.0">
-            <Label fx:id="montantArgent" alignment="CENTER_RIGHT" contentDisplay="RIGHT"
-                   maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-                   prefHeight="50.0" prefWidth="110.0" text="argent">
+         <FlowPane alignment="CENTER_RIGHT" columnHalignment="RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="161.0">
+            <Label fx:id="montantArgent" alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="50.0" prefWidth="110.0" text="argent">
                <font>
-                  <Font size="18.0"/>
+                  <Font size="18.0" />
                </font>
             </Label>
             <ImageView fitHeight="150.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@zimdim_coin.png"/>
+               <Image url="@zimdim_coin.png" />
             </ImageView>
          </FlowPane>
       </FlowPane>
@@ -40,17 +37,17 @@
    <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" tabMinWidth="250.0">
       <Tab text="Mes cartes">
          <AnchorPane>
-            <FlowPane prefHeight="200.0" prefWidth="1080.0"/>
+            <FlowPane prefHeight="200.0" prefWidth="1080.0" />
          </AnchorPane>
       </Tab>
       <Tab text="Boutique">
          <AnchorPane />
       </Tab>
       <Tab text="Mon équipe">
-         <AnchorPane/>
+         <AnchorPane />
       </Tab>
       <Tab text="Matchs">
-         <AnchorPane/>
+         <AnchorPane />
       </Tab>
    </TabPane>
 </FlowPane>

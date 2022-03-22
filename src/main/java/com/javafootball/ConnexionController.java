@@ -15,15 +15,12 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 
 public class ConnexionController implements Initializable {
 
     final private String cheminVersFichierData = "utilisateur.csv";
-    List<Utilisateur> lesUtilisateur;
+    Map<String, Utilisateur> lesUtilisateur;
 
     @FXML
     TextField pseudoField;
@@ -40,28 +37,31 @@ public class ConnexionController implements Initializable {
      * @param nouvelUtilisateur : l'utilisateur à ajouter
      * @return true si ça c'est bien passé, false sinon
      */
-    private boolean enregistrerUtilisateur(Utilisateur nouvelUtilisateur) {
-        this.lesUtilisateur.add(nouvelUtilisateur);
-        try {
+    private boolean enregistrerUtilisateur(Utilisateur nouvelUtilisateur) throws IOException {
+        if(this.lesUtilisateur.get(nouvelUtilisateur.pseudo) == null) {
+            this.lesUtilisateur.put(nouvelUtilisateur.pseudo, nouvelUtilisateur);
             FileWriter fw = new FileWriter(cheminVersFichierData, true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(nouvelUtilisateur.toString());
             bw.newLine();
             bw.close();
             return true;
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+        } else {
             return false;
         }
     }
 
     @FXML
     protected void incription() {
-        if(enregistrerUtilisateur(new Utilisateur(pseudoField.getText(), motDePasseField.getText()))) {
-            errorLbl.setText("Inscription réussie");
-        } else {
-            errorLbl.setText("Une erreur dans la création du compte est survenue");
+        try {
+            if(enregistrerUtilisateur(new Utilisateur(pseudoField.getText(), motDePasseField.getText()))) {
+                errorLbl.setText("Inscription réussie");
+            } else {
+                errorLbl.setText("Le pseudo existe déjà, inscription impossible");
+            }
+        } catch (IOException e) {
+            System.out.println("Un erreur est survenue lors de l'écriture dans le fichier de sauvegarde des utilisateurs.");
+            e.printStackTrace();
         }
     }
 
@@ -74,12 +74,12 @@ public class ConnexionController implements Initializable {
      *          1 si le couple est bon
      */
     private int verifCoupleLogin(String pseudo, String motDePasse) {
-        for (Utilisateur u: this.lesUtilisateur) {
-            if(u.pseudo.equals(pseudo)) {
-                if(u.motDePasse.equals(motDePasse)) {
-                    currentUtilisateur = u;
-                    return 1;
-                }
+        Utilisateur resUti = lesUtilisateur.get(pseudo);
+        if(resUti != null) {
+            if(resUti.motDePasse.equals(motDePasse)) {
+                currentUtilisateur = resUti;
+                return 1;
+            } else {
                 return 0;
             }
         }
@@ -111,7 +111,7 @@ public class ConnexionController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.lesUtilisateur = new ArrayList<>();
+        this.lesUtilisateur = new HashMap<>();
         try {
             File dataFile = new File(cheminVersFichierData);
             if (dataFile.createNewFile()) {
@@ -123,12 +123,12 @@ public class ConnexionController implements Initializable {
                     while (myReader.hasNextLine()) {
                         String row = myReader.nextLine();
                         String [] splittedRow = row.split(";");
-                        lesUtilisateur.add(new Utilisateur(splittedRow[0], splittedRow[1], Integer.parseInt(splittedRow[2])));
+                        lesUtilisateur.put(splittedRow[0], new Utilisateur(splittedRow[0], splittedRow[1], Integer.parseInt(splittedRow[2])));
                     }
                     System.out.println("utilisateurs :" + lesUtilisateur.toString());
                     myReader.close();
                 } catch (FileNotFoundException e) {
-                    System.out.println("An error occurred.");
+                    System.out.println("Une erreur est survenue dans la lecture du fichier de sauvegarde des utilisateurs.");
                     e.printStackTrace();
                 }
             }
