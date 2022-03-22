@@ -3,7 +3,7 @@ package com.javafootball.Model;
 public class Utilisateur {
     public String pseudo;
     public String motDePasse;
-    int argent;
+    public int argent;
 
     public Utilisateur(String pseudo, String motDePasse) {
         this.pseudo = pseudo;

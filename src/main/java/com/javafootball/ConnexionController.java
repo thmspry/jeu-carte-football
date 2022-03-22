@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -30,6 +31,8 @@ public class ConnexionController implements Initializable {
     PasswordField motDePasseField;
     @FXML
     Label errorLbl;
+
+    private Utilisateur currentUtilisateur;
 
 
     /**
@@ -74,6 +77,7 @@ public class ConnexionController implements Initializable {
         for (Utilisateur u: this.lesUtilisateur) {
             if(u.pseudo.equals(pseudo)) {
                 if(u.motDePasse.equals(motDePasse)) {
+                    currentUtilisateur = u;
                     return 1;
                 }
                 return 0;
@@ -90,7 +94,13 @@ public class ConnexionController implements Initializable {
             case 0 -> errorLbl.setText("Le mot de passe n'est pas le bon");
             case 1 -> {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Jeu.fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), 1080, 720);
+                Parent root = fxmlLoader.load();
+                if(currentUtilisateur != null) {
+                    JeuController jeuController = fxmlLoader.getController();
+                    jeuController.setUtilisateur(this.currentUtilisateur);
+                }
+
+                Scene scene = new Scene(root, 1080, 720);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setTitle("Zimdim Football");
                 stage.setScene(scene);
