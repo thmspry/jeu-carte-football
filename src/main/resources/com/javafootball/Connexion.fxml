@@ -52,7 +52,7 @@
                <Insets left="2.0"/>
             </FlowPane.margin>
          </Separator>
-         <Button mnemonicParsing="false" onAction="#incription" text="S'inscrire">
+         <Button mnemonicParsing="false" onAction="#inscription" text="S'inscrire">
             <font>
                <Font size="18.0"/>
             </font>

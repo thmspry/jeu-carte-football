@@ -52,7 +52,7 @@ public class ConnexionController implements Initializable {
     }
 
     @FXML
-    protected void incription() {
+    protected void inscription() {
         try {
             if(enregistrerUtilisateur(new Utilisateur(pseudoField.getText(), motDePasseField.getText()))) {
                 errorLbl.setText("Inscription réussie");
@@ -93,9 +93,15 @@ public class ConnexionController implements Initializable {
             case -1 -> errorLbl.setText("Ce compte n'existe pas");
             case 0 -> errorLbl.setText("Le mot de passe n'est pas le bon");
             case 1 -> {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Jeu.fxml"));
+                FXMLLoader fxmlLoader;
+                if(currentUtilisateur.admin) {
+                    fxmlLoader = new FXMLLoader(getClass().getResource("Admin.fxml"));
+                } else {
+                    fxmlLoader = new FXMLLoader(getClass().getResource("Jeu.fxml"));
+                }
+
                 Parent root = fxmlLoader.load();
-                if(currentUtilisateur != null) {
+                if(currentUtilisateur != null && !currentUtilisateur.admin) {
                     JeuController jeuController = fxmlLoader.getController();
                     jeuController.setUtilisateur(this.currentUtilisateur);
                 }
@@ -123,9 +129,10 @@ public class ConnexionController implements Initializable {
                     while (myReader.hasNextLine()) {
                         String row = myReader.nextLine();
                         String [] splittedRow = row.split(";");
-                        lesUtilisateur.put(splittedRow[0], new Utilisateur(splittedRow[0], splittedRow[1], Integer.parseInt(splittedRow[2])));
+                        boolean admin = splittedRow[3].equals("true");
+                        lesUtilisateur.put(splittedRow[0], new Utilisateur(splittedRow[0], splittedRow[1], Integer.parseInt(splittedRow[2]), admin));
                     }
-                    System.out.println("utilisateurs :" + lesUtilisateur.toString());
+                    //System.out.println("utilisateurs :" + lesUtilisateur.toString());
                     myReader.close();
                 } catch (FileNotFoundException e) {
                     System.out.println("Une erreur est survenue dans la lecture du fichier de sauvegarde des utilisateurs.");
