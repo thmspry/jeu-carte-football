@@ -1,6 +1,8 @@
 package com.javafootball;
 
+import com.javafootball.Model.Admin;
 import com.javafootball.Model.Utilisateur;
+import com.javafootball.Model.UtilisateurJoueur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +21,7 @@ import java.util.*;
 
 public class ConnexionController implements Initializable {
 
-    final private String cheminVersFichierData = "utilisateur.csv";
+    final private String cheminVersFichierData = "utilisateurs.csv";
     Map<String, Utilisateur> lesUtilisateur;
 
     @FXML
@@ -54,7 +56,7 @@ public class ConnexionController implements Initializable {
     @FXML
     protected void inscription() {
         try {
-            if(enregistrerUtilisateur(new Utilisateur(pseudoField.getText(), motDePasseField.getText()))) {
+            if(enregistrerUtilisateur(new UtilisateurJoueur(pseudoField.getText(), motDePasseField.getText()))) {
                 errorLbl.setText("Inscription réussie");
             } else {
                 errorLbl.setText("Le pseudo existe déjà, inscription impossible");
@@ -94,16 +96,13 @@ public class ConnexionController implements Initializable {
             case 0 -> errorLbl.setText("Le mot de passe n'est pas le bon");
             case 1 -> {
                 FXMLLoader fxmlLoader;
-                if(currentUtilisateur.admin) {
-                    fxmlLoader = new FXMLLoader(getClass().getResource("Admin.fxml"));
-                } else {
-                    fxmlLoader = new FXMLLoader(getClass().getResource("Jeu.fxml"));
-                }
+                String nomVue = currentUtilisateur.nomVue;
+                fxmlLoader = new FXMLLoader(getClass().getResource(nomVue));
 
                 Parent root = fxmlLoader.load();
-                if(currentUtilisateur != null && !currentUtilisateur.admin) {
+                if(currentUtilisateur != null && !nomVue.equals("Admin.fxml")) {
                     JeuController jeuController = fxmlLoader.getController();
-                    jeuController.setUtilisateur(this.currentUtilisateur);
+                    jeuController.setUtilisateur((UtilisateurJoueur) this.currentUtilisateur);
                 }
 
                 Scene scene = new Scene(root, 1080, 720);
@@ -129,10 +128,17 @@ public class ConnexionController implements Initializable {
                     while (myReader.hasNextLine()) {
                         String row = myReader.nextLine();
                         String [] splittedRow = row.split(";");
-                        boolean admin = splittedRow[3].equals("true");
-                        lesUtilisateur.put(splittedRow[0], new Utilisateur(splittedRow[0], splittedRow[1], Integer.parseInt(splittedRow[2]), admin));
+                        Utilisateur nouvelUtilisateur;
+                        String pseudo = splittedRow[0];
+                        String motDePasse = splittedRow[1];
+                        if(splittedRow.length > 2) {
+                            nouvelUtilisateur = new UtilisateurJoueur(pseudo, motDePasse, Integer.parseInt(splittedRow[2]), new ArrayList<>());
+                        } else {
+                            nouvelUtilisateur = new Admin(pseudo, motDePasse);
+                        }
+                        lesUtilisateur.put(pseudo, nouvelUtilisateur);
+
                     }
-                    //System.out.println("utilisateurs :" + lesUtilisateur.toString());
                     myReader.close();
                 } catch (FileNotFoundException e) {
                     System.out.println("Une erreur est survenue dans la lecture du fichier de sauvegarde des utilisateurs.");

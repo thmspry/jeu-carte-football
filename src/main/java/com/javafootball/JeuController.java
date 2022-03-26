@@ -1,6 +1,6 @@
 package com.javafootball;
 
-import com.javafootball.Model.Utilisateur;
+import com.javafootball.Model.UtilisateurJoueur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +20,7 @@ public class JeuController {
     @FXML
     Label pseudo;
 
-    Utilisateur utilisateur;
+    UtilisateurJoueur utilisateur;
 
     /**
      * Remplis les champs relatifs à l'utilisateur dans la fenêtre
@@ -40,7 +40,7 @@ public class JeuController {
      * Attribut l'utilisateur courant
      * @param uti : l'utilisateur courant à attribuer
      */
-    void setUtilisateur(Utilisateur uti) {
+    void setUtilisateur(UtilisateurJoueur uti) {
         this.utilisateur = uti;
         setInfoUtilisateur();
     }
