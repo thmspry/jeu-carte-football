@@ -1,8 +1,8 @@
 package com.javafootball;
 
-import com.javafootball.Model.Admin;
-import com.javafootball.Model.Utilisateur;
-import com.javafootball.Model.UtilisateurJoueur;
+import com.javafootball.Model.Utilisateur.Admin;
+import com.javafootball.Model.Utilisateur.Utilisateur;
+import com.javafootball.Model.Utilisateur.UtilisateurJoueur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

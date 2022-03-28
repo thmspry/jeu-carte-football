@@ -1,4 +1,4 @@
-package com.javafootball.Model;
+package com.javafootball.Model.Utilisateur;
 
 
 abstract public class Utilisateur {
