@@ -1,5 +1,6 @@
 package com.javafootball.Model.Joueur;
 
+
 abstract public class Carte {
     public int numero;
     public int maxExemplaire;
@@ -10,4 +11,6 @@ abstract public class Carte {
     public String toString() {
         return "" + numero;
     }
+
+
 }
