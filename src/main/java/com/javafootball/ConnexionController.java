@@ -21,7 +21,7 @@ import java.util.*;
 
 public class ConnexionController implements Initializable {
 
-    final private String cheminVersFichierData = "utilisateurs.csv";
+    final private String cheminVersFichierData = "src/main/resources/com/javafootball/data/utilisateurs.csv";
     Map<String, Utilisateur> lesUtilisateur;
 
     @FXML
@@ -37,7 +37,7 @@ public class ConnexionController implements Initializable {
     /**
      * Ajoute un utilisateur dans la liste d'utilisateur, ainsi que le fichier de sauvegarde
      * @param nouvelUtilisateur : l'utilisateur à ajouter
-     * @return true si ça c'est bien passé, false sinon
+     * @return true si ça s'est bien passé, false sinon
      */
     private boolean enregistrerUtilisateur(Utilisateur nouvelUtilisateur) throws IOException {
         if(this.lesUtilisateur.get(nouvelUtilisateur.pseudo) == null) {
