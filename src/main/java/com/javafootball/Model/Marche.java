@@ -7,8 +7,8 @@ import java.util.List;
 public class Marche {
     List<Carte> carteAVendre;
 
-    public Marche(List<Carte> carteAVendre) {
-        this.carteAVendre = carteAVendre;
+    public void ajouterCarteAVendre(Carte c) {
+        carteAVendre.add(c);
     }
 }
 

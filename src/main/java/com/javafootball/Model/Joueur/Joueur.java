@@ -11,15 +11,17 @@ abstract public class Joueur {
     public String lienPhoto;
     public Equipe equipe;
 
-
     protected Joueur(String prenom, String nom) {
         this.prenom = prenom;
         this.nom = nom;
     }
 
-
     boolean aJoue() {
-
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return nom + ";" + prenom + ";" + equipe.nom;
     }
 }

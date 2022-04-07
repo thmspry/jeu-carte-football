@@ -23,7 +23,7 @@ public class CarteCommune extends Carte{
 
     @Override
     public String toString() {
-        return (this.joueur.prenom + this.joueur.nom +" numéro "+this.numero);
+        return super.toString() + ";C";
     }
 
 }

@@ -11,7 +11,7 @@ abstract public class Carte {
 
     @Override
     public String toString() {
-        return "" + numero;
+        return joueur.toString() + ";" + this.numero;
     }
 
 
