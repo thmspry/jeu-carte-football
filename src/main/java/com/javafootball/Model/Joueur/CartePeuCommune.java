@@ -1,17 +1,27 @@
 package com.javafootball.Model.Joueur;
 
-public class CartePeuCommune extends Carte{
+public class CartePeuCommune extends Carte {
 
-    CartePeuCommune(int numero, Joueur joueur){
+    final static private int maxExemplaire = 100;
+    final static private float coefficient = 1.05F;
+
+    public CartePeuCommune(Joueur joueur, int numero) {
+        super(joueur);
         this.numero = numero;
-        this.joueur = joueur;
-        this.maxExemplaire = 100;
-        this.coefficient =  1.05F;
     }
 
+    static Carte creerCarte(Joueur joueur) {
+        if (joueur.compteurPeuCommune < maxExemplaire) {
+            Carte nouvelleCarte;
+            joueur.compteurPeuCommune++;
+            nouvelleCarte = new CartePeuCommune(joueur, joueur.compteurPeuCommune);
+            return nouvelleCarte;
+        }
+        return null;
+    }
 
     @Override
     public String toString() {
-        return (this.joueur.prenom + this.joueur.nom +" numéro "+this.numero);
+        return (this.joueur.prenom + this.joueur.nom + " numéro " + this.numero);
     }
 }

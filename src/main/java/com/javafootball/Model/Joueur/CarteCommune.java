@@ -1,13 +1,25 @@
 package com.javafootball.Model.Joueur;
 
 public class CarteCommune extends Carte{
+    final static private int maxExemplaire = 1000;
+    final static private float coefficient = 1F;
 
-    public CarteCommune(int numero, Joueur joueur) {
+    public CarteCommune(Joueur joueur, int numero) {
+        super(joueur);
         this.numero = numero;
-        this.joueur = joueur;
-        this.maxExemplaire = 1000;
-        this.coefficient = 1;
     }
+
+    static Carte creerCarte(Joueur joueur) {
+        if (joueur.compteurCommune < maxExemplaire) {
+            Carte nouvelleCarte;
+            joueur.compteurCommune++;
+            nouvelleCarte = new CarteCommune(joueur, joueur.compteurCommune);
+            return nouvelleCarte;
+        }
+        return null;
+    }
+
+
 
     @Override
     public String toString() {

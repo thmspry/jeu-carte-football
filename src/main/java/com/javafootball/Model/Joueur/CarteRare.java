@@ -1,16 +1,27 @@
 package com.javafootball.Model.Joueur;
 
-public class CarteRare extends Carte{
-    CarteRare(int numero, Joueur joueur){
+public class CarteRare extends Carte {
+
+    final static private int maxExemplaire = 10;
+    final static private float coefficient = 1.1F;
+
+    public CarteRare(Joueur joueur, int numero) {
+        super(joueur);
         this.numero = numero;
-        this.joueur = joueur;
-        this.maxExemplaire = 10;
-        this.coefficient =  1.10F;
     }
 
+    static Carte creerCarte(Joueur joueur) {
+        if (joueur.compteurRare < maxExemplaire) {
+            Carte nouvelleCarte;
+            joueur.compteurRare++;
+            nouvelleCarte = new CarteRare(joueur, joueur.compteurRare);
+            return nouvelleCarte;
+        }
+        return null;
+    }
 
     @Override
     public String toString() {
-        return (this.joueur.prenom + this.joueur.nom +" numéro "+this.numero);
+        return (this.joueur.prenom + this.joueur.nom + " numéro " + this.numero);
     }
 }

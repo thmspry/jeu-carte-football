@@ -3,6 +3,9 @@ package com.javafootball.Model.Joueur;
 import com.javafootball.Model.Equipe;
 
 abstract public class Joueur {
+    int compteurCommune = 0;
+    int compteurPeuCommune = 0;
+    int compteurRare = 0;
     public final String prenom;
     public final String nom;
     public String lienPhoto;
@@ -15,7 +18,7 @@ abstract public class Joueur {
     }
 
 
-    boolean aJoue(){
+    boolean aJoue() {
 
         return false;
     }
