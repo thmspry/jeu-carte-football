@@ -18,7 +18,7 @@ abstract public class Carte {
     }
 
     public String toStringVerbeux() {
-        return joueur.toString() + " n°" + this.numero;
+        return joueur.toStringVerbeux() + " n°" + this.numero;
     }
 
 

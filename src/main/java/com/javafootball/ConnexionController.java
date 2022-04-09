@@ -113,8 +113,6 @@ public class ConnexionController implements Initializable {
                     adminController.setMarche(marche);
                 }
 
-
-
                 Scene scene = new Scene(root, 1080, 720);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setTitle("Zimdim Football");
@@ -166,7 +164,8 @@ public class ConnexionController implements Initializable {
         }
 
         // Parse marché
-        this.marche.initialisationDonnee("src/main/resources/com/javafootball/data/ext/2022_11_Nantes_ext.csv");
+        this.marche.initialisationJoueur("src/main/resources/com/javafootball/data/ext/2022_11_Nantes_ext.csv");
+        this.marche.initialisationBoutique("src/main/resources/com/javafootball/data/boutique.csv");
 
     }
 

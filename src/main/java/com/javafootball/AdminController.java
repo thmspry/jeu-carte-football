@@ -15,7 +15,9 @@ import javafx.scene.control.RadioButton;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class AdminController {
@@ -81,6 +83,8 @@ public class AdminController {
         Joueur joueurSelectionne = listeJoueur.getSelectionModel().getSelectedItem();
         Carte nouvelleCarte = null;
 
+        final String cheminVersFichierBoutique = "src/main/resources/com/javafootball/data/boutique.csv";
+
         // TODO : Factoriser les if d'une certaine manière
         if (radioCommune.isSelected()) {
             try {
@@ -109,7 +113,20 @@ public class AdminController {
 
         if (nouvelleCarte != null) {
             marche.ajouterCarteAVendre(nouvelleCarte);
+
+            try {
+                FileWriter fw = new FileWriter(cheminVersFichierBoutique, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(nouvelleCarte.toString());
+                bw.newLine();
+                bw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
+
+
 
     }
 
