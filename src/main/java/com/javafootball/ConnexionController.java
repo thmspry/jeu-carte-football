@@ -1,5 +1,6 @@
 package com.javafootball;
 
+import com.javafootball.Model.Marche;
 import com.javafootball.Model.Utilisateur.Admin;
 import com.javafootball.Model.Utilisateur.Utilisateur;
 import com.javafootball.Model.Utilisateur.UtilisateurJoueur;
@@ -32,6 +33,7 @@ public class ConnexionController implements Initializable {
     Label errorLbl;
 
     private Utilisateur currentUtilisateur;
+    private Marche marche;
 
 
     /**
@@ -117,6 +119,9 @@ public class ConnexionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.lesUtilisateur = new HashMap<>();
+        this.marche = new Marche();
+
+
         try {
             File dataFile = new File(cheminVersFichierData);
             if (dataFile.createNewFile()) {
