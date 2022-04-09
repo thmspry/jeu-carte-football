@@ -22,7 +22,8 @@ import java.util.*;
 
 public class ConnexionController implements Initializable {
 
-    final private String cheminVersFichierData = "src/main/resources/com/javafootball/data/utilisateurs.csv";
+    private final String cheminVersFichierData = "src/main/resources/com/javafootball/data/utilisateurs.csv";
+
     Map<String, Utilisateur> lesUtilisateur;
 
     @FXML
@@ -102,10 +103,17 @@ public class ConnexionController implements Initializable {
                 fxmlLoader = new FXMLLoader(getClass().getResource(nomVue));
 
                 Parent root = fxmlLoader.load();
+
                 if(currentUtilisateur != null && !nomVue.equals("Admin.fxml")) {
                     JeuController jeuController = fxmlLoader.getController();
                     jeuController.setUtilisateur((UtilisateurJoueur) this.currentUtilisateur);
+                    jeuController.setMarche(marche);
+                } else {
+                    AdminController adminController = fxmlLoader.getController();
+                    adminController.setMarche(marche);
                 }
+
+
 
                 Scene scene = new Scene(root, 1080, 720);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -122,6 +130,8 @@ public class ConnexionController implements Initializable {
         this.marche = new Marche();
 
 
+
+        // Parse utilisateurs
         try {
             File dataFile = new File(cheminVersFichierData);
             if (dataFile.createNewFile()) {
@@ -136,9 +146,9 @@ public class ConnexionController implements Initializable {
                         Utilisateur nouvelUtilisateur;
                         String pseudo = splittedRow[0];
                         String motDePasse = splittedRow[1];
-                        if(splittedRow.length > 2) {
+                        if(splittedRow.length > 2) {    // Cas utilsateur joueur
                             nouvelUtilisateur = new UtilisateurJoueur(pseudo, motDePasse, Integer.parseInt(splittedRow[2]), new ArrayList<>());
-                        } else {
+                        } else {    // Cas d'una admin
                             nouvelUtilisateur = new Admin(pseudo, motDePasse);
                         }
                         lesUtilisateur.put(pseudo, nouvelUtilisateur);
@@ -154,5 +164,14 @@ public class ConnexionController implements Initializable {
             System.out.println("Une erreur est survenue dans la création du fichier de sauvegarde des utilisateurs.");
             e.printStackTrace();
         }
+
+        // Parse marché
+        this.marche.initialisationDonnee("src/main/resources/com/javafootball/data/ext/2022_11_Nantes_ext.csv");
+
     }
+
+    void setMarche(Marche marche) {
+        this.marche = marche;
+    }
+
 }

@@ -3,12 +3,13 @@ package com.javafootball.Model.Joueur;
 import com.javafootball.Model.Exception.*;
 
 public class CarteCommune extends Carte{
-    final static private int maxExemplaire = 1000;
-    final static private float coefficient = 1F;
+    final static public int maxExemplaire = 1000;
 
     private CarteCommune(Joueur joueur, int numero) {
         super(joueur);
         this.numero = numero;
+        this.coefficient = 1F;
+        this.lienFondCarte = "https://cdn-0.fifarosters.com/assets/cards/fifa22/cards_bg_e_1_1_2.png";
     }
 
     public static Carte creerCarte(Joueur joueur) throws ExceptionRareteDepasse {

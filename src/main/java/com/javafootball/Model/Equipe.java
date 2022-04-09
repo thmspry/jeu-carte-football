@@ -2,6 +2,7 @@ package com.javafootball.Model;
 
 import com.javafootball.Model.Joueur.Joueur;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Equipe {
@@ -10,5 +11,6 @@ public class Equipe {
 
     public Equipe(String nom) {
         this.nom = nom;
+        compositionJoueur = new ArrayList<>();
     }
 }

@@ -1,13 +1,26 @@
 package com.javafootball.Model.Joueur;
 
+import com.javafootball.Model.Exception.ExceptionPoste;
+
 public enum Poste {
-    GOALKEEPER("GK"), DEFENSEUR("D"), MIDDLEFIELD("M"),FORWARD("F");
+    GOALKEEPER("G"), DEFENSEUR("D"), MIDDLEFIELD("M"),FORWARD("F");
 
-    private String abreviation;
+    private final String abreviation;
 
 
-    private Poste(String abreviation) {
+    Poste(String abreviation) {
         this.abreviation = abreviation;
+    }
+
+    static public Poste getPoste(String abreviation) throws ExceptionPoste {
+
+        return switch (abreviation) {
+            case "G" -> Poste.GOALKEEPER;
+            case "D" -> Poste.DEFENSEUR;
+            case "M" -> Poste.MIDDLEFIELD;
+            case "F" -> Poste.FORWARD;
+            default -> throw new ExceptionPoste("Aucun poste valide");
+        };
     }
 
     public String getAbreviation(){

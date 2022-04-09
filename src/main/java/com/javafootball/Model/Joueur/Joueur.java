@@ -9,7 +9,7 @@ abstract public class Joueur {
 
     public final String prenom;
     public final String nom;
-    public String lienPhoto ="";
+    public String lienPhoto = "";
     public Equipe equipe;
     public Poste poste;
 
@@ -24,12 +24,17 @@ abstract public class Joueur {
         return false;
     }
 
-    public int getCompteurRare(){
+    public int getCompteurRare() {
         return this.compteurRare;
     }
 
+    /*@Override
+    public String toString() {
+        return this.nom + ";" + this.prenom + ";" + this.equipe.nom + ";" + this.poste.getAbreviation();
+    }*/
+
     @Override
     public String toString() {
-        return this.nom + ";" + this.prenom + ";" + this.equipe.nom;
+        return this.prenom + " " + this.nom + ", " + this.equipe.nom + ", " + this.poste.getAbreviation();
     }
 }

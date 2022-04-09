@@ -7,10 +7,4 @@ public class JoueurGardien extends Joueur{
         super(prenom, nom, equipe);
         this.poste = Poste.GOALKEEPER;
     }
-
-
-    @Override
-    public String toString() {
-        return super.toString() + ";G";
-    }
 }
