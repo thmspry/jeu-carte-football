@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -12,12 +13,12 @@
 <?import javafx.scene.text.Font?>
 
 <FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafootball.JeuController">
-   <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="200.0" prefHeight="100.0" prefWidth="200.0">
+   <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="150.0" prefHeight="100.0" prefWidth="200.0">
       <Button mnemonicParsing="false" onAction="#seDeconnecter" text="Se déconnecter">
          <font>
             <Font size="14.0" />
          </font></Button>
-      <Label text="Zimdim">
+      <Label text="Zimdim Football">
          <font>
             <Font size="36.0" />
          </font>
@@ -48,12 +49,40 @@
       </Tab>
       <Tab text="Boutique">
          <AnchorPane>
-            <FlowPane orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0">
-               <ListView fx:id="listeCarteBoutique" prefHeight="200.0" prefWidth="200.0"/>
-               <FlowPane prefHeight="200.0" prefWidth="200.0">
-                  <ImageView fx:id="fondCarte" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
-                             preserveRatio="true"/>
-                  <Button mnemonicParsing="false" text="Acheter"/>
+            <FlowPane hgap="150.0" orientation="VERTICAL">
+               <ListView fx:id="listeCarteBoutique" prefWidth="500.0" />
+               <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+                  <FlowPane fx:id="fondCarte" alignment="TOP_CENTER" orientation="VERTICAL" prefHeight="500.0"
+                            prefWidth="400.0">
+                     <Label fx:id="vendeurLbl">
+                        <font>
+                           <Font name="System Italic" size="18.0"/>
+                        </font>
+                     </Label>
+                     <Label fx:id="posteLbl">
+                        <font>
+                           <Font name="System Bold" size="24.0"/>
+                        </font>
+                        <FlowPane.margin>
+                           <Insets top="40.0"/>
+                        </FlowPane.margin>
+                     </Label>
+                     <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <FlowPane.margin>
+                           <Insets/>
+                        </FlowPane.margin>
+                     </ImageView>
+                     <Label fx:id="nomJoueurLbl">
+                        <font>
+                           <Font name="System Bold" size="24.0"/>
+                        </font>
+                        <FlowPane.margin>
+                           <Insets top="10.0"/>
+                        </FlowPane.margin>
+                     </Label>
+                     <Label fx:id="rareteLbl"/>
+                  </FlowPane>
+                  <Button mnemonicParsing="false" text="Acheter" />
                </FlowPane>
             </FlowPane>
          </AnchorPane>

@@ -6,6 +6,7 @@ abstract public class Carte {
     public Joueur joueur;
     protected float coefficient;
     public String lienFondCarte;
+    public String rareteLabel;
 
     public Carte(Joueur joueur) {
         this.joueur = joueur;
@@ -14,6 +15,10 @@ abstract public class Carte {
     @Override
     public String toString() {
         return joueur.toString() + ";" + this.numero;
+    }
+
+    public String toStringVerbeux() {
+        return joueur.toString() + " n°" + this.numero;
     }
 
 

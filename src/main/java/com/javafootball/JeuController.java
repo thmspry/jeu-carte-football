@@ -1,11 +1,10 @@
 package com.javafootball;
 
-import com.javafootball.Model.Joueur.Carte;
+import com.javafootball.Model.Joueur.CarteRare;
 import com.javafootball.Model.Joueur.Joueur;
 import com.javafootball.Model.Marche;
-import com.javafootball.Model.Utilisateur.Admin;
-import com.javafootball.Model.Utilisateur.Utilisateur;
 import com.javafootball.Model.Utilisateur.UtilisateurJoueur;
+import com.javafootball.Model.Vente;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,7 +17,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -39,11 +39,19 @@ public class JeuController implements Initializable {
     @FXML
     Label pseudo;
     @FXML
-    ListView<Carte> listeCarteBoutique;
+    ListView<Vente> listeCarteBoutique;
     @FXML
-    ImageView fondCarte;
+    FlowPane fondCarte;
+    @FXML
+    Label nomJoueurLbl;
+    @FXML
+    Label posteLbl;
+    @FXML
+    Label vendeurLbl;
+    @FXML
+    Label rareteLbl;
 
-    Carte carteSelectionnee;
+    Vente venteSelectionnee;
 
     UtilisateurJoueur utilisateur;
     Marche marche;
@@ -98,8 +106,8 @@ public class JeuController implements Initializable {
 
     void setMarche(Marche marche) {
         this.marche = marche;
-        for (Carte c : marche.carteAVendre) {
-            this.listeCarteBoutique.getItems().add(c);
+        for (Vente v : marche.carteAVendre) {
+            this.listeCarteBoutique.getItems().add(v);
         }
     }
 
@@ -124,13 +132,38 @@ public class JeuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        listeCarteBoutique.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Carte>() {
+        Color jaune = Color.web("#F7EF00");
+        Color noir = Color.web("#000000");
+        listeCarteBoutique.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Vente>() {
             @Override
-            public void changed(ObservableValue<? extends Carte> observableValue, Carte carte, Carte t1) {
-                carteSelectionnee = listeCarteBoutique.getSelectionModel().getSelectedItem();
-                Image imageFondCarte = new Image(carteSelectionnee.lienFondCarte);
-                fondCarte.setImage(imageFondCarte);
+            public void changed(ObservableValue<? extends Vente> observableValue, Vente carte, Vente t1) {
+                venteSelectionnee = listeCarteBoutique.getSelectionModel().getSelectedItem();
+                Joueur joueurCourant = venteSelectionnee.carteAVendre.joueur;
+                Image imageFondCarte = new Image(venteSelectionnee.carteAVendre.lienFondCarte);
+                String pseudoVendeur = venteSelectionnee.getPseudoVendeur();
+
+                BackgroundImage bImg = new BackgroundImage(imageFondCarte,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.DEFAULT,
+                        new BackgroundSize(400, 500, false, false, false, false));
+                Background bGround = new Background(bImg);
+                nomJoueurLbl.setText(joueurCourant.prenom + " " + joueurCourant.nom);
+                if(venteSelectionnee.carteAVendre instanceof CarteRare) {
+                    nomJoueurLbl.setTextFill(jaune);
+                    posteLbl.setTextFill(jaune);
+                    rareteLbl.setTextFill(jaune);
+                } else {
+                    nomJoueurLbl.setTextFill(noir);
+                    posteLbl.setTextFill(noir);
+                    rareteLbl.setTextFill(noir);
+                }
+                posteLbl.setText(joueurCourant.poste.getAbreviationSimplifie());
+                vendeurLbl.setText("Vendeur : " + pseudoVendeur);
+                rareteLbl.setText(venteSelectionnee.carteAVendre.rareteLabel);
+                fondCarte.setBackground(bGround);
             }
         });
+
     }
 }

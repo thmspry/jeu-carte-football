@@ -11,6 +11,7 @@ public class CartePeuCommune extends Carte {
         this.numero = numero;
         this.coefficient = 1.05F;
         this.lienFondCarte = "https://cdn-0.fifarosters.com/assets/cards/fifa22/cards_bg_e_1_1_3.png";
+        this.rareteLabel = "Peu commune";
     }
 
     public static Carte creerCarte(Joueur joueur) throws ExceptionRareteDepasse {

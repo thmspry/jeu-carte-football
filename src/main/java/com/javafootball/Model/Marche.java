@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Marche {
-    public List<Carte> carteAVendre;
+    public List<Vente> carteAVendre;
     public List<Joueur> joueursExistant;
     List<Equipe> equipesExistante;
 
@@ -82,8 +82,16 @@ public class Marche {
 
 
 
+    public void ajouterCarteAVendre(Vente v) {
+        carteAVendre.add(v);
+    }
+
+    public void ajouterCarteAVendre(Carte c, Utilisateur vendeur) {
+        carteAVendre.add(new Vente(c, vendeur));
+    }
+
     public void ajouterCarteAVendre(Carte c) {
-        carteAVendre.add(c);
+        carteAVendre.add(new Vente(c, null));
     }
 }
 

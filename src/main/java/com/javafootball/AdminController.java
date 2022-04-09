@@ -75,11 +75,13 @@ public class AdminController {
     }
 
 
+
     @FXML
     void mettreEnVente(ActionEvent event) {
         Joueur joueurSelectionne = listeJoueur.getSelectionModel().getSelectedItem();
         Carte nouvelleCarte = null;
 
+        // TODO : Factoriser les if d'une certaine manière
         if (radioCommune.isSelected()) {
             try {
                 nouvelleCarte = CarteCommune.creerCarte(joueurSelectionne);
@@ -105,7 +107,10 @@ public class AdminController {
             }
         }
 
-        marche.ajouterCarteAVendre(nouvelleCarte);
+        if (nouvelleCarte != null) {
+            marche.ajouterCarteAVendre(nouvelleCarte);
+        }
+
     }
 
 }

@@ -11,6 +11,7 @@ public class CarteRare extends Carte {
         this.numero = numero;
         this.coefficient = 1.1F;
         this.lienFondCarte = "https://cdn-0.fifarosters.com/assets/cards/fifa22/cards_bg_e_1_4_0.png";
+        this.rareteLabel = "Rare";
     }
 
     public static Carte creerCarte(Joueur joueur) throws ExceptionRareteDepasse{

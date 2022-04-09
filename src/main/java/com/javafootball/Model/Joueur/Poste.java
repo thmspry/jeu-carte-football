@@ -2,6 +2,8 @@ package com.javafootball.Model.Joueur;
 
 import com.javafootball.Model.Exception.ExceptionPoste;
 
+import java.util.Arrays;
+
 public enum Poste {
     GOALKEEPER("G"), DEFENSEUR("D"), MIDDLEFIELD("M"),FORWARD("F");
 
@@ -25,5 +27,13 @@ public enum Poste {
 
     public String getAbreviation(){
         return this.abreviation;
+    }
+
+    public String getAbreviationSimplifie() {
+        if(this == GOALKEEPER) {
+            return "Gardien";
+        } else {
+            return "Joueur de champ";
+        }
     }
 }
