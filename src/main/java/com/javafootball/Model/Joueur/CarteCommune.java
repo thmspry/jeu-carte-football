@@ -4,7 +4,7 @@ public class CarteCommune extends Carte{
     final static private int maxExemplaire = 1000;
     final static private float coefficient = 1F;
 
-    public CarteCommune(Joueur joueur, int numero) {
+    private CarteCommune(Joueur joueur, int numero) {
         super(joueur);
         this.numero = numero;
     }
