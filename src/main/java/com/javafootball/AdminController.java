@@ -5,6 +5,7 @@ import com.javafootball.Model.Joueur.*;
 import com.javafootball.Model.Marche;
 import com.javafootball.Model.Utilisateur.Admin;
 import com.javafootball.Model.Utilisateur.Utilisateur;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,8 +30,6 @@ public class AdminController implements Initializable {
     @FXML
     Label nomFichier;
     @FXML
-    ListView<Joueur> listeJoueur;
-    @FXML
     RadioButton radioCommune;
     @FXML
     RadioButton radioPeuCommune;
@@ -41,6 +40,17 @@ public class AdminController implements Initializable {
     @FXML
     Spinner<Integer> prixVente;
 
+    @FXML
+    TableView<Joueur> tableauCarte;
+    @FXML
+    TableColumn<Joueur, String> prenom;
+    @FXML
+    TableColumn<Joueur, String> nom;
+    @FXML
+    TableColumn<Joueur, String> poste;
+    @FXML
+    TableColumn<Joueur, String> equipe;
+
     Admin utilisateur;
     Marche marche;
 
@@ -48,9 +58,7 @@ public class AdminController implements Initializable {
 
     void setMarche(Marche marche) {
         this.marche = marche;
-        for (Joueur j : marche.joueursExistant) {
-            this.listeJoueur.getItems().add(j);
-        }
+        this.tableauCarte.getItems().addAll(marche.joueursExistant);
     }
 
     void setUtilisateur(Admin u) {
@@ -92,7 +100,7 @@ public class AdminController implements Initializable {
 
     @FXML
     void mettreEnVente(ActionEvent event) {
-        Joueur joueurSelectionne = listeJoueur.getSelectionModel().getSelectedItem();
+        Joueur joueurSelectionne = tableauCarte.getSelectionModel().getSelectedItem();
         Carte nouvelleCarte = null;
 
         final String cheminVersFichierBoutique = "src/main/resources/com/javafootball/data/boutique.csv";
@@ -147,5 +155,10 @@ public class AdminController implements Initializable {
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 2000000);
         valueFactory.setValue(0);
         prixVente.setValueFactory(valueFactory);
+
+        prenom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().prenom));
+        nom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().nom));
+        poste.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().poste.getAbreviation()));
+        equipe.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().equipe.nom));
     }
 }

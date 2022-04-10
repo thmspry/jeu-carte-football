@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -22,7 +21,7 @@
             <Font size="14.0" />
          </font></Button>
       <ImageView fitHeight="66.0" fitWidth="416.0" pickOnBounds="true" preserveRatio="true">
-         <Image url="@zimdim_football_cropped.png"/>
+         <Image url="@zimdim_football_cropped.png" />
       </ImageView>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="100.0">
          <Label fx:id="pseudo" text="pseudo">
@@ -45,8 +44,17 @@
    <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" tabMinWidth="250.0">
       <Tab text="Mes cartes">
          <AnchorPane>
-            <FlowPane hgap="150.0" orientation="VERTICAL">
-               <ListView fx:id="listeCartePerso" prefWidth="500.0" />
+            <FlowPane alignment="TOP_CENTER" hgap="150.0" orientation="VERTICAL" prefHeight="530.0" prefWidth="1067.0">
+               <TableView fx:id="tableauPerso" prefHeight="530.0" prefWidth="481.0">
+                  <columns>
+                     <TableColumn fx:id="prenomPerso" prefWidth="75.0" text="Prénom" />
+                     <TableColumn fx:id="nomPerso" prefWidth="75.0" text="Nom" />
+                     <TableColumn fx:id="raretePerso" prefWidth="75.0" text="Rareté" />
+                     <TableColumn fx:id="postePerso" prefWidth="75.0" text="Poste" />
+                     <TableColumn fx:id="equipePerso" prefWidth="113.0" text="Équipe" />
+                     <TableColumn fx:id="numeroPerso" prefWidth="67.0" text="Numero" />
+                  </columns>
+               </TableView>
                <FlowPane alignment="CENTER" hgap="40.0" prefHeight="200.0" prefWidth="200.0">
                   <FlowPane fx:id="fondCartePerso" alignment="TOP_CENTER" orientation="VERTICAL" prefHeight="500.0" prefWidth="400.0">
                      <Label fx:id="postePersoLbl" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="228.0" textAlignment="CENTER">
@@ -54,7 +62,7 @@
                            <Font name="System Bold" size="24.0" />
                         </font>
                         <FlowPane.margin>
-                           <Insets top="60.0" />
+                           <Insets top="70.0" />
                         </FlowPane.margin>
                      </Label>
                      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
@@ -80,16 +88,17 @@
       </Tab>
       <Tab text="Boutique">
          <AnchorPane>
-            <FlowPane alignment="TOP_CENTER" hgap="100.0" orientation="VERTICAL" prefHeight="540.0" prefWidth="1073.0">
-               <TableView fx:id="tableauBoutique" prefHeight="530.0" prefWidth="524.0">
+            <FlowPane alignment="TOP_CENTER" hgap="50.0" orientation="VERTICAL" prefHeight="540.0" prefWidth="1073.0">
+               <TableView fx:id="tableauBoutique" prefHeight="530.0" prefWidth="636.0">
                  <columns>
                    <TableColumn fx:id="prenomBoutique" prefWidth="75.0" text="Prénom" />
                    <TableColumn fx:id="nomBoutique" prefWidth="75.0" text="Nom" />
                      <TableColumn fx:id="rareteBoutique" prefWidth="75.0" text="Rareté" />
                      <TableColumn fx:id="posteBoutique" prefWidth="75.0" text="Poste" />
-                     <TableColumn fx:id="numeroBoutique" prefWidth="75.0" text="Numero" />
+                     <TableColumn fx:id="equipeBoutique" prefWidth="88.0" text="Équipe" />
+                     <TableColumn fx:id="numeroBoutique" prefWidth="62.0" text="Numero" />
                      <TableColumn fx:id="prixBoutique" prefWidth="75.0" text="Prix" />
-                     <TableColumn fx:id="vendeurBoutique" prefWidth="75.0" text="Vendeur" />
+                     <TableColumn fx:id="vendeurBoutique" prefWidth="103.0" text="Vendeur" />
                  </columns>
                </TableView>
                <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0">

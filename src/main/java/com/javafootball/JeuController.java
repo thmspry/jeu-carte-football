@@ -44,6 +44,7 @@ public class JeuController implements Initializable {
     Label montantArgent;
     @FXML
     Label pseudo;
+
     @FXML
     TableView<Vente> tableauBoutique;
     @FXML
@@ -56,6 +57,8 @@ public class JeuController implements Initializable {
     TableColumn<Vente, String> posteBoutique;
     @FXML
     TableColumn<Vente, String> numeroBoutique;
+    @FXML
+    TableColumn<Vente, String> equipeBoutique;
     @FXML
     TableColumn<Vente, String> prixBoutique;
     @FXML
@@ -75,7 +78,20 @@ public class JeuController implements Initializable {
     Label prixVenteBoutique;
 
     @FXML
-    ListView<Carte> listeCartePerso;
+    TableView<Carte> tableauPerso;
+    @FXML
+    TableColumn<Carte, String> prenomPerso;
+    @FXML
+    TableColumn<Carte, String> nomPerso;
+    @FXML
+    TableColumn<Carte, String> raretePerso;
+    @FXML
+    TableColumn<Carte, String> postePerso;
+    @FXML
+    TableColumn<Carte, String> equipePerso;
+    @FXML
+    TableColumn<Carte, String> numeroPerso;
+
     @FXML
     FlowPane fondCartePerso;
     @FXML
@@ -116,7 +132,7 @@ public class JeuController implements Initializable {
 
         pseudo.setText(this.utilisateur.pseudo);
 
-        listeCartePerso.getItems().addAll(utilisateur.listeCarte);
+        tableauPerso.getItems().addAll(utilisateur.listeCarte);
 
         // Parsing de ses cartes
         final String cheminVersFichierData = "src/main/resources/com/javafootball/data/" + utilisateur.pseudo + ".csv";
@@ -156,12 +172,7 @@ public class JeuController implements Initializable {
 
     void setMarche(Marche marche) {
         this.marche = marche;
-        for (Vente v : marche.carteAVendre) {
-            this.tableauBoutique.getItems().add(v);
-        }
-
-
-
+        tableauBoutique.getItems().addAll(marche.carteAVendre);
     }
 
     @FXML
@@ -187,7 +198,15 @@ public class JeuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Color jaune = Color.web("#F7EF00");
         Color noir = Color.web("#000000");
-        listeCartePerso.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Carte>() {
+
+        prenomPerso.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().joueur.prenom));
+        nomPerso.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().joueur.nom));
+        raretePerso.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().rareteLabel));
+        postePerso.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().joueur.poste.getAbreviation()));
+        equipePerso.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().joueur.equipe.nom));
+        numeroPerso.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().numero)));
+
+        tableauPerso.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Carte>() {
             @Override
             public void changed(ObservableValue<? extends Carte> observableValue, Carte cartePrecedente, Carte carteCourante) {
                 carteSelectionne = carteCourante;
@@ -221,6 +240,7 @@ public class JeuController implements Initializable {
         nomBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().carteAVendre.joueur.nom));
         rareteBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().carteAVendre.rareteLabel));
         posteBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().carteAVendre.joueur.poste.getAbreviation()));
+        equipeBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().carteAVendre.joueur.equipe.nom));
         numeroBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().carteAVendre.numero)));
         prixBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(separeMilliers(cellData.getValue().prix)));
         vendeurBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().vendeur.getPseudoVendeur()));
@@ -280,7 +300,7 @@ public class JeuController implements Initializable {
             // Mise à jour de la vue
             montantArgent.setText(separeMilliers(utilisateur.argent));
             tableauBoutique.getItems().remove(venteSelectionnee);
-            listeCartePerso.getItems().add(carteEnJeu);
+            tableauPerso.getItems().add(carteEnJeu);
         }
 
     }
@@ -292,7 +312,7 @@ public class JeuController implements Initializable {
         this.utilisateur.listeCarte.remove(carteSelectionne);
 
         // Mise à jour de la vue
-        listeCartePerso.getItems().remove(carteSelectionne);
+        tableauPerso.getItems().remove(carteSelectionne);
         tableauBoutique.getItems().add(nouvelleVente);
     }
 
