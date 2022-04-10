@@ -285,7 +285,7 @@ public class JeuController implements Initializable {
     public void acheter(ActionEvent actionEvent) {
         int montant = venteSelectionnee.prix;
 
-        if (montant < utilisateur.argent) {
+        if (montant < utilisateur.argent && (venteSelectionnee.vendeur != utilisateur)) {
             Carte carteEnJeu = venteSelectionnee.carteAVendre;
             utilisateur.depenserArgent(montant);
             utilisateur.recevoirCarte(carteEnJeu);
@@ -301,6 +301,23 @@ public class JeuController implements Initializable {
             montantArgent.setText(separeMilliers(utilisateur.argent));
             tableauBoutique.getItems().remove(venteSelectionnee);
             tableauPerso.getItems().add(carteEnJeu);
+        }else if(venteSelectionnee.vendeur == utilisateur){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Achat d'une carte");
+
+            // Header Text: null
+            alert.setHeaderText(null);
+            alert.setContentText("Vous ne pouvez pas acheter votre propre Carte");
+            alert.showAndWait();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Achat d'une carte");
+
+            // Header Text: null
+            alert.setHeaderText(null);
+            alert.setContentText("Vous ne possedez pas assez de Zimdim Coin pour acheter cette carte");
+            alert.showAndWait();
         }
 
     }
@@ -308,12 +325,22 @@ public class JeuController implements Initializable {
     public void vendre(ActionEvent actionEvent) {
         int montant = prixVentePerso.getValue();
 
-        Vente nouvelleVente = this.marche.ajouterCarteAVendre(carteSelectionne, this.utilisateur, montant);
-        this.utilisateur.listeCarte.remove(carteSelectionne);
+        if(montant != 0) {
+            Vente nouvelleVente = this.marche.ajouterCarteAVendre(carteSelectionne, this.utilisateur, montant);
+            this.utilisateur.listeCarte.remove(carteSelectionne);
 
-        // Mise à jour de la vue
-        tableauPerso.getItems().remove(carteSelectionne);
-        tableauBoutique.getItems().add(nouvelleVente);
+            // Mise à jour de la vue
+            tableauPerso.getItems().remove(carteSelectionne);
+            tableauBoutique.getItems().add(nouvelleVente);
+        }else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Vente d'une carte sans prix");
+
+            // Header Text: null
+            alert.setHeaderText(null);
+            alert.setContentText("Vous ne pouvez pas mettre en vente une carte au prix de 0 ZC");
+            alert.showAndWait();
+        }
     }
 
     public void remplacerLigne(int numeroLigne, String data, String chemin) throws IOException {
