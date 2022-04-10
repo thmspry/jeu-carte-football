@@ -26,11 +26,32 @@ public class UtilisateurJoueur extends Utilisateur {
     }
 
     @Override
+    public String getPseudoVendeur() {
+        return pseudo;
+    }
+
+    @Override
+    public void recevoirCarte(Carte carte) {
+        this.listeCarte.add(carte);
+    }
+
+    @Override
+    public void donnerCarte(Carte carte) {
+        this.listeCarte.remove(carte);
+    }
+
+    @Override
+    public void depenserArgent(int montant) {
+        argent -= montant;
+    }
+
+    @Override
+    public void recevoirArgent(int montant) {
+        this.argent += montant;
+    }
+
+    @Override
     public String toString() {
-        String informationsUtilisateur = pseudo + ';' + motDePasse + ';'  + argent;
-        for (Carte c: listeCarte) {
-            informationsUtilisateur += c.toString() + ';';
-        }
-        return informationsUtilisateur;
+        return pseudo + ';' + motDePasse + ';'  + argent;
     }
 }

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.FlowPane?>
 
@@ -15,7 +16,7 @@
          <Label fx:id="nomFichier" text="Aucun fichier sélectionné." />
       </FlowPane>
       <Button mnemonicParsing="false" text="Passer à la semaine suivante" />
-      <FlowPane alignment="CENTER" orientation="VERTICAL" vgap="40.0">
+      <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="455.0" prefWidth="405.0" vgap="40.0">
          <ListView fx:id="listeJoueur" prefHeight="200.0" prefWidth="200.0" />
          <FlowPane hgap="30.0">
             <Label text="Rareté :" />
@@ -27,7 +28,10 @@
             <RadioButton fx:id="radioPeuCommune" mnemonicParsing="false" text="Peu commune" toggleGroup="$rarete" />
             <RadioButton fx:id="radioRare" mnemonicParsing="false" text="Rare" toggleGroup="$rarete" />
          </FlowPane>
-         <Button mnemonicParsing="false" onAction="#mettreEnVente" text="Mettre en vente la carte" />
+         <FlowPane alignment="CENTER" hgap="50.0" prefHeight="19.0" prefWidth="149.0">
+            <Spinner fx:id="prixVente" editable="true"/>
+            <Button mnemonicParsing="false" onAction="#mettreEnVente" text="Mettre en vente la carte"/>
+         </FlowPane>
          <Label fx:id="errorCreationCarte" />
       </FlowPane>
    </FlowPane>

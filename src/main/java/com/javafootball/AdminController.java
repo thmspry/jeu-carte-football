@@ -3,15 +3,16 @@ package com.javafootball;
 import com.javafootball.Model.Exception.ExceptionRareteDepasse;
 import com.javafootball.Model.Joueur.*;
 import com.javafootball.Model.Marche;
+import com.javafootball.Model.Utilisateur.Admin;
+import com.javafootball.Model.Utilisateur.Utilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -19,8 +20,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class AdminController {
+public class AdminController implements Initializable {
 
 
     @FXML
@@ -35,14 +38,23 @@ public class AdminController {
     RadioButton radioRare;
     @FXML
     Label errorCreationCarte;
+    @FXML
+    Spinner<Integer> prixVente;
 
+    Admin utilisateur;
     Marche marche;
+
+
 
     void setMarche(Marche marche) {
         this.marche = marche;
         for (Joueur j : marche.joueursExistant) {
             this.listeJoueur.getItems().add(j);
         }
+    }
+
+    void setUtilisateur(Admin u) {
+        this.utilisateur = u;
     }
 
     @FXML
@@ -112,9 +124,9 @@ public class AdminController {
         }
 
         if (nouvelleCarte != null) {
-            marche.ajouterCarteAVendre(nouvelleCarte);
+            marche.ajouterCarteAVendre(nouvelleCarte, utilisateur, prixVente.getValue());
 
-            try {
+            /*try {
                 FileWriter fw = new FileWriter(cheminVersFichierBoutique, true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 bw.write(nouvelleCarte.toString());
@@ -122,7 +134,7 @@ public class AdminController {
                 bw.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
 
@@ -130,4 +142,10 @@ public class AdminController {
 
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 2000000);
+        valueFactory.setValue(0);
+        prixVente.setValueFactory(valueFactory);
+    }
 }

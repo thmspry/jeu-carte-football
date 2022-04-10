@@ -25,7 +25,7 @@ public class Marche {
         this.equipesExistante = new ArrayList<>();
     }
 
-    public void initialisationBoutique(String cheminVersFichier) {
+    /*public void initialisationBoutique(String cheminVersFichier) {
         try {
             File dataFile = new File(cheminVersFichier);
             if (dataFile.createNewFile()) {
@@ -49,7 +49,7 @@ public class Marche {
             System.out.println("Une erreur est survenue dans la création du fichier de boutique.");
             e.printStackTrace();
         }
-    }
+    }*/
 
     public void initialisationJoueur(String cheminVersFichier) {
         try {
@@ -108,16 +108,12 @@ public class Marche {
 
 
 
-    public void ajouterCarteAVendre(Vente v) {
-        carteAVendre.add(v);
+
+    public Vente ajouterCarteAVendre(Carte c, Utilisateur vendeur, int prix) {
+        Vente nouvelleVente = new Vente(c, vendeur, prix);
+        carteAVendre.add(nouvelleVente);
+        return nouvelleVente;
     }
 
-    public void ajouterCarteAVendre(Carte c, Utilisateur vendeur) {
-        carteAVendre.add(new Vente(c, vendeur));
-    }
-
-    public void ajouterCarteAVendre(Carte c) {
-        carteAVendre.add(new Vente(c, null));
-    }
 }
 

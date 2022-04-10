@@ -110,6 +110,7 @@ public class ConnexionController implements Initializable {
                     jeuController.setMarche(marche);
                 } else {
                     AdminController adminController = fxmlLoader.getController();
+                    adminController.setUtilisateur((Admin) this.currentUtilisateur);
                     adminController.setMarche(marche);
                 }
 
@@ -146,7 +147,7 @@ public class ConnexionController implements Initializable {
                         String motDePasse = splittedRow[1];
                         if(splittedRow.length > 2) {    // Cas utilsateur joueur
                             nouvelUtilisateur = new UtilisateurJoueur(pseudo, motDePasse, Integer.parseInt(splittedRow[2]), new ArrayList<>());
-                        } else {    // Cas d'una admin
+                        } else {    // Cas d'un admin
                             nouvelUtilisateur = new Admin(pseudo, motDePasse);
                         }
                         lesUtilisateur.put(pseudo, nouvelUtilisateur);
@@ -165,7 +166,7 @@ public class ConnexionController implements Initializable {
 
         // Parse marché
         this.marche.initialisationJoueur("src/main/resources/com/javafootball/data/ext/2022_11_Nantes_ext.csv");
-        this.marche.initialisationBoutique("src/main/resources/com/javafootball/data/boutique.csv");
+        //this.marche.initialisationBoutique("src/main/resources/com/javafootball/data/boutique.csv");
 
     }
 
