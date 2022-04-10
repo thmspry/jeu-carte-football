@@ -29,8 +29,8 @@
             <RadioButton fx:id="radioRare" mnemonicParsing="false" text="Rare" toggleGroup="$rarete" />
          </FlowPane>
          <FlowPane alignment="CENTER" hgap="50.0" prefHeight="19.0" prefWidth="149.0">
-            <Spinner fx:id="prixVente" editable="true"/>
-            <Button mnemonicParsing="false" onAction="#mettreEnVente" text="Mettre en vente la carte"/>
+            <Spinner fx:id="prixVente" editable="true" />
+            <Button mnemonicParsing="false" onAction="#mettreEnVente" text="Mettre en vente la carte" />
          </FlowPane>
          <Label fx:id="errorCreationCarte" />
       </FlowPane>

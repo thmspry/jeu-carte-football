@@ -7,6 +7,8 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,16 +16,14 @@
 <?import javafx.scene.text.Font?>
 
 <FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafootball.JeuController">
-   <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="120.0" prefHeight="100.0" prefWidth="200.0">
+   <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="50.0" prefHeight="100.0" prefWidth="200.0">
       <Button mnemonicParsing="false" onAction="#seDeconnecter" text="Se déconnecter">
          <font>
             <Font size="14.0" />
          </font></Button>
-      <Label text="Zimdim Football">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Label>
+      <ImageView fitHeight="66.0" fitWidth="416.0" pickOnBounds="true" preserveRatio="true">
+         <Image url="@zimdim_football_cropped.png"/>
+      </ImageView>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="100.0">
          <Label fx:id="pseudo" text="pseudo">
             <font>
@@ -46,45 +46,52 @@
       <Tab text="Mes cartes">
          <AnchorPane>
             <FlowPane hgap="150.0" orientation="VERTICAL">
-               <ListView fx:id="listeCartePerso" prefWidth="500.0"/>
+               <ListView fx:id="listeCartePerso" prefWidth="500.0" />
                <FlowPane alignment="CENTER" hgap="40.0" prefHeight="200.0" prefWidth="200.0">
-                  <FlowPane fx:id="fondCartePerso" alignment="TOP_CENTER" orientation="VERTICAL"
-                            prefHeight="500.0" prefWidth="400.0">
-                     <Label fx:id="postePersoLbl" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0"
-                            prefWidth="228.0" textAlignment="CENTER">
+                  <FlowPane fx:id="fondCartePerso" alignment="TOP_CENTER" orientation="VERTICAL" prefHeight="500.0" prefWidth="400.0">
+                     <Label fx:id="postePersoLbl" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="228.0" textAlignment="CENTER">
                         <font>
-                           <Font name="System Bold" size="24.0"/>
+                           <Font name="System Bold" size="24.0" />
                         </font>
                         <FlowPane.margin>
-                           <Insets top="60.0"/>
+                           <Insets top="60.0" />
                         </FlowPane.margin>
                      </Label>
                      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                         <FlowPane.margin>
-                           <Insets/>
+                           <Insets />
                         </FlowPane.margin>
                      </ImageView>
-                     <Label fx:id="nomJoueurPersoLbl" minHeight="-Infinity" minWidth="-Infinity"
-                            prefHeight="35.0" prefWidth="231.0" textAlignment="CENTER">
+                     <Label fx:id="nomJoueurPersoLbl" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="231.0" textAlignment="CENTER">
                         <font>
-                           <Font name="System Bold" size="24.0"/>
+                           <Font name="System Bold" size="24.0" />
                         </font>
                         <FlowPane.margin>
-                           <Insets top="10.0"/>
+                           <Insets top="10.0" />
                         </FlowPane.margin>
                      </Label>
-                     <Label fx:id="raretePersoLbl"/>
+                     <Label fx:id="raretePersoLbl" />
                   </FlowPane>
-                  <Spinner fx:id="prixVentePerso" editable="true"/>
-                  <Button mnemonicParsing="false" onAction="#vendre" text="Vendre"/>
+                  <Spinner fx:id="prixVentePerso" editable="true" />
+                  <Button mnemonicParsing="false" onAction="#vendre" text="Vendre" />
                </FlowPane>
             </FlowPane>
          </AnchorPane>
       </Tab>
       <Tab text="Boutique">
          <AnchorPane>
-            <FlowPane hgap="150.0" orientation="VERTICAL">
-               <ListView fx:id="listeCarteBoutique" prefWidth="500.0" />
+            <FlowPane alignment="TOP_CENTER" hgap="100.0" orientation="VERTICAL" prefHeight="540.0" prefWidth="1073.0">
+               <TableView fx:id="tableauBoutique" prefHeight="530.0" prefWidth="524.0">
+                 <columns>
+                   <TableColumn fx:id="prenomBoutique" prefWidth="75.0" text="Prénom" />
+                   <TableColumn fx:id="nomBoutique" prefWidth="75.0" text="Nom" />
+                     <TableColumn fx:id="rareteBoutique" prefWidth="75.0" text="Rareté" />
+                     <TableColumn fx:id="posteBoutique" prefWidth="75.0" text="Poste" />
+                     <TableColumn fx:id="numeroBoutique" prefWidth="75.0" text="Numero" />
+                     <TableColumn fx:id="prixBoutique" prefWidth="75.0" text="Prix" />
+                     <TableColumn fx:id="vendeurBoutique" prefWidth="75.0" text="Vendeur" />
+                 </columns>
+               </TableView>
                <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
                   <FlowPane fx:id="fondCarteBoutique" alignment="TOP_CENTER" orientation="VERTICAL" prefHeight="500.0" prefWidth="400.0">
                      <Label fx:id="vendeurBoutiqueLbl">

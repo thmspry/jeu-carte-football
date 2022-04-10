@@ -7,6 +7,7 @@ import com.javafootball.Model.Marche;
 import com.javafootball.Model.Utilisateur.Utilisateur;
 import com.javafootball.Model.Utilisateur.UtilisateurJoueur;
 import com.javafootball.Model.Vente;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -16,10 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -47,7 +45,22 @@ public class JeuController implements Initializable {
     @FXML
     Label pseudo;
     @FXML
-    ListView<Vente> listeCarteBoutique;
+    TableView<Vente> tableauBoutique;
+    @FXML
+    TableColumn<Vente, String> prenomBoutique;
+    @FXML
+    TableColumn<Vente, String> nomBoutique;
+    @FXML
+    TableColumn<Vente, String> rareteBoutique;
+    @FXML
+    TableColumn<Vente, String> posteBoutique;
+    @FXML
+    TableColumn<Vente, String> numeroBoutique;
+    @FXML
+    TableColumn<Vente, String> prixBoutique;
+    @FXML
+    TableColumn<Vente, String> vendeurBoutique;
+
     @FXML
     FlowPane fondCarteBoutique;
     @FXML
@@ -73,6 +86,7 @@ public class JeuController implements Initializable {
     Label raretePersoLbl;
     @FXML
     Spinner<Integer> prixVentePerso;
+
 
     Vente venteSelectionnee;
     Carte carteSelectionne;
@@ -143,8 +157,11 @@ public class JeuController implements Initializable {
     void setMarche(Marche marche) {
         this.marche = marche;
         for (Vente v : marche.carteAVendre) {
-            this.listeCarteBoutique.getItems().add(v);
+            this.tableauBoutique.getItems().add(v);
         }
+
+
+
     }
 
     @FXML
@@ -199,7 +216,16 @@ public class JeuController implements Initializable {
             }
         });
 
-        listeCarteBoutique.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Vente>() {
+        // Association des colonnes aux bons champs
+        prenomBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().carteAVendre.joueur.prenom));
+        nomBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().carteAVendre.joueur.nom));
+        rareteBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().carteAVendre.rareteLabel));
+        posteBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().carteAVendre.joueur.poste.getAbreviation()));
+        numeroBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(Integer.toString(cellData.getValue().carteAVendre.numero)));
+        prixBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(separeMilliers(cellData.getValue().prix)));
+        vendeurBoutique.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().vendeur.getPseudoVendeur()));
+
+        tableauBoutique.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Vente>() {
             @Override
             public void changed(ObservableValue<? extends Vente> observableValue, Vente ventePrecedente, Vente venteCourante) {
                 venteSelectionnee = venteCourante;
@@ -253,7 +279,7 @@ public class JeuController implements Initializable {
 
             // Mise à jour de la vue
             montantArgent.setText(separeMilliers(utilisateur.argent));
-            listeCarteBoutique.getItems().remove(venteSelectionnee);
+            tableauBoutique.getItems().remove(venteSelectionnee);
             listeCartePerso.getItems().add(carteEnJeu);
         }
 
@@ -267,7 +293,7 @@ public class JeuController implements Initializable {
 
         // Mise à jour de la vue
         listeCartePerso.getItems().remove(carteSelectionne);
-        listeCarteBoutique.getItems().add(nouvelleVente);
+        tableauBoutique.getItems().add(nouvelleVente);
     }
 
     public void remplacerLigne(int numeroLigne, String data, String chemin) throws IOException {

@@ -14,9 +14,7 @@
 
 <FlowPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="720.0" prefWidth="1080.0" vgap="50.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafootball.ConnexionController">
    <ImageView fitHeight="266.0" fitWidth="577.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@zimdim_football.png" />
-      </image>
+      <Image url="@zimdim_football.png"/>
    </ImageView>
    <FlowPane alignment="CENTER" orientation="VERTICAL" vgap="20.0">
       <Label text="Pseudo">
