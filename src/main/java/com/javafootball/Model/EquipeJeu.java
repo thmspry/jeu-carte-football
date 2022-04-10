@@ -1,9 +1,8 @@
 package com.javafootball.Model;
 
-import com.javafootball.Model.Exception.ExceptionEquipeNonValide;
+import com.javafootball.Model.Exception.*;
 import com.javafootball.Model.Joueur.Carte;
 import com.javafootball.Model.Joueur.JoueurGardien;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,7 @@ public class EquipeJeu {
         this.compositionCarte = new ArrayList<Carte>();
     }
 
-    public boolean equipeValide() throws ExceptionEquipeNonValide {  // creer une exception pour ca
+    public boolean equipeValide() throws ExceptionEquipeNonValide {
         int cptGK = 0;
         for (Carte j : compositionCarte) {
             if (j.joueur instanceof JoueurGardien) {
@@ -27,7 +26,7 @@ public class EquipeJeu {
         return true;
     }
 
-    public boolean ajouterJoueur(Carte carte) throws ExceptionEquipeNonValide { // creer une exception pour ca
+    public boolean ajouterJoueur(Carte carte) throws ExceptionEquipeNonValide {
         String leNom = carte.joueur.nom;
         String lePrenom = carte.joueur.prenom;
         if (compositionCarte.size() >= 4) {
@@ -55,6 +54,28 @@ public class EquipeJeu {
             System.out.println("Joueur ajouté");
             return true;
         }
+        return false;
+    }
+
+    public boolean remplacerJoueur( Carte JoueurSortant, Carte JoueurEntrant){
+        if (compositionCarte.isEmpty()){
+            System.out.println("Equipe vide");
+            return false;
+        }else if(compositionCarte.contains(JoueurSortant)){
+            int index =compositionCarte.indexOf(JoueurSortant);
+            compositionCarte.set(index, JoueurEntrant);
+            try {
+                if (equipeValide()){
+                    return true;
+                }
+            } catch (ExceptionEquipeNonValide exceptionEquipeNonValide) {
+                exceptionEquipeNonValide.printStackTrace();
+            }
+        }else{
+            System.out.println("Joueur non present dans l'équipe");
+            return false;
+        }
+
         return false;
     }
 }
