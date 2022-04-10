@@ -8,6 +8,7 @@ import java.util.List;
 public class Equipe {
     public final String nom;
     public List<Joueur> compositionJoueur;
+    public String urlImageLogo = "";
 
     public Equipe(String nom) {
         this.nom = nom;

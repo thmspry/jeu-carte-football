@@ -1,5 +1,6 @@
 package com.javafootball.Model.Utilisateur;
 
+import com.javafootball.Model.EquipeJeu;
 import com.javafootball.Model.Joueur.Carte;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ public class UtilisateurJoueur extends Utilisateur {
 
     public int argent;
     public List<Carte> listeCarte;
+    private EquipeJeu sonEquipe;
 
 
     public UtilisateurJoueur(String pseudo, String motDePasse, int argent, List<Carte> listeCarte) {
@@ -16,6 +18,8 @@ public class UtilisateurJoueur extends Utilisateur {
         this.argent = argent;
         this.listeCarte = listeCarte;
         this.nomVue = "Jeu.fxml";
+        this.sonEquipe = new EquipeJeu();  // jsp
+
     }
 
     public UtilisateurJoueur(String pseudo, String motDePasse) {
@@ -23,11 +27,16 @@ public class UtilisateurJoueur extends Utilisateur {
         this.argent = 10000;
         this.listeCarte = new ArrayList<>();
         this.nomVue = "Jeu.fxml";
+        this.sonEquipe = new EquipeJeu();
     }
 
     @Override
     public String getPseudoVendeur() {
         return pseudo;
+    }
+
+    public EquipeJeu getSonEquipe() {
+        return sonEquipe;
     }
 
     @Override
