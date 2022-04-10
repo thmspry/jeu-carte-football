@@ -28,12 +28,13 @@
          </TableView>
          <FlowPane hgap="30.0">
             <Label text="Rareté :" />
-            <RadioButton fx:id="radioCommune" mnemonicParsing="false" selected="true" text="Commune" />
-            <RadioButton fx:id="radioPeuCommune" mnemonicParsing="false" text="Peu commune" />
-            <RadioButton fx:id="radioRare" mnemonicParsing="false" text="Rare">
+            <RadioButton fx:id="radioCommune" mnemonicParsing="false" selected="true" text="Commune" toggleGroup="$rarete">
                <toggleGroup>
                   <ToggleGroup fx:id="rarete" />
-               </toggleGroup></RadioButton>
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="radioPeuCommune" mnemonicParsing="false" text="Peu commune" toggleGroup="$rarete" />
+            <RadioButton fx:id="radioRare" mnemonicParsing="false" text="Rare" toggleGroup="$rarete" />
          </FlowPane>
          <FlowPane alignment="CENTER" hgap="50.0" prefHeight="19.0" prefWidth="149.0">
             <Spinner fx:id="prixVente" editable="true" />
