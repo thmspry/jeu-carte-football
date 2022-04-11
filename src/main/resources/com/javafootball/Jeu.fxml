@@ -152,18 +152,18 @@
                   <children>
                      <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="400.0" prefWidth="298.0" vgap="50.0">
                         <children>
-                           <ComboBox prefWidth="150.0" promptText="Gardien" />
-                           <ComboBox prefWidth="150.0" promptText="Joueur de champ 1" />
-                           <ComboBox prefWidth="150.0" promptText="Joueur de champ 2" />
-                           <ComboBox prefWidth="150.0" promptText="Joueur de champ 3" />
+                           <ComboBox fx:id="gkCb" prefWidth="150.0" promptText="Gardien" />
+                           <ComboBox fx:id="jdc1Cb" prefWidth="150.0" promptText="Joueur de champ 1" />
+                           <ComboBox fx:id="jdc2Cb" prefWidth="150.0" promptText="Joueur de champ 2" />
+                           <ComboBox fx:id="jdc3Cb" prefWidth="150.0" promptText="Joueur de champ 3" />
                         </children>
                      </FlowPane>
                      <AnchorPane fx:id="fondTerrain" minHeight="370.0" minWidth="356.0" prefHeight="370.0" prefWidth="356.0">
                         <children>
-                           <Label layoutX="178.0" layoutY="54.0" text="JDC1" />
-                           <Label layoutX="49.0" layoutY="191.0" text="JDC3" />
-                           <Label layoutX="286.0" layoutY="182.0" text="JDC2" />
-                           <Label layoutX="192.0" layoutY="345.0" text="GK" />
+                           <Label fx:id="jdc1" layoutX="178.0" layoutY="54.0" text="JDC1" />
+                           <Label fx:id="jdc2" layoutX="49.0" layoutY="191.0" text="JDC2" />
+                           <Label fx:id="jdc3" layoutX="286.0" layoutY="182.0" text="JDC3" />
+                           <Label fx:id="gk" layoutX="192.0" layoutY="345.0" text="GK" />
                         </children>
                      </AnchorPane>
                      <Button mnemonicParsing="false" text="Enregistrer l'équipe de la semaine" />

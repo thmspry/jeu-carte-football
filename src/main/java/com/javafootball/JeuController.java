@@ -1,8 +1,6 @@
 package com.javafootball;
 
-import com.javafootball.Model.Joueur.Carte;
-import com.javafootball.Model.Joueur.CarteRare;
-import com.javafootball.Model.Joueur.Joueur;
+import com.javafootball.Model.Joueur.*;
 import com.javafootball.Model.Marche;
 import com.javafootball.Model.Utilisateur.Utilisateur;
 import com.javafootball.Model.Utilisateur.UtilisateurJoueur;
@@ -104,6 +102,22 @@ public class JeuController implements Initializable {
 
     @FXML
     AnchorPane fondTerrain;
+    @FXML
+    Label jdc1;
+    @FXML
+    Label jdc2;
+    @FXML
+    Label jdc3;
+    @FXML
+    Label gk;
+    @FXML
+    ComboBox<Carte> jdc1Cb;
+    @FXML
+    ComboBox<Carte> jdc2Cb;
+    @FXML
+    ComboBox<Carte> jdc3Cb;
+    @FXML
+    ComboBox<Carte> gkCb;
 
 
     Vente venteSelectionnee;
@@ -135,6 +149,25 @@ public class JeuController implements Initializable {
         pseudo.setText(this.utilisateur.pseudo);
 
         tableauPerso.getItems().addAll(utilisateur.listeCarte);
+
+        for(Carte j: utilisateur.listeCarte) {
+            if(j.joueur instanceof JoueurGardien) {
+                gkCb.getItems().add(j);
+            }
+
+            if(j.joueur instanceof JoueurDeChamp) {
+                jdc1Cb.getItems().add(j);
+            }
+
+            if(j.joueur instanceof JoueurDeChamp) {
+                jdc2Cb.getItems().add(j);
+            }
+
+            if(j.joueur instanceof JoueurDeChamp) {
+                jdc3Cb.getItems().add(j);
+            }
+        }
+
 
     }
 
@@ -259,6 +292,34 @@ public class JeuController implements Initializable {
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 2000000);
         valueFactory.setValue(0);
         prixVentePerso.setValueFactory(valueFactory);
+
+        gkCb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Carte>() {
+            @Override
+            public void changed(ObservableValue<? extends Carte> observableValue, Carte joueurGardien, Carte t1) {
+                gk.setText(t1.joueur.prenom + " " + t1.joueur.nom);
+            }
+        });
+
+        jdc1Cb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Carte>() {
+            @Override
+            public void changed(ObservableValue<? extends Carte> observableValue, Carte joueurGardien, Carte t1) {
+                jdc1.setText(t1.joueur.prenom + " " + t1.joueur.nom);
+            }
+        });
+
+        jdc2Cb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Carte>() {
+            @Override
+            public void changed(ObservableValue<? extends Carte> observableValue, Carte joueurGardien, Carte t1) {
+                jdc2.setText(t1.joueur.prenom + " " + t1.joueur.nom);
+            }
+        });
+
+        jdc3Cb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Carte>() {
+            @Override
+            public void changed(ObservableValue<? extends Carte> observableValue, Carte joueurGardien, Carte t1) {
+                jdc1.setText(t1.joueur.prenom + " " + t1.joueur.nom);
+            }
+        });
 
 
         Image imageFondTerrain = new Image("https://i.pinimg.com/originals/46/68/29/46682955fe4c8aadd88a60d8f77a94cb.png");

@@ -10,7 +10,7 @@ public class EquipeJeu {
     public List<Carte> compositionCarte;
 
     public EquipeJeu() {
-        this.compositionCarte = new ArrayList<Carte>();
+        this.compositionCarte = new ArrayList<>();
     }
 
     public boolean equipeValide() throws ExceptionEquipeNonValide {
