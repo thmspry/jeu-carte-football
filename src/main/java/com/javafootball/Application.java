@@ -1,5 +1,8 @@
 package com.javafootball;
 
+import com.javafootball.Model.Equipe;
+import com.javafootball.Model.Joueur.Joueur;
+import com.javafootball.Model.Joueur.JoueurGardien;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -21,5 +24,6 @@ public class Application extends javafx.application.Application {
 
     public static void main(String[] args) {
         launch();
+
     }
 }
