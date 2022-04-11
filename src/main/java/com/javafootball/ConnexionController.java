@@ -166,12 +166,15 @@ public class ConnexionController implements Initializable {
 
         // Parse marché
         this.marche.initialisationJoueur("src/main/resources/com/javafootball/data/ext/2022_11_Nantes_ext.csv");
-        //this.marche.initialisationBoutique("src/main/resources/com/javafootball/data/boutique.csv");
 
     }
 
     void setMarche(Marche marche) {
         this.marche = marche;
+    }
+
+    void majUtilisateur(Utilisateur utilisateur) {
+        this.lesUtilisateur.put(utilisateur.pseudo, utilisateur);
     }
 
 }
