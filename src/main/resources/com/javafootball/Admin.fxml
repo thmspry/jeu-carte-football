@@ -4,21 +4,26 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
 
-<FlowPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafootball.AdminController">
-   <Button mnemonicParsing="false" onAction="#seDeconnecter" text="Se deconnecter" />
-   <FlowPane columnHalignment="CENTER" hgap="200.0" orientation="VERTICAL" prefHeight="150.0" prefWidth="204.0" rowValignment="TOP" vgap="60.0">
-      <FlowPane prefWidth="200.0">
-         <Button mnemonicParsing="false" onAction="#importerFichier" text="Importer les résultats de le semaine" />
-         <Label fx:id="nomFichier" text="Aucun fichier sélectionné." />
-      </FlowPane>
-      <Button mnemonicParsing="false" text="Passer à la semaine suivante" />
-      <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="455.0" prefWidth="405.0" vgap="40.0">
-         <TableView fx:id="tableauCarte" prefHeight="239.0" prefWidth="388.0">
+<SplitPane dividerPositions="0.6572939866369709" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafootball.AdminController">
+   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+      <FlowPane alignment="CENTER" hgap="30.0" orientation="VERTICAL" prefHeight="455.0" prefWidth="1080.0">
+         <Button mnemonicParsing="false" onAction="#seDeconnecter" text="Se deconnecter" />
+         <Label fx:id="errorCreationCarte" text="Mise en vente d'une nouvelle carte">
+            <font>
+               <Font size="24.0" />
+            </font>
+         </Label>
+         <TableView fx:id="tableauCarte" prefHeight="350.0" prefWidth="405.0">
             <columns>
                <TableColumn fx:id="prenom" prefWidth="76.0" text="Prénom" />
                <TableColumn fx:id="nom" prefWidth="93.0" text="Nom" />
@@ -26,21 +31,44 @@
                <TableColumn fx:id="equipe" prefWidth="121.0" text="Équipe" />
             </columns>
          </TableView>
-         <FlowPane hgap="30.0">
-            <Label text="Rareté :" />
-            <RadioButton fx:id="radioCommune" mnemonicParsing="false" selected="true" text="Commune" toggleGroup="$rarete">
-               <toggleGroup>
-                  <ToggleGroup fx:id="rarete" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="radioPeuCommune" mnemonicParsing="false" text="Peu commune" toggleGroup="$rarete" />
-            <RadioButton fx:id="radioRare" mnemonicParsing="false" text="Rare" toggleGroup="$rarete" />
-         </FlowPane>
-         <FlowPane alignment="CENTER" hgap="50.0" prefHeight="19.0" prefWidth="149.0">
-            <Spinner fx:id="prixVente" editable="true" />
+         <FlowPane alignment="CENTER_LEFT" prefHeight="333.0" prefWidth="494.0" vgap="50.0">
+            <FlowPane hgap="20.0" prefHeight="178.0" prefWidth="493.0">
+               <Label text="Rareté :" />
+               <RadioButton fx:id="radioCommune" mnemonicParsing="false" selected="true" style="-fx-background-color: lightgrey; -fx-padding: 10px;">
+                  <toggleGroup>
+                     <ToggleGroup fx:id="rarete" />
+                  </toggleGroup>
+                  <graphic>
+                     <ImageView fx:id="imageCommune" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                  </graphic>
+               </RadioButton>
+               <RadioButton fx:id="radioPeuCommune" mnemonicParsing="false" style="-fx-background-color: #f6e5a5; -fx-padding: 10px;" toggleGroup="$rarete">
+                  <graphic>
+                     <ImageView fx:id="imagePeuCommune" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                  </graphic></RadioButton>
+               <RadioButton fx:id="radioRare" mnemonicParsing="false" style="-fx-padding: 10px; -fx-background-color: #ef9ffc;" toggleGroup="$rarete">
+                  <graphic>
+                     <ImageView fx:id="imageRare" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
+                  </graphic></RadioButton>
+            </FlowPane>
+            <FlowPane alignment="BOTTOM_LEFT" hgap="20.0" prefHeight="19.0">
+               <Label text="Prix :" />
+               <Spinner fx:id="prixVente" editable="true" />
+               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@zimdim_coin.png" />
+               </ImageView>
+            </FlowPane>
             <Button mnemonicParsing="false" onAction="#mettreEnVente" text="Mettre en vente la carte" />
          </FlowPane>
-         <Label fx:id="errorCreationCarte" />
       </FlowPane>
-   </FlowPane>
-</FlowPane>
+   </AnchorPane>
+   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="200.0" prefHeight="164.0" prefWidth="1080.0" rowValignment="TOP" vgap="60.0">
+         <FlowPane hgap="80.0" prefHeight="43.0" prefWidth="465.0">
+            <Button mnemonicParsing="false" onAction="#importerFichier" text="Importer les résultats de le semaine" />
+            <Label fx:id="nomFichier" text="Aucun fichier sélectionné." />
+         </FlowPane>
+         <Button mnemonicParsing="false" text="Passer à la semaine suivante" />
+      </FlowPane>
+   </AnchorPane>
+</SplitPane>

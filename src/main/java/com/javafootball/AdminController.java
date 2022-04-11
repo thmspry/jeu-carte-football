@@ -14,6 +14,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -50,6 +52,13 @@ public class AdminController implements Initializable {
     TableColumn<Joueur, String> poste;
     @FXML
     TableColumn<Joueur, String> equipe;
+
+    @FXML
+    ImageView imageCommune;
+    @FXML
+    ImageView imagePeuCommune;
+    @FXML
+    ImageView imageRare;
 
     Admin utilisateur;
     Marche marche;
@@ -160,5 +169,9 @@ public class AdminController implements Initializable {
         nom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().nom));
         poste.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().poste.getAbreviation()));
         equipe.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().equipe.nom));
+
+        imageCommune.setImage(new Image("https://cdn-0.fifarosters.com/assets/cards/fifa22/cards_bg_e_1_1_2.png"));
+        imagePeuCommune.setImage(new Image("https://cdn-0.fifarosters.com/assets/cards/fifa22/cards_bg_e_1_1_3.png"));
+        imageRare.setImage(new Image("https://cdn-0.fifarosters.com/assets/cards/fifa22/cards_bg_e_1_4_0.png"));
     }
 }

@@ -25,31 +25,6 @@ public class Marche {
         this.equipesExistante = new ArrayList<>();
     }
 
-    /*public void initialisationBoutique(String cheminVersFichier) {
-        try {
-            File dataFile = new File(cheminVersFichier);
-            if (dataFile.createNewFile()) {
-                System.out.println("Le fichier " + dataFile.getName() + " à été créé");
-            } else {
-                System.out.println("Le fichier de bd boutique est déjà présent.");
-                try {
-                    Scanner myReader = new Scanner(dataFile);
-                    while (myReader.hasNextLine()) {
-                        String row = myReader.nextLine();
-                        String [] splittedRow = row.split(";");
-
-                    }
-                    myReader.close();
-                } catch (FileNotFoundException e) {
-                    System.out.println("Une erreur est survenue dans la lecture du fichier de boutique.");
-                    e.printStackTrace();
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Une erreur est survenue dans la création du fichier de boutique.");
-            e.printStackTrace();
-        }
-    }*/
 
     public void initialisationJoueur(String cheminVersFichier) {
         try {

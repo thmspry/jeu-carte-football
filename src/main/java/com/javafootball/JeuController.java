@@ -23,9 +23,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -34,6 +32,7 @@ import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -103,6 +102,9 @@ public class JeuController implements Initializable {
     @FXML
     Spinner<Integer> prixVentePerso;
 
+    @FXML
+    AnchorPane fondTerrain;
+
 
     Vente venteSelectionnee;
     Carte carteSelectionne;
@@ -134,29 +136,6 @@ public class JeuController implements Initializable {
 
         tableauPerso.getItems().addAll(utilisateur.listeCarte);
 
-        // Parsing de ses cartes
-        final String cheminVersFichierData = "src/main/resources/com/javafootball/data/" + utilisateur.pseudo + ".csv";
-        try {
-            File dataFile = new File(cheminVersFichierData);
-            if (dataFile.createNewFile()) {
-                System.out.println("Le fichier " + dataFile.getName() + " à été créé");
-            } else {
-                System.out.println("Le fichier de donnée de l'utilisateur est déjà présent.");
-                try {
-                    Scanner myReader = new Scanner(dataFile);
-                    while (myReader.hasNextLine()) {
-
-                    }
-                    myReader.close();
-                } catch (FileNotFoundException e) {
-                    System.out.println("Une erreur est survenue dans la lecture du fichier de sauvegarde de données utilisateur.");
-                    e.printStackTrace();
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Une erreur est survenue dans la création du fichier de sauvegarde de données des utilisateur.");
-            e.printStackTrace();
-        }
     }
 
 
@@ -177,7 +156,6 @@ public class JeuController implements Initializable {
 
     @FXML
     void seDeconnecter(ActionEvent event) throws IOException {
-        this.utilisateur = null;
         FXMLLoader fxmlLoader;
         fxmlLoader = new FXMLLoader(getClass().getResource("Connexion.fxml"));
 
@@ -185,12 +163,14 @@ public class JeuController implements Initializable {
 
         ConnexionController connexionController = fxmlLoader.getController();
         connexionController.setMarche(marche);
+        connexionController.majUtilisateur(utilisateur);
 
         Scene scene = new Scene(root, 1080, 720);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("Zimdim Football");
         stage.setScene(scene);
         stage.show();
+        this.utilisateur = null;
     }
 
 
@@ -280,6 +260,17 @@ public class JeuController implements Initializable {
         valueFactory.setValue(0);
         prixVentePerso.setValueFactory(valueFactory);
 
+
+        Image imageFondTerrain = new Image("https://i.pinimg.com/originals/46/68/29/46682955fe4c8aadd88a60d8f77a94cb.png");
+
+        BackgroundImage bImgTerrain = new BackgroundImage(imageFondTerrain,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                new BackgroundSize(356, 370, false, false, false, false));
+        Background bGroundTerrain = new Background(bImgTerrain);
+        fondTerrain.setBackground(bGroundTerrain);
+
     }
 
     public void acheter(ActionEvent actionEvent) {
@@ -301,11 +292,12 @@ public class JeuController implements Initializable {
             montantArgent.setText(separeMilliers(utilisateur.argent));
             tableauBoutique.getItems().remove(venteSelectionnee);
             tableauPerso.getItems().add(carteEnJeu);
+
+
         }else if(venteSelectionnee.vendeur == utilisateur){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Achat d'une carte");
 
-            // Header Text: null
             alert.setHeaderText(null);
             alert.setContentText("Vous ne pouvez pas acheter votre propre Carte");
             alert.showAndWait();
@@ -314,7 +306,6 @@ public class JeuController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Achat d'une carte");
 
-            // Header Text: null
             alert.setHeaderText(null);
             alert.setContentText("Vous ne possedez pas assez de Zimdim Coin pour acheter cette carte");
             alert.showAndWait();
@@ -336,9 +327,8 @@ public class JeuController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Vente d'une carte sans prix");
 
-            // Header Text: null
             alert.setHeaderText(null);
-            alert.setContentText("Vous ne pouvez pas mettre en vente une carte au prix de 0 ZC");
+            alert.setContentText("Vous ne pouvez pas mettre en vente une carte au prix de 0 Zimdim Coin");
             alert.showAndWait();
         }
     }
