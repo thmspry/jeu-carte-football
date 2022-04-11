@@ -2,6 +2,8 @@ package com.javafootball.Model.Joueur;
 
 import com.javafootball.Model.Equipe;
 
+import java.util.Objects;
+
 abstract public class Joueur {
     int compteurCommune = 0;
     int compteurPeuCommune = 0;
@@ -9,7 +11,7 @@ abstract public class Joueur {
 
     public final String prenom;
     public final String nom;
-    public String lienPhoto = "";
+    public String lienPhoto;
     public Equipe equipe;
     public Poste poste;
 
@@ -18,7 +20,9 @@ abstract public class Joueur {
         this.prenom = prenom;
         this.nom = nom;
         this.equipe = equipe;
+        this.lienPhoto = "https://creazilla-store.fra1.digitaloceanspaces.com/emojis/46301/bust-in-silhouette-emoji-clipart-sm.png";
     }
+
 
     boolean aJoue() {
         return false;
@@ -28,6 +32,14 @@ abstract public class Joueur {
         return this.compteurRare;
     }
 
+    public void setLienPhoto(String lienPhoto) {
+        this.lienPhoto = lienPhoto;
+    }
+
+    public String denomination() {
+        return this.prenom + " " + this.nom;
+    }
+
     @Override
     public String toString() {
         return this.nom + ";" + this.prenom + ";" + this.equipe.nom + ";" + this.poste.getAbreviation();
@@ -35,5 +47,13 @@ abstract public class Joueur {
 
     public String toStringVerbeux() {
         return this.prenom + " " + this.nom + ", " + this.equipe.nom + ", " + this.poste.getAbreviation();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Joueur joueur = (Joueur) o;
+        return Objects.equals(prenom, joueur.prenom) && Objects.equals(nom, joueur.nom) && equipe.equals(joueur.equipe);
     }
 }

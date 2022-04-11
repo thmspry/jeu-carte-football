@@ -2,13 +2,12 @@ package com.javafootball.Model;
 
 import com.javafootball.Model.Exception.ExceptionPoste;
 import com.javafootball.Model.Joueur.*;
-import com.javafootball.Model.Utilisateur.Admin;
 import com.javafootball.Model.Utilisateur.Utilisateur;
-import com.javafootball.Model.Utilisateur.UtilisateurJoueur;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,68 +25,77 @@ public class Marche {
     }
 
 
-    public void initialisationJoueur(String cheminVersFichier) {
-        try {
-            File dataFile = new File(cheminVersFichier);
-            if (!dataFile.createNewFile()) {
-                try {
-                    Scanner myReader = new Scanner(dataFile);
-                    boolean equipeAjoutee = false;
-                    Equipe equipeFichier = null;   // L'équipe concernant le fichier de données
-                    while (myReader.hasNextLine()) {
-                        String row = myReader.nextLine();
-                        String [] splittedRow = row.split(",");
+    public void initialisationJoueurEquipe(String cheminVersFichier) {
+        File dataFile = new File(cheminVersFichier);
+        if (dataFile.exists()) {
+            try {
 
-                        if(!equipeAjoutee) {
-                            String nomEquipe = splittedRow[0];
-                            equipeFichier = new Equipe(nomEquipe);
-                            this.equipesExistante.add(equipeFichier);
-                            equipeAjoutee = true;
-                        }
+                Scanner myReader = new Scanner(dataFile, StandardCharsets.UTF_16);
+                Equipe equipeCourante = new Equipe("equipefactice");
 
-                        String [] prenomNomJoueur = splittedRow[1].split(" ");
-                        String prenomJoueur = prenomNomJoueur[0];
-                        String nomJoueur = switch (prenomNomJoueur.length) {
-                            case 1 -> "";
-                            case 2 -> prenomNomJoueur[1];
-                            default -> // Joueur avec plusieurs noms de famille
-                                    String.join(" ", Arrays.copyOfRange(prenomNomJoueur, 1, prenomNomJoueur.length - 1));
-                        };
+                while (myReader.hasNextLine()) {
+                    String row = myReader.nextLine();
+                    String[] splittedRow = row.split(";");
 
-                        String poste = splittedRow[2];
-                        Joueur nouveauJoueur;
-                        if(poste.equals("G")) { // Le joueur est un gardien
-                            nouveauJoueur = new JoueurGardien(prenomJoueur, nomJoueur, equipeFichier);
-                        } else {
-                            nouveauJoueur = new JoueurDeChamp(prenomJoueur, nomJoueur, Poste.getPoste(poste), equipeFichier);
-                        }
+                    String[] prenomNomJoueur = splittedRow[0].split(" ");
+                    String prenomJoueur = prenomNomJoueur[0];
+                    String nomJoueur = switch (prenomNomJoueur.length) {
+                        case 1 -> ""; // Joueur sans nom de famille (joueur avec surnom)
+                        case 2 -> prenomNomJoueur[1];   // Joueur avec un nom de famille
+                        default -> // Joueur avec plusieurs noms de famille
+                                String.join(" ", Arrays.copyOfRange(prenomNomJoueur, 1, prenomNomJoueur.length));
+                    };
 
-                        this.joueursExistant.add(nouveauJoueur);
+                    String poste = splittedRow[1];
+                    Joueur nouveauJoueur;
 
+                    String nomEquipe = splittedRow[2];
+                    if (!equipeExiste(nomEquipe)) {
+                        equipeCourante = new Equipe(nomEquipe);
+                        this.equipesExistante.add(equipeCourante);
                     }
-                    myReader.close();
-                } catch (FileNotFoundException e) {
-                    System.out.println("Une erreur est survenue dans la lecture du fichier de données des joueurs.");
-                    e.printStackTrace();
-                } catch (ExceptionPoste e) {
-                    e.printStackTrace();
+
+                    if (poste.equals("G")) { // Le joueur est un gardien
+                        nouveauJoueur = new JoueurGardien(prenomJoueur, nomJoueur, equipeCourante);
+                    } else {
+                        nouveauJoueur = new JoueurDeChamp(prenomJoueur, nomJoueur, Poste.getPoste(poste), equipeCourante);
+                    }
+
+
+                    if (splittedRow.length > 3) {    // Un lien pour une photo de joueur est fournis sur la ligne
+                        nouveauJoueur.setLienPhoto(splittedRow[3]);
+                    }
+
+                    this.joueursExistant.add(nouveauJoueur);
+                    equipeCourante.ajouterJoueur(nouveauJoueur);
+
                 }
+                myReader.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("Une erreur est survenue dans la lecture du fichier de données des joueurs.");
+                e.printStackTrace();
+            } catch (ExceptionPoste | IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            System.out.println("Une erreur est survenue dans la lecture du fichier de données des joueurs.");
-            e.printStackTrace();
         }
+
+
     }
-
-
-
-
 
 
     public Vente ajouterCarteAVendre(Carte c, Utilisateur vendeur, int prix) {
         Vente nouvelleVente = new Vente(c, vendeur, prix);
         carteAVendre.add(nouvelleVente);
         return nouvelleVente;
+    }
+
+    public boolean equipeExiste(String nomEquipe) {
+        for (Equipe e : this.equipesExistante) {
+            if (e.nom.equals(nomEquipe)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -10,15 +10,15 @@ public class UtilisateurJoueur extends Utilisateur {
 
     public int argent;
     public List<Carte> listeCarte;
-    private EquipeJeu sonEquipe;
+    public EquipeJeu sonEquipe;
 
 
-    public UtilisateurJoueur(String pseudo, String motDePasse, int argent, List<Carte> listeCarte) {
+    public UtilisateurJoueur(String pseudo, String motDePasse, int argent) {
         super(pseudo, motDePasse);
         this.argent = argent;
-        this.listeCarte = listeCarte;
+        this.listeCarte = new ArrayList<>();
         this.nomVue = "Jeu.fxml";
-        this.sonEquipe = new EquipeJeu();  // jsp
+        this.sonEquipe = new EquipeJeu();
 
     }
 

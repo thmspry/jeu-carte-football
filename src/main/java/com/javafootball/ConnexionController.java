@@ -146,7 +146,7 @@ public class ConnexionController implements Initializable {
                         String pseudo = splittedRow[0];
                         String motDePasse = splittedRow[1];
                         if(splittedRow.length > 2) {    // Cas utilsateur joueur
-                            nouvelUtilisateur = new UtilisateurJoueur(pseudo, motDePasse, Integer.parseInt(splittedRow[2]), new ArrayList<>());
+                            nouvelUtilisateur = new UtilisateurJoueur(pseudo, motDePasse, Integer.parseInt(splittedRow[2]));
                         } else {    // Cas d'un admin
                             nouvelUtilisateur = new Admin(pseudo, motDePasse);
                         }
@@ -165,7 +165,8 @@ public class ConnexionController implements Initializable {
         }
 
         // Parse marché
-        this.marche.initialisationJoueur("src/main/resources/com/javafootball/data/ext/2022_11_Nantes_ext.csv");
+        //this.marche.initialisationJoueurEquipe("src/main/resources/com/javafootball/data/ext/2022_11_Nantes_ext.csv");
+        this.marche.initialisationJoueurEquipe("src/main/resources/com/javafootball/data/ext/Ligue1.csv");
 
     }
 

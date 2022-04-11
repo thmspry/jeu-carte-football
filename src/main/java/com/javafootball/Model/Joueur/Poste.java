@@ -21,7 +21,7 @@ public enum Poste {
             case "D" -> Poste.DEFENSEUR;
             case "M" -> Poste.MIDDLEFIELD;
             case "F" -> Poste.FORWARD;
-            default -> throw new ExceptionPoste("Aucun poste valide");
+            default -> throw new ExceptionPoste("Aucun poste valide (poste '" + abreviation + "' donné.");
         };
     }
 

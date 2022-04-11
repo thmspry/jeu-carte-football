@@ -1,5 +1,7 @@
 package com.javafootball;
 
+import com.javafootball.Model.EquipeJeu;
+import com.javafootball.Model.Exception.ExceptionEquipeNonValide;
 import com.javafootball.Model.Joueur.*;
 import com.javafootball.Model.Marche;
 import com.javafootball.Model.Utilisateur.Utilisateur;
@@ -17,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -29,12 +32,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 
 public class JeuController implements Initializable {
+
+    Color jaune = Color.web("#F7EF00");
+    Color noir = Color.web("#000000");
 
 
     @FXML
@@ -60,7 +63,6 @@ public class JeuController implements Initializable {
     TableColumn<Vente, String> prixBoutique;
     @FXML
     TableColumn<Vente, String> vendeurBoutique;
-
     @FXML
     FlowPane fondCarteBoutique;
     @FXML
@@ -71,6 +73,8 @@ public class JeuController implements Initializable {
     Label vendeurBoutiqueLbl;
     @FXML
     Label rareteBoutiqueLbl;
+    @FXML
+    ImageView photoJoueurBoutique;
     @FXML
     Label prixVenteBoutique;
 
@@ -88,7 +92,6 @@ public class JeuController implements Initializable {
     TableColumn<Carte, String> equipePerso;
     @FXML
     TableColumn<Carte, String> numeroPerso;
-
     @FXML
     FlowPane fondCartePerso;
     @FXML
@@ -118,6 +121,16 @@ public class JeuController implements Initializable {
     ComboBox<Carte> jdc3Cb;
     @FXML
     ComboBox<Carte> gkCb;
+    @FXML
+    FlowPane jdc1Fond;
+    @FXML
+    FlowPane jdc2Fond;
+    @FXML
+    FlowPane jdc3Fond;
+    @FXML
+    FlowPane gkFond;
+    @FXML
+            Label succes;
 
 
     Vente venteSelectionnee;
@@ -148,27 +161,13 @@ public class JeuController implements Initializable {
 
         pseudo.setText(this.utilisateur.pseudo);
 
-        tableauPerso.getItems().addAll(utilisateur.listeCarte);
+        majOngletCarte();
 
-        for(Carte j: utilisateur.listeCarte) {
-            if(j.joueur instanceof JoueurGardien) {
-                gkCb.getItems().add(j);
-            }
+        majOngletEquipe();
 
-            if(j.joueur instanceof JoueurDeChamp) {
-                jdc1Cb.getItems().add(j);
-            }
-
-            if(j.joueur instanceof JoueurDeChamp) {
-                jdc2Cb.getItems().add(j);
-            }
-
-            if(j.joueur instanceof JoueurDeChamp) {
-                jdc3Cb.getItems().add(j);
-            }
+        for (Carte c : utilisateur.sonEquipe.compositionCarte) {
+            Joueur j = c.joueur;
         }
-
-
     }
 
 
@@ -184,7 +183,8 @@ public class JeuController implements Initializable {
 
     void setMarche(Marche marche) {
         this.marche = marche;
-        tableauBoutique.getItems().addAll(marche.carteAVendre);
+
+        tableauBoutique.getItems().addAll(this.marche.carteAVendre);
     }
 
     @FXML
@@ -209,8 +209,6 @@ public class JeuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Color jaune = Color.web("#F7EF00");
-        Color noir = Color.web("#000000");
 
         prenomPerso.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().joueur.prenom));
         nomPerso.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().joueur.nom));
@@ -232,7 +230,7 @@ public class JeuController implements Initializable {
                         BackgroundPosition.DEFAULT,
                         new BackgroundSize(400, 500, false, false, false, false));
                 Background bGround = new Background(bImg);
-                nomJoueurPersoLbl.setText(joueurCourant.prenom + " " + joueurCourant.nom);
+                nomJoueurPersoLbl.setText(joueurCourant.denomination());
                 if (carteCourante instanceof CarteRare) {
                     nomJoueurPersoLbl.setTextFill(jaune);
                     postePersoLbl.setTextFill(jaune);
@@ -263,15 +261,15 @@ public class JeuController implements Initializable {
             public void changed(ObservableValue<? extends Vente> observableValue, Vente ventePrecedente, Vente venteCourante) {
                 venteSelectionnee = venteCourante;
                 Joueur joueurCourant = venteCourante.carteAVendre.joueur;
-                Image imageFondCarte = new Image(venteCourante.carteAVendre.lienFondCarte);
 
+                Image imageFondCarte = new Image(venteCourante.carteAVendre.lienFondCarte);
                 BackgroundImage bImg = new BackgroundImage(imageFondCarte,
                         BackgroundRepeat.NO_REPEAT,
                         BackgroundRepeat.NO_REPEAT,
                         BackgroundPosition.DEFAULT,
                         new BackgroundSize(400, 500, false, false, false, false));
                 Background bGround = new Background(bImg);
-                nomJoueurBoutiqueLbl.setText(joueurCourant.prenom + " " + joueurCourant.nom);
+                nomJoueurBoutiqueLbl.setText(joueurCourant.denomination());
                 if (venteCourante.carteAVendre instanceof CarteRare) {
                     nomJoueurBoutiqueLbl.setTextFill(jaune);
                     posteBoutiqueLbl.setTextFill(jaune);
@@ -286,6 +284,7 @@ public class JeuController implements Initializable {
                 rareteBoutiqueLbl.setText(venteCourante.carteAVendre.rareteLabel);
                 fondCarteBoutique.setBackground(bGround);
                 prixVenteBoutique.setText("Prix : " + separeMilliers(venteCourante.prix));
+                photoJoueurBoutique.setImage(new Image(venteCourante.carteAVendre.joueur.lienPhoto));
             }
         });
 
@@ -296,39 +295,92 @@ public class JeuController implements Initializable {
         gkCb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Carte>() {
             @Override
             public void changed(ObservableValue<? extends Carte> observableValue, Carte joueurGardien, Carte t1) {
-                gk.setText(t1.joueur.prenom + " " + t1.joueur.nom);
+                if(t1 instanceof CarteRare) {
+                    gk.setTextFill(jaune);
+                } else {
+                    gk.setTextFill(noir);
+                }
+                gk.setText(t1.joueur.denomination());
+                Image imageFondCarte = new Image(t1.lienFondCarte);
+                BackgroundImage bImg = new BackgroundImage(imageFondCarte,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.DEFAULT,
+                        new BackgroundSize(87, 122, false, false, false, false));
+                Background bGround = new Background(bImg);
+                gkFond.setBackground(bGround);
+
             }
         });
 
         jdc1Cb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Carte>() {
             @Override
             public void changed(ObservableValue<? extends Carte> observableValue, Carte joueurGardien, Carte t1) {
-                jdc1.setText(t1.joueur.prenom + " " + t1.joueur.nom);
+                if(t1 instanceof CarteRare) {
+                    jdc1.setTextFill(jaune);
+                } else {
+                    jdc1.setTextFill(noir);
+                }
+                jdc1.setText(t1.joueur.denomination());
+                Image imageFondCarte = new Image(t1.lienFondCarte);
+                BackgroundImage bImg = new BackgroundImage(imageFondCarte,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.DEFAULT,
+                        new BackgroundSize(87, 122, false, false, false, false));
+                Background bGround = new Background(bImg);
+                jdc1Fond.setBackground(bGround);
             }
         });
 
         jdc2Cb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Carte>() {
             @Override
             public void changed(ObservableValue<? extends Carte> observableValue, Carte joueurGardien, Carte t1) {
-                jdc2.setText(t1.joueur.prenom + " " + t1.joueur.nom);
+                if(t1 instanceof CarteRare) {
+                    jdc2.setTextFill(jaune);
+                } else {
+                    jdc2.setTextFill(noir);
+                }
+                jdc2.setText(t1.joueur.denomination());
+                Image imageFondCarte = new Image(t1.lienFondCarte);
+                BackgroundImage bImg = new BackgroundImage(imageFondCarte,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.DEFAULT,
+                        new BackgroundSize(87, 122, false, false, false, false));
+                Background bGround = new Background(bImg);
+                jdc2Fond.setBackground(bGround);
             }
         });
 
         jdc3Cb.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Carte>() {
             @Override
             public void changed(ObservableValue<? extends Carte> observableValue, Carte joueurGardien, Carte t1) {
-                jdc1.setText(t1.joueur.prenom + " " + t1.joueur.nom);
+                if(t1 instanceof CarteRare) {
+                    jdc3.setTextFill(jaune);
+                } else {
+                    jdc3.setTextFill(noir);
+                }
+                jdc3.setText(t1.joueur.denomination());
+                Image imageFondCarte = new Image(t1.lienFondCarte);
+                BackgroundImage bImg = new BackgroundImage(imageFondCarte,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.DEFAULT,
+                        new BackgroundSize(87, 122, false, false, false, false));
+                Background bGround = new Background(bImg);
+                jdc3Fond.setBackground(bGround);
             }
         });
 
 
-        Image imageFondTerrain = new Image("https://i.pinimg.com/originals/46/68/29/46682955fe4c8aadd88a60d8f77a94cb.png");
+        Image imageFondTerrain = new Image("https://i.imgur.com/K9Kcq12.png");
 
         BackgroundImage bImgTerrain = new BackgroundImage(imageFondTerrain,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
-                new BackgroundSize(356, 370, false, false, false, false));
+                new BackgroundSize(735, 346, false, false, false, false));
         Background bGroundTerrain = new Background(bImgTerrain);
         fondTerrain.setBackground(bGroundTerrain);
 
@@ -354,16 +406,18 @@ public class JeuController implements Initializable {
             tableauBoutique.getItems().remove(venteSelectionnee);
             tableauPerso.getItems().add(carteEnJeu);
 
+            majOngletEquipe();
 
-        }else if(venteSelectionnee.vendeur == utilisateur){
+
+
+        } else if (venteSelectionnee.vendeur == utilisateur) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Achat d'une carte");
 
             alert.setHeaderText(null);
             alert.setContentText("Vous ne pouvez pas acheter votre propre Carte");
             alert.showAndWait();
-        }
-        else {
+        } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Achat d'une carte");
 
@@ -377,14 +431,13 @@ public class JeuController implements Initializable {
     public void vendre(ActionEvent actionEvent) {
         int montant = prixVentePerso.getValue();
 
-        if(montant != 0) {
+        if (montant != 0) {
             Vente nouvelleVente = this.marche.ajouterCarteAVendre(carteSelectionne, this.utilisateur, montant);
             this.utilisateur.listeCarte.remove(carteSelectionne);
 
-            // Mise à jour de la vue
             tableauPerso.getItems().remove(carteSelectionne);
             tableauBoutique.getItems().add(nouvelleVente);
-        }else {
+        } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Vente d'une carte sans prix");
 
@@ -412,14 +465,14 @@ public class JeuController implements Initializable {
             Scanner myReader = new Scanner(dataFile);
             while (myReader.hasNextLine()) {
                 String row = myReader.nextLine();
-                String [] splittedRow = row.split(";");
+                String[] splittedRow = row.split(";");
 
                 String pseudo = splittedRow[0];
-                if(pseudo.equals(vendeur.pseudo)) {
+                if (pseudo.equals(vendeur.pseudo)) {
                     ligneVendeur = compteurLigne;
                 }
 
-                if(pseudo.equals(acheteur.pseudo)) {
+                if (pseudo.equals(acheteur.pseudo)) {
                     ligneAcheteur = compteurLigne;
                 }
                 compteurLigne++;
@@ -436,6 +489,58 @@ public class JeuController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void soumettreEquipe(ActionEvent event) {
+        List<Carte> propositionEquipe = new ArrayList<>();
+        Carte gardienSelectionne = gkCb.getSelectionModel().getSelectedItem();
+        Carte jdc1Selectionne = jdc1Cb.getSelectionModel().getSelectedItem();
+        Carte jdc2Selectionne = jdc2Cb.getSelectionModel().getSelectedItem();
+        Carte jdc3Selectionne = jdc3Cb.getSelectionModel().getSelectedItem();
+        if (gardienSelectionne != null) {
+            propositionEquipe.add(gardienSelectionne);
+        }
+        if (jdc1Selectionne != null) {
+            propositionEquipe.add(jdc1Selectionne);
+        }
+        if (jdc2Selectionne != null) {
+            propositionEquipe.add(jdc2Selectionne);
+        }
+        if (jdc3Selectionne != null) {
+            propositionEquipe.add(jdc3Selectionne);
+        }
+
+        try {
+            EquipeJeu.equipeValide(propositionEquipe);
+            this.utilisateur.sonEquipe.setEquipe(propositionEquipe);
+            succes.setText("L'équipe à bien été enregistrée !");
+
+        } catch (ExceptionEquipeNonValide e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Achat d'une carte");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+
+    }
+
+    public void majOngletEquipe() {
+        gkCb.getItems().clear();
+        jdc1Cb.getItems().clear();
+        jdc2Cb.getItems().clear();
+        jdc3Cb.getItems().clear();
+
+        gkCb.getItems().addAll(this.utilisateur.listeCarte);
+        jdc1Cb.getItems().addAll(this.utilisateur.listeCarte);
+        jdc2Cb.getItems().addAll(this.utilisateur.listeCarte);
+        jdc3Cb.getItems().addAll(this.utilisateur.listeCarte);
+    }
+
+    public void majOngletCarte() {
+        tableauPerso.getItems().clear();
+        tableauPerso.getItems().addAll(this.utilisateur.listeCarte);
     }
 
 }
