@@ -1,7 +1,6 @@
 package com.javafootball;
 
-import com.javafootball.Model.Marche;
-import com.javafootball.Model.MatchHebdo;
+import com.javafootball.Model.SystemeDonnee;
 import com.javafootball.Model.Utilisateur.Admin;
 import com.javafootball.Model.Utilisateur.Utilisateur;
 import com.javafootball.Model.Utilisateur.UtilisateurJoueur;
@@ -23,10 +22,6 @@ import java.util.*;
 
 public class ConnexionController implements Initializable {
 
-    private final String cheminVersFichierData = "src/main/resources/com/javafootball/data/utilisateurs.csv";
-
-    Map<String, Utilisateur> lesUtilisateur;
-
     @FXML
     TextField pseudoField;
     @FXML
@@ -34,34 +29,21 @@ public class ConnexionController implements Initializable {
     @FXML
     Label errorLbl;
 
-    private Utilisateur currentUtilisateur;
-    private Marche marche;
-    private MatchHebdo matchHebdo;
+    private SystemeDonnee sd;
 
+    final String cheminVersFichierUtilisateurs = "src/main/resources/com/javafootball/data/utilisateurs.csv";
+    final String cheminVersFichierJoueurs = "src/main/resources/com/javafootball/data/ext/Ligue1.csv";
 
-    /**
-     * Ajoute un utilisateur dans la liste d'utilisateur, ainsi que le fichier de sauvegarde
-     * @param nouvelUtilisateur : l'utilisateur à ajouter
-     * @return true si ça s'est bien passé, false sinon
-     */
-    private boolean enregistrerUtilisateur(Utilisateur nouvelUtilisateur) throws IOException {
-        if(this.lesUtilisateur.get(nouvelUtilisateur.pseudo) == null) {
-            this.lesUtilisateur.put(nouvelUtilisateur.pseudo, nouvelUtilisateur);
-            FileWriter fw = new FileWriter(cheminVersFichierData, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(nouvelUtilisateur.toString());
-            bw.newLine();
-            bw.close();
-            return true;
-        } else {
-            return false;
-        }
+    // Setteur pour transmettre les informations du jeu entre controllers
+    void setSystemeDonne(SystemeDonnee sd) {
+        this.sd = sd;
     }
+
 
     @FXML
     protected void inscription() {
         try {
-            if(enregistrerUtilisateur(new UtilisateurJoueur(pseudoField.getText(), motDePasseField.getText()))) {
+            if(sd.enregistrerUtilisateur(new UtilisateurJoueur(pseudoField.getText(), motDePasseField.getText()), cheminVersFichierUtilisateurs)) {
                 errorLbl.setText("Inscription réussie");
             } else {
                 errorLbl.setText("Le pseudo existe déjà, inscription impossible");
@@ -72,50 +54,28 @@ public class ConnexionController implements Initializable {
         }
     }
 
-    /**
-     * Vérifie le couple de pseudo mot de passe dans la liste de l'utilisateur
-     * @param pseudo : le pseudo de l'utilisateur
-     * @param motDePasse : le mot de passe de l'utilisateur
-     * @return -1 si le pseudo n'apparait pas dans la liste
-     *          0 si le pseudo apparait, mais le mot de passe n'est pas bon
-     *          1 si le couple est bon
-     */
-    private int verifCoupleLogin(String pseudo, String motDePasse) {
-        Utilisateur resUti = lesUtilisateur.get(pseudo);
-        if(resUti != null) {
-            if(resUti.motDePasse.equals(motDePasse)) {
-                currentUtilisateur = resUti;
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-        return -1;
-    }
-
     @FXML
     protected void connexion(ActionEvent event) throws IOException {
-        int resultatRecherche = verifCoupleLogin(pseudoField.getText(), motDePasseField.getText());
+        int resultatRecherche = this.sd.verifCoupleLogin(pseudoField.getText(), motDePasseField.getText());
         switch (resultatRecherche) {
             case -1 -> errorLbl.setText("Ce compte n'existe pas");
             case 0 -> errorLbl.setText("Le mot de passe n'est pas le bon");
             case 1 -> {
                 FXMLLoader fxmlLoader;
-                String nomVue = currentUtilisateur.nomVue;
+                Utilisateur utilisateurConnexion = sd.utilisateurs.get(pseudoField.getText());
+                String nomVue = utilisateurConnexion.nomVue;
                 fxmlLoader = new FXMLLoader(getClass().getResource(nomVue));
 
                 Parent root = fxmlLoader.load();
 
-                if(currentUtilisateur != null && !nomVue.equals("Admin.fxml")) {
+                if(utilisateurConnexion instanceof UtilisateurJoueur) {
                     JeuController jeuController = fxmlLoader.getController();
-                    jeuController.setUtilisateur((UtilisateurJoueur) this.currentUtilisateur);
-                    jeuController.setMarche(marche);
-                    jeuController.setMatchHebdo(matchHebdo);
+                    jeuController.setUtilisateurCourant((UtilisateurJoueur) utilisateurConnexion);
+                    jeuController.setSystemeDonnee(this.sd);
                 } else {
                     AdminController adminController = fxmlLoader.getController();
-                    adminController.setUtilisateur((Admin) this.currentUtilisateur);
-                    adminController.setMarche(marche);
-                    adminController.setMatchHebdo(matchHebdo);
+                    adminController.setUtilisateurCourant((Admin) utilisateurConnexion);
+                    adminController.setSystemeDonnee(this.sd);
                 }
 
                 Scene scene = new Scene(root, 1080, 720);
@@ -127,63 +87,16 @@ public class ConnexionController implements Initializable {
         }
     }
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.lesUtilisateur = new HashMap<>();
-        this.marche = new Marche();
 
-        // Parse utilisateurs
-        try {
-            File dataFile = new File(cheminVersFichierData);
-            if (dataFile.createNewFile()) {
-                System.out.println("Le fichier " + dataFile.getName() + " à été créé");
-            } else {
-                System.out.println("Le fichier de bd sur le utilisateur est déjà présent.");
-                try {
-                    Scanner myReader = new Scanner(dataFile);
-                    while (myReader.hasNextLine()) {
-                        String row = myReader.nextLine();
-                        String [] splittedRow = row.split(";");
-                        Utilisateur nouvelUtilisateur;
-                        String pseudo = splittedRow[0];
-                        String motDePasse = splittedRow[1];
-                        if(splittedRow.length > 2) {    // Cas utilsateur joueur
-                            nouvelUtilisateur = new UtilisateurJoueur(pseudo, motDePasse, Integer.parseInt(splittedRow[2]));
-                        } else {    // Cas d'un admin
-                            nouvelUtilisateur = new Admin(pseudo, motDePasse);
-                        }
-                        lesUtilisateur.put(pseudo, nouvelUtilisateur);
-
-                    }
-                    myReader.close();
-                } catch (FileNotFoundException e) {
-                    System.out.println("Une erreur est survenue dans la lecture du fichier de sauvegarde des utilisateurs.");
-                    e.printStackTrace();
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Une erreur est survenue dans la création du fichier de sauvegarde des utilisateurs.");
-            e.printStackTrace();
+        if(sd == null) {
+            sd = new SystemeDonnee();
+            sd.parseUtilisateur(cheminVersFichierUtilisateurs);
+            sd.marche.parseJoueurEquipe(cheminVersFichierJoueurs);
         }
 
-        // Parse marché
-        this.marche.initialisationJoueurEquipe("src/main/resources/com/javafootball/data/ext/Ligue1.csv");
-
-    }
-
-    void setMarche(Marche marche) {
-        this.marche = marche;
-    }
-
-    void setMatchHebdo(MatchHebdo matchHebdo) {
-        if (matchHebdo != null) {
-            this.matchHebdo = matchHebdo;
-        System.out.println("Set matchhebdo connexioncontroller :" + matchHebdo);
-        }
-    }
-
-    void majUtilisateur(Utilisateur utilisateur) {
-        this.lesUtilisateur.put(utilisateur.pseudo, utilisateur);
     }
 
 }

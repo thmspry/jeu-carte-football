@@ -28,7 +28,7 @@ public class Marche {
     }
 
 
-    public void initialisationJoueurEquipe(String cheminVersFichier) {
+    public void parseJoueurEquipe(String cheminVersFichier) {
         File dataFile = new File(cheminVersFichier);
         if (dataFile.exists()) {
             try {
@@ -69,7 +69,7 @@ public class Marche {
                         nouveauJoueur.setLienPhoto(splittedRow[3]);
                     }
 
-                    this.joueursExistant.add(nouveauJoueur);
+                    joueursExistant.add(nouveauJoueur);
                     equipeCourante.ajouterJoueur(nouveauJoueur);
 
                 }

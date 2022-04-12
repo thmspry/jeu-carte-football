@@ -11,8 +11,8 @@ import java.util.*;
 public class MatchHebdo {
     public static int semaineCompteur = 1;
     public int semaine;
-    private List<UtilisateurJoueur> joueurInscrit;
-    private List<UtilisateurJoueur> lesGagnants;
+    private final List<UtilisateurJoueur> joueurInscrit;
+    private final List<UtilisateurJoueur> lesGagnants;
 
     public MatchHebdo() {
         this.semaine = semaineCompteur;
@@ -82,12 +82,9 @@ public class MatchHebdo {
     }
 
     public void chercher3Meilleurs() {
-        joueurInscrit.sort(new Comparator<UtilisateurJoueur>() {
-            @Override
-            public int compare(UtilisateurJoueur o1, UtilisateurJoueur o2) {
-                double diff = o1.scoreDeLaSemaine - o2.scoreDeLaSemaine;
-                return (int) diff;
-            }
+        joueurInscrit.sort((o1, o2) -> {
+            double diff = o1.scoreDeLaSemaine - o2.scoreDeLaSemaine;
+            return (int) diff;
         });
         for(int i = 0; i < joueurInscrit.size() && i < 3; i++) {
             lesGagnants.add(joueurInscrit.get(i));
@@ -151,17 +148,17 @@ public class MatchHebdo {
     public void recompenseGagnant() throws ExceptionRareteDepasse {
         if(!lesGagnants.isEmpty()) {
             Carte cartePour1er = CarteRare.creerCarteAleatoire();
-            lesGagnants.get(0).donnerCarte(cartePour1er);
+            lesGagnants.get(0).recevoirCarte(cartePour1er);
         }
 
         if(lesGagnants.size() > 1) {
             Carte cartePour2eme = CartePeuCommune.creerCarteAleatoire();
-            lesGagnants.get(1).donnerCarte(cartePour2eme);
+            lesGagnants.get(1).recevoirCarte(cartePour2eme);
         }
 
         if(lesGagnants.size() > 2) {
             Carte cartepour3eme = CarteCommune.creerCarteAleatoire();
-            lesGagnants.get(2).donnerCarte(cartepour3eme);
+            lesGagnants.get(2).recevoirCarte(cartepour3eme);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.javafootball.Model.Utilisateur;
 
 import com.javafootball.Model.Joueur.Carte;
+import com.javafootball.Model.Vente;
 
 public class Admin extends Utilisateur{
 
@@ -17,16 +18,21 @@ public class Admin extends Utilisateur{
     }
 
     @Override
-    public void depenserArgent(int montant) {    }
+    boolean aLesMoyens(Vente vente) {
+        return true;
+    }
 
     @Override
-    public void donnerCarte(Carte carte) {      }
+    void depenserArgent(int montant) {    }
+
+    @Override
+    void perdreCarte(Carte carte) {      }
 
     @Override
     public void recevoirCarte(Carte carte) {    }
 
     @Override
-    public void recevoirArgent(int montant) {    }
+    void recevoirArgent(int montant) {    }
 
     @Override
     public String toString() {

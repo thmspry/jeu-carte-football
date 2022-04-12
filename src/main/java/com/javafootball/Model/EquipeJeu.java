@@ -14,18 +14,10 @@ public class EquipeJeu {
         this.compositionCarte = new ArrayList<>();
     }
 
-    /*public boolean equipeValide() throws ExceptionEquipeNonValide {
-        int cptGK = 0;
-        for (Carte j : compositionCarte) {
-            if (j.joueur instanceof JoueurGardien) {
-                cptGK++;
-            }
-        }
-        if (cptGK != 1) {
-            throw new ExceptionEquipeNonValide("Il faut 1 gardien");
-        }
-        return true;
-    }*/
+    public boolean aSoumisEquipe() {
+        return !this.compositionCarte.isEmpty();
+    }
+
 
     static public void equipeValide(List<Carte> propositionCarte) throws ExceptionEquipeNonValide {
         int cptGK = 0;

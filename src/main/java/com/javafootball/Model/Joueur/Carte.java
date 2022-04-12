@@ -15,6 +15,13 @@ abstract public class Carte {
     }
 
 
+    /**
+     * Donne une dénomination de la carte, comprenant seulement le nom et prom du joueur
+     * @return la string formatée
+     */
+    public String denominationSimplifiee() {
+        return this.joueur.denomination();
+    }
 
     @Override
     public String toString() {
