@@ -1,6 +1,9 @@
 package com.javafootball.Model.Joueur;
 
 import com.javafootball.Model.Exception.*;
+import com.javafootball.Model.Marche;
+
+import java.util.List;
 
 public class CarteRare extends Carte {
 
@@ -23,6 +26,23 @@ public class CarteRare extends Carte {
         }
         throw new ExceptionRareteDepasse("Nombre de carte de cette rareté du joueur depassé");
 
+    }
+
+    public static Carte creerCarteAleatoire() throws ExceptionRareteDepasse {
+        List<Joueur> listeJoueur = Marche.joueursExistant;
+
+        while(true) {
+            Joueur j = Marche.getJoueurAleatoire(listeJoueur);
+            try {
+                return creerCarte(j);
+            } catch (ExceptionRareteDepasse e) {
+                e.printStackTrace();
+                listeJoueur.remove(j);
+                if(listeJoueur.size() == 0) {
+                    throw new ExceptionRareteDepasse("Plus aucune carte rare n'est disponible");
+                }
+            }
+        }
     }
 
     @Override

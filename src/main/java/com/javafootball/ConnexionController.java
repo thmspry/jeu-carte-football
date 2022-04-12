@@ -1,6 +1,7 @@
 package com.javafootball;
 
 import com.javafootball.Model.Marche;
+import com.javafootball.Model.MatchHebdo;
 import com.javafootball.Model.Utilisateur.Admin;
 import com.javafootball.Model.Utilisateur.Utilisateur;
 import com.javafootball.Model.Utilisateur.UtilisateurJoueur;
@@ -35,6 +36,7 @@ public class ConnexionController implements Initializable {
 
     private Utilisateur currentUtilisateur;
     private Marche marche;
+    private MatchHebdo matchHebdo;
 
 
     /**
@@ -108,10 +110,12 @@ public class ConnexionController implements Initializable {
                     JeuController jeuController = fxmlLoader.getController();
                     jeuController.setUtilisateur((UtilisateurJoueur) this.currentUtilisateur);
                     jeuController.setMarche(marche);
+                    jeuController.setMatchHebdo(matchHebdo);
                 } else {
                     AdminController adminController = fxmlLoader.getController();
                     adminController.setUtilisateur((Admin) this.currentUtilisateur);
                     adminController.setMarche(marche);
+                    adminController.setMatchHebdo(matchHebdo);
                 }
 
                 Scene scene = new Scene(root, 1080, 720);
@@ -127,8 +131,6 @@ public class ConnexionController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.lesUtilisateur = new HashMap<>();
         this.marche = new Marche();
-
-
 
         // Parse utilisateurs
         try {
@@ -165,13 +167,19 @@ public class ConnexionController implements Initializable {
         }
 
         // Parse marché
-        //this.marche.initialisationJoueurEquipe("src/main/resources/com/javafootball/data/ext/2022_11_Nantes_ext.csv");
         this.marche.initialisationJoueurEquipe("src/main/resources/com/javafootball/data/ext/Ligue1.csv");
 
     }
 
     void setMarche(Marche marche) {
         this.marche = marche;
+    }
+
+    void setMatchHebdo(MatchHebdo matchHebdo) {
+        if (matchHebdo != null) {
+            this.matchHebdo = matchHebdo;
+        System.out.println("Set matchhebdo connexioncontroller :" + matchHebdo);
+        }
     }
 
     void majUtilisateur(Utilisateur utilisateur) {

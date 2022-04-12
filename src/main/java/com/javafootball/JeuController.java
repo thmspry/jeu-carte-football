@@ -4,6 +4,7 @@ import com.javafootball.Model.EquipeJeu;
 import com.javafootball.Model.Exception.ExceptionEquipeNonValide;
 import com.javafootball.Model.Joueur.*;
 import com.javafootball.Model.Marche;
+import com.javafootball.Model.MatchHebdo;
 import com.javafootball.Model.Utilisateur.Utilisateur;
 import com.javafootball.Model.Utilisateur.UtilisateurJoueur;
 import com.javafootball.Model.Vente;
@@ -138,6 +139,7 @@ public class JeuController implements Initializable {
 
     UtilisateurJoueur utilisateur;
     Marche marche;
+    MatchHebdo matchHebdo;
 
     /**
      * Pour avoir une chaine de caratère comportant le montant avec les milliers séparés
@@ -183,8 +185,14 @@ public class JeuController implements Initializable {
 
     void setMarche(Marche marche) {
         this.marche = marche;
-
         tableauBoutique.getItems().addAll(this.marche.carteAVendre);
+    }
+
+    void setMatchHebdo(MatchHebdo matchHebdo) {
+        if(matchHebdo != null) {
+            this.matchHebdo = matchHebdo;
+            System.out.println("Set matchhebdo jeucontroller :" + matchHebdo);
+        }
     }
 
     @FXML
@@ -197,6 +205,7 @@ public class JeuController implements Initializable {
         ConnexionController connexionController = fxmlLoader.getController();
         connexionController.setMarche(marche);
         connexionController.majUtilisateur(utilisateur);
+        connexionController.setMatchHebdo(matchHebdo);
 
         Scene scene = new Scene(root, 1080, 720);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -514,11 +523,12 @@ public class JeuController implements Initializable {
         try {
             EquipeJeu.equipeValide(propositionEquipe);
             this.utilisateur.sonEquipe.setEquipe(propositionEquipe);
+            this.matchHebdo.ajoutJoueur(this.utilisateur);
             succes.setText("L'équipe à bien été enregistrée !");
 
         } catch (ExceptionEquipeNonValide e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achat d'une carte");
+            alert.setTitle("Erreur de constitution de l'équipe");
             alert.setHeaderText(null);
             alert.setContentText(e.getMessage());
             alert.showAndWait();

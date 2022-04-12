@@ -40,41 +40,38 @@
                   </toggleGroup>
                   <graphic>
                      <FlowPane alignment="CENTER" minHeight="126.0" minWidth="90.0" prefWidth="90.0" vgap="10.0">
-                        <children>
-                           <ImageView fx:id="imageCommune" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
-                           <Label text="Commun">
-                              <font>
-                                 <Font size="14.0" />
-                              </font>
-                           </Label>
-                        </children>
+                        <ImageView fx:id="imageCommune" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true"
+                                   preserveRatio="true"/>
+                        <Label text="Commun">
+                           <font>
+                              <Font size="14.0"/>
+                           </font>
+                        </Label>
                      </FlowPane>
                   </graphic>
                </RadioButton>
                <RadioButton fx:id="radioPeuCommune" mnemonicParsing="false" style="-fx-background-color: #f6e5a5; -fx-padding: 10px;" toggleGroup="$rarete">
                   <graphic>
                      <FlowPane alignment="CENTER" minHeight="126.0" minWidth="90.0" prefWidth="90.0" vgap="10.0">
-                        <children>
-                           <ImageView fx:id="imagePeuCommune" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
-                           <Label text="Peu commun">
-                              <font>
-                                 <Font size="14.0" />
-                              </font>
-                           </Label>
-                        </children>
+                        <ImageView fx:id="imagePeuCommune" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true"
+                                   preserveRatio="true"/>
+                        <Label text="Peu commun">
+                           <font>
+                              <Font size="14.0"/>
+                           </font>
+                        </Label>
                      </FlowPane>
                   </graphic></RadioButton>
                <RadioButton fx:id="radioRare" mnemonicParsing="false" style="-fx-padding: 10px; -fx-background-color: #ef9ffc;" toggleGroup="$rarete">
                   <graphic>
                      <FlowPane alignment="CENTER" minWidth="90.0" prefWidth="90.0" vgap="10.0">
-                        <children>
-                           <ImageView fx:id="imageRare" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
-                           <Label text="Rare">
-                              <font>
-                                 <Font size="14.0" />
-                              </font>
-                           </Label>
-                        </children>
+                        <ImageView fx:id="imageRare" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true"
+                                   preserveRatio="true"/>
+                        <Label text="Rare">
+                           <font>
+                              <Font size="14.0"/>
+                           </font>
+                        </Label>
                      </FlowPane>
                   </graphic></RadioButton>
             </FlowPane>
@@ -95,7 +92,8 @@
             <Button mnemonicParsing="false" onAction="#importerFichier" text="Importer les résultats de le semaine" />
             <Label fx:id="nomFichier" text="Aucun fichier sélectionné." />
          </FlowPane>
-         <Button mnemonicParsing="false" text="Passer à la semaine suivante" />
+         <Label fx:id="errorSemaine" text="Label" />
+         <Button mnemonicParsing="false" onAction="#passerSemaineSuivante" text="Passer à la semaine suivante" />
       </FlowPane>
    </AnchorPane>
 </SplitPane>

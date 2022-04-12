@@ -3,8 +3,8 @@ package com.javafootball;
 import com.javafootball.Model.Exception.ExceptionRareteDepasse;
 import com.javafootball.Model.Joueur.*;
 import com.javafootball.Model.Marche;
+import com.javafootball.Model.MatchHebdo;
 import com.javafootball.Model.Utilisateur.Admin;
-import com.javafootball.Model.Utilisateur.Utilisateur;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -60,14 +60,17 @@ public class AdminController implements Initializable {
     @FXML
     ImageView imageRare;
 
+    @FXML
+            Label errorSemaine;
+
     Admin utilisateur;
     Marche marche;
-
+    MatchHebdo matchHebdo;
 
 
     void setMarche(Marche marche) {
         this.marche = marche;
-        this.tableauCarte.getItems().addAll(marche.joueursExistant);
+        this.tableauCarte.getItems().addAll(Marche.joueursExistant);
     }
 
     void setUtilisateur(Admin u) {
@@ -83,6 +86,7 @@ public class AdminController implements Initializable {
 
         ConnexionController connexionController = fxmlLoader.getController();
         connexionController.setMarche(marche);
+        connexionController.setMatchHebdo(matchHebdo);
 
         Scene scene = new Scene(root, 1080, 720);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -101,7 +105,25 @@ public class AdminController implements Initializable {
         } else {
             nomFichier.setText(file.getName() + " sélectionné.");
         }
+    }
 
+
+    @FXML
+    public void passerSemaineSuivante(ActionEvent event) {
+        try {
+            this.matchHebdo.passerSemaineSuivante();
+        } catch (ExceptionRareteDepasse e) {
+            errorSemaine.setText(e.getMessage());
+        }
+
+        this.matchHebdo = new MatchHebdo();
+    }
+
+    public void setMatchHebdo(MatchHebdo matchHebdo) {
+        if(matchHebdo != null) {
+            this.matchHebdo = matchHebdo;
+            System.out.println("Set matchhebdo admincontroller :" + matchHebdo);
+        }
 
     }
 
@@ -142,28 +164,20 @@ public class AdminController implements Initializable {
 
         if (nouvelleCarte != null) {
             marche.ajouterCarteAVendre(nouvelleCarte, utilisateur, prixVente.getValue());
-
-            /*try {
-                FileWriter fw = new FileWriter(cheminVersFichierBoutique, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                bw.write(nouvelleCarte.toString());
-                bw.newLine();
-                bw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
-
         }
-
-
-
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 2000000);
         valueFactory.setValue(0);
         prixVente.setValueFactory(valueFactory);
+
+        if(matchHebdo == null) {
+            matchHebdo = new MatchHebdo();
+            System.out.println("match hebdo créé");
+        }
 
         prenom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().prenom));
         nom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().nom));

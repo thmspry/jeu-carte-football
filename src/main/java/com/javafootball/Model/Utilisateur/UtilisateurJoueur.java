@@ -11,6 +11,7 @@ public class UtilisateurJoueur extends Utilisateur {
     public int argent;
     public List<Carte> listeCarte;
     public EquipeJeu sonEquipe;
+    public double scoreDeLaSemaine;
 
 
     public UtilisateurJoueur(String pseudo, String motDePasse, int argent) {
@@ -28,7 +29,10 @@ public class UtilisateurJoueur extends Utilisateur {
         this.listeCarte = new ArrayList<>();
         this.nomVue = "Jeu.fxml";
         this.sonEquipe = new EquipeJeu();
+        this.scoreDeLaSemaine = 0;
     }
+
+
 
     @Override
     public String getPseudoVendeur() {

@@ -8,20 +8,23 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Marche {
     public List<Vente> carteAVendre;
-    public List<Joueur> joueursExistant;
+    public static List<Joueur> joueursExistant;
     List<Equipe> equipesExistante;
 
     public Marche() {
         this.carteAVendre = new ArrayList<>();
-        this.joueursExistant = new ArrayList<>();
+        joueursExistant = new ArrayList<>();
         this.equipesExistante = new ArrayList<>();
+    }
+
+
+    public static Joueur getJoueurAleatoire(List<Joueur> joueurList) {
+        Random rand = new Random();
+        return joueurList.get(rand.nextInt(joueursExistant.size()));
     }
 
 
@@ -40,9 +43,9 @@ public class Marche {
                     String[] prenomNomJoueur = splittedRow[0].split(" ");
                     String prenomJoueur = prenomNomJoueur[0];
                     String nomJoueur = switch (prenomNomJoueur.length) {
-                        case 1 -> ""; // Joueur sans nom de famille (joueur avec surnom)
-                        case 2 -> prenomNomJoueur[1];   // Joueur avec un nom de famille
-                        default -> // Joueur avec plusieurs noms de famille
+                        case 1 -> "";                   // Joueur sans nom de famille (joueur avec surnom)
+                        case 2 -> prenomNomJoueur[1];   // Joueur avec un seul nom de famille
+                        default ->                      // Joueur avec plusieurs noms de famille
                                 String.join(" ", Arrays.copyOfRange(prenomNomJoueur, 1, prenomNomJoueur.length));
                     };
 
