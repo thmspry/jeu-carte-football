@@ -30,7 +30,7 @@ public class MatchHebdo {
      *
      * @return un chaine formatée
      */
-    private String incateurSemaine() {
+    private String indicateurSemaine() {
         String indicateurSemaine;
         if (this.semaine < 10) {
             indicateurSemaine = "0" + this.semaine;
@@ -40,10 +40,10 @@ public class MatchHebdo {
         return indicateurSemaine;
     }
 
-    private double scoreJoueur(UtilisateurJoueur uti) {
+    private double scoreUtilisateur(UtilisateurJoueur uti) {
         double scoreTotal = 0;
 
-        final String cheminVersFichier = "src/main/resources/com/javafootball/data/ext/2022_" + this.incateurSemaine() + "_Nantes.csv";
+        final String cheminVersFichier = "src/main/resources/com/javafootball/data/ext/2022_" + this.indicateurSemaine() + "_Nantes.csv";
         File dataFile = new File(cheminVersFichier);
         try {
             EquipeJeu sesCartes = uti.sonEquipe;
@@ -76,8 +76,8 @@ public class MatchHebdo {
     }
 
     public void calculScoreAllJoueur() {
-        for (UtilisateurJoueur joueur : joueurInscrit) {
-            joueur.scoreDeLaSemaine = scoreJoueur(joueur);
+        for (UtilisateurJoueur utilisateurJoueur : joueurInscrit) {
+            utilisateurJoueur.scoreDeLaSemaine = scoreUtilisateur(utilisateurJoueur);
         }
     }
 
@@ -92,80 +92,27 @@ public class MatchHebdo {
     }
 
 
-    /*public List<UtilisateurJoueur> gagnant() {
-        double scoremax = 0;
-        double scoremax2 = 0;
-        double scoremax3 = 0;
-        List<UtilisateurJoueur> gagnant = new ArrayList<>();
-        for (UtilisateurJoueur joueur : joueurInscrit) {
-            double scoretest = joueurScore.get(joueur);
-            if (scoretest > scoremax) {
-                double ancienScore = scoremax;
-                scoremax = scoretest;
-                if (gagnant.isEmpty()) {
-                    gagnant.add(joueur);
-                } else {
-                    if (ancienScore != 0) {
-                        UtilisateurJoueur ancien1 = gagnant.get(0);
-
-                        UtilisateurJoueur ancien2 = gagnant.get(1);
-                        scoremax3 = scoremax2;
-                        scoremax2 = ancienScore;
-                        gagnant.set(1, ancien1);
-                        gagnant.set(2, ancien2);
-                    }
-                    gagnant.set(0, joueur);
-                }
-            } else if (scoretest > scoremax2) {
-                scoremax2 = scoretest;
-                if (gagnant.get(1) == null) {
-                    gagnant.add(joueur);
-                } else {
-                    double ancienscore2 = scoremax2;
-                    if (ancienscore2 != 0) {
-                        UtilisateurJoueur ancien2 = gagnant.get(1);
-                        scoremax3 = ancienscore2;
-                        gagnant.set(2, ancien2);
-                    }
-                    gagnant.set(1, joueur);
-                }
-            } else if (scoretest > scoremax3) {
-                scoremax3 = scoretest;
-                if (gagnant.get(2) == null) {
-                    gagnant.add(joueur);
-                } else {
-                    gagnant.set(2, joueur);
-                }
-            }
-
-        }
-        System.out.println(joueurInscrit.size());
-        System.out.println(gagnant.size());
-        return gagnant;
-
-    }*/
-
-    public void recompenseGagnant() throws ExceptionRareteDepasse {
+    public void recompenseGagnant(Marche marche) throws ExceptionRareteDepasse {
         if(!lesGagnants.isEmpty()) {
-            Carte cartePour1er = CarteRare.creerCarteAleatoire();
+            Carte cartePour1er = CarteRare.creerCarteAleatoire(marche);
             lesGagnants.get(0).recevoirCarte(cartePour1er);
         }
 
         if(lesGagnants.size() > 1) {
-            Carte cartePour2eme = CartePeuCommune.creerCarteAleatoire();
+            Carte cartePour2eme = CartePeuCommune.creerCarteAleatoire(marche);
             lesGagnants.get(1).recevoirCarte(cartePour2eme);
         }
 
         if(lesGagnants.size() > 2) {
-            Carte cartepour3eme = CarteCommune.creerCarteAleatoire();
+            Carte cartepour3eme = CarteCommune.creerCarteAleatoire(marche);
             lesGagnants.get(2).recevoirCarte(cartepour3eme);
         }
     }
 
-    public void passerSemaineSuivante() throws ExceptionRareteDepasse {
+    public void passerSemaineSuivante(Marche marche) throws ExceptionRareteDepasse {
         calculScoreAllJoueur();
         chercher3Meilleurs();
-        recompenseGagnant();
+        recompenseGagnant(marche);
     }
 
     @Override

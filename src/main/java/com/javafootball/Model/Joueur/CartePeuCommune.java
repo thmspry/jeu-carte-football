@@ -3,6 +3,7 @@ package com.javafootball.Model.Joueur;
 import com.javafootball.Model.Exception.ExceptionRareteDepasse;
 import com.javafootball.Model.Marche;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartePeuCommune extends Carte {
@@ -17,23 +18,28 @@ public class CartePeuCommune extends Carte {
         this.rareteLabel = "Peu commune";
     }
 
-    public static Carte creerCarte(Joueur joueur) throws ExceptionRareteDepasse {
+    public static Carte creerCarte(Joueur joueur, Marche marcheActuel) throws ExceptionRareteDepasse {
         if (joueur.compteurPeuCommune < maxExemplaire) {
-            Carte nouvelleCarte;
-            joueur.compteurPeuCommune++;
-            nouvelleCarte = new CartePeuCommune(joueur, joueur.compteurPeuCommune);
-            return nouvelleCarte;
+            // verification qu'il reste au moins la carte réservée aux récompenses hebdo
+            if (marcheActuel.resteAuMoinsPeuCommune(2)) {
+                Carte nouvelleCarte;
+                joueur.compteurPeuCommune++;
+                nouvelleCarte = new CartePeuCommune(joueur, joueur.compteurPeuCommune);
+                return nouvelleCarte;
+            } else {
+                throw new ExceptionRareteDepasse("Il ne reste plus qu'une carte peu commune créable sur tout le set de joueur, elle est réservée a la récompense hebdo du 2ème mailleur joueur.");
+            }
         }
         throw new ExceptionRareteDepasse("Nombre de carte de cette rareté du joueur depassé");
     }
 
-    public static Carte creerCarteAleatoire() throws ExceptionRareteDepasse {
-        List<Joueur> listeJoueur = Marche.joueursExistant;
+    public static Carte creerCarteAleatoire(Marche marcheActuel) throws ExceptionRareteDepasse {
+        List<Joueur> listeJoueur = new ArrayList<>(List.copyOf(marcheActuel.joueursExistant));
 
         while(true) {
             Joueur j = Marche.getJoueurAleatoire(listeJoueur);
             try {
-                return creerCarte(j);
+                return creerCarte(j, marcheActuel);
             } catch (ExceptionRareteDepasse e) {
                 e.printStackTrace();
                 listeJoueur.remove(j);

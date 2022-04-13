@@ -72,7 +72,7 @@ public class AdminController implements Initializable {
 
     public void setSystemeDonnee(SystemeDonnee sd) {
         this.sd = sd;
-        this.tableauCarte.getItems().addAll(Marche.joueursExistant);
+        this.tableauCarte.getItems().addAll(this.sd.marche.joueursExistant);
     }
 
 
@@ -110,7 +110,7 @@ public class AdminController implements Initializable {
     @FXML
     public void passerSemaineSuivante(ActionEvent event) {
         try {
-            this.sd.matchHebdo.passerSemaineSuivante();
+            this.sd.matchHebdo.passerSemaineSuivante(this.sd.marche);
         } catch (ExceptionRareteDepasse e) {
             errorSemaine.setText(e.getMessage());
         }
@@ -126,7 +126,7 @@ public class AdminController implements Initializable {
         // TODO : Factoriser les if d'une certaine manière
         if (radioCommune.isSelected()) {
             try {
-                nouvelleCarte = CarteCommune.creerCarte(joueurSelectionne);
+                nouvelleCarte = CarteCommune.creerCarte(joueurSelectionne, this.sd.marche);
                 errorCreationCarte.setText("Carte créée");
             } catch (ExceptionRareteDepasse e) {
                 errorCreationCarte.setText("La limite de " + CarteCommune.maxExemplaire + " cartes de ce joueur à été atteinte.");
@@ -134,7 +134,7 @@ public class AdminController implements Initializable {
         }
         if (radioPeuCommune.isSelected()) {
             try {
-                nouvelleCarte = CartePeuCommune.creerCarte(joueurSelectionne);
+                nouvelleCarte = CartePeuCommune.creerCarte(joueurSelectionne, this.sd.marche);
                 errorCreationCarte.setText("Carte créée");
             } catch (ExceptionRareteDepasse e) {
                 errorCreationCarte.setText("La limite de " + CartePeuCommune.maxExemplaire + " cartes de ce joueur à été atteinte.");
@@ -142,7 +142,7 @@ public class AdminController implements Initializable {
         }
         if (radioRare.isSelected()) {
             try {
-                nouvelleCarte = CarteRare.creerCarte(joueurSelectionne);
+                nouvelleCarte = CarteRare.creerCarte(joueurSelectionne, this.sd.marche);
                 errorCreationCarte.setText("Carte créée");
             } catch (ExceptionRareteDepasse e) {
                 errorCreationCarte.setText("La limite de " + CarteRare.maxExemplaire + " cartes de ce joueur à été atteinte.");

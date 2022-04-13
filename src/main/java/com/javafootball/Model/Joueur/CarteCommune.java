@@ -3,9 +3,10 @@ package com.javafootball.Model.Joueur;
 import com.javafootball.Model.Exception.*;
 import com.javafootball.Model.Marche;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CarteCommune extends Carte{
+public class CarteCommune extends Carte {
     final static public int maxExemplaire = 1000;
 
     private CarteCommune(Joueur joueur, int numero) {
@@ -16,35 +17,37 @@ public class CarteCommune extends Carte{
         this.rareteLabel = "Commune";
     }
 
-    public static Carte creerCarte(Joueur joueur) throws ExceptionRareteDepasse {
+    public static Carte creerCarte(Joueur joueur, Marche marcheActuel) throws ExceptionRareteDepasse {
         if (joueur.compteurCommune < maxExemplaire) {
-            Carte nouvelleCarte;
-            joueur.compteurCommune++;
-            nouvelleCarte = new CarteCommune(joueur, joueur.compteurCommune);
-            return nouvelleCarte;
+            // verification qu'il reste au moins la carte réservée aux récompenses hebdo
+            if (marcheActuel.resteAuMoinsCommune(2)) {
+                Carte nouvelleCarte;
+                joueur.compteurCommune++;
+                nouvelleCarte = new CarteCommune(joueur, joueur.compteurCommune);
+                return nouvelleCarte;
+            } else {
+                throw new ExceptionRareteDepasse("Il ne reste plus qu'une carte commune créable sur tout le set de joueur, elle est réservée a la récompense hebdo du 3ème mailleur joueur.");
+            }
         }
-        throw new ExceptionRareteDepasse("Nombre de carte de cette rareté du joueur depassé");
+        throw new ExceptionRareteDepasse("Nombre de carte de cette rareté du joueur atteinte");
     }
 
-    public static Carte creerCarteAleatoire() throws ExceptionRareteDepasse {
-        List<Joueur> listeJoueur = Marche.joueursExistant;
+    public static Carte creerCarteAleatoire(Marche marcheActuel) throws ExceptionRareteDepasse {
+        List<Joueur> listeJoueur = new ArrayList<>(List.copyOf(marcheActuel.joueursExistant));
 
-        while(true) {
+        while (true) {
             Joueur j = Marche.getJoueurAleatoire(listeJoueur);
             try {
-                return creerCarte(j);
+                return creerCarte(j, marcheActuel);
             } catch (ExceptionRareteDepasse e) {
                 e.printStackTrace();
                 listeJoueur.remove(j);
-                if(listeJoueur.size() == 0) {
+                if (listeJoueur.size() == 0) {
                     throw new ExceptionRareteDepasse("Plus aucune commune carte n'est disponible");
                 }
             }
         }
     }
-
-
-
 
 
     @Override

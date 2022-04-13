@@ -5,9 +5,9 @@ import com.javafootball.Model.Equipe;
 import java.util.Objects;
 
 abstract public class Joueur {
-    int compteurCommune = 0;
-    int compteurPeuCommune = 0;
-    int compteurRare = 0;
+    public int compteurCommune = 0;
+    public int compteurPeuCommune = 0;
+    public int compteurRare = 0;
 
     public final String prenom;
     public final String nom;

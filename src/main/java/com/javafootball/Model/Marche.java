@@ -12,7 +12,7 @@ import java.util.*;
 
 public class Marche {
     public List<Vente> carteAVendre;
-    public static List<Joueur> joueursExistant;
+    public List<Joueur> joueursExistant;
     List<Equipe> equipesExistante;
 
     public Marche() {
@@ -21,10 +21,33 @@ public class Marche {
         this.equipesExistante = new ArrayList<>();
     }
 
+    public boolean resteAuMoinsCommune(int montantMinimumDispo) {
+        int dispoCommune = 0;
+        for(Joueur j : this.joueursExistant) {
+            dispoCommune += CarteCommune.maxExemplaire - j.compteurCommune;
+        }
+        return dispoCommune >= montantMinimumDispo;
+    }
+
+    public  boolean resteAuMoinsPeuCommune(int montantMinimumDispo) {
+        int dispoPeuCommune = 0;
+        for(Joueur j : this.joueursExistant) {
+            dispoPeuCommune += CartePeuCommune.maxExemplaire - j.compteurPeuCommune;
+        }
+        return dispoPeuCommune >= montantMinimumDispo;
+    }
+
+    public  boolean resteAuMoinsRare(int montantMinimumDispo) {
+        int dispoRare = 0;
+        for(Joueur j : this.joueursExistant) {
+            dispoRare += CarteRare.maxExemplaire - j.compteurRare;
+        }
+        return dispoRare >= montantMinimumDispo;
+    }
 
     public static Joueur getJoueurAleatoire(List<Joueur> joueurList) {
         Random rand = new Random();
-        return joueurList.get(rand.nextInt(joueursExistant.size()));
+        return joueurList.get(rand.nextInt(joueurList.size()));
     }
 
 
