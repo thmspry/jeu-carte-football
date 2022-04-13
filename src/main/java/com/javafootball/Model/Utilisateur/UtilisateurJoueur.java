@@ -11,7 +11,7 @@ public class UtilisateurJoueur extends Utilisateur {
 
     public int argent;
     public List<Carte> listeCarte;
-    public EquipeJeu sonEquipe;
+    public EquipeJeu equipe;
     public double scoreDeLaSemaine;
 
 
@@ -20,7 +20,7 @@ public class UtilisateurJoueur extends Utilisateur {
         this.argent = argent;
         this.listeCarte = new ArrayList<>();
         this.nomVue = "Jeu.fxml";
-        this.sonEquipe = new EquipeJeu();
+        this.equipe = new EquipeJeu();
 
     }
 
@@ -29,12 +29,12 @@ public class UtilisateurJoueur extends Utilisateur {
         this.argent = 10000;    // Lorsqu'un utilisateur arrive dans le jeu, il reçoit 10000 (dix-mille) pièces
         this.listeCarte = new ArrayList<>();
         this.nomVue = "Jeu.fxml";
-        this.sonEquipe = new EquipeJeu();
+        this.equipe = new EquipeJeu();
         this.scoreDeLaSemaine = 0;
     }
 
     public boolean aSoumisEquipe() {
-        return this.sonEquipe.aSoumisEquipe();
+        return this.equipe.aSoumisEquipe();
     }
 
 

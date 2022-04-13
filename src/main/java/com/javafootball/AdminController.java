@@ -135,41 +135,45 @@ public class AdminController implements Initializable {
     @FXML
     void mettreEnVente(ActionEvent event) {
         Joueur joueurSelectionne = tableauCarte.getSelectionModel().getSelectedItem();
-        Carte nouvelleCarte;
-        int nombreCarteVoulue = nombreCarte.getValue();
-        int nombreCarteCreee = 0;
+        if(joueurSelectionne != null) {
+            Carte nouvelleCarte;
+            int nombreCarteVoulue = nombreCarte.getValue();
+            int nombreCarteCreee = 0;
 
-        resultCreationCarte.setText("");
+            resultCreationCarte.setText("");
 
-        try {
+            try {
 
-            // TODO : Factoriser d'une certaine manière
+                // TODO : Factoriser d'une certaine manière
 
-            if (radioCommune.isSelected()) {
-                for (nombreCarteCreee = 0; nombreCarteCreee < nombreCarteVoulue; nombreCarteCreee++) {
-                    nouvelleCarte = CarteCommune.creerCarte(joueurSelectionne, this.sd.marche, true);
-                    this.sd.marche.ajouterCarteAVendre(nouvelleCarte, this.adminCourant, prixVente.getValue());
+                if (radioCommune.isSelected()) {
+                    for (nombreCarteCreee = 0; nombreCarteCreee < nombreCarteVoulue; nombreCarteCreee++) {
+                        nouvelleCarte = CarteCommune.creerCarte(joueurSelectionne, this.sd.marche, true);
+                        this.sd.marche.ajouterCarteAVendre(nouvelleCarte, this.adminCourant, prixVente.getValue());
+                    }
                 }
-            }
-            if (radioPeuCommune.isSelected()) {
-                for (nombreCarteCreee = 0; nombreCarteCreee < nombreCarteVoulue; nombreCarteCreee++) {
-                    nouvelleCarte = CartePeuCommune.creerCarte(joueurSelectionne, this.sd.marche, true);
-                    this.sd.marche.ajouterCarteAVendre(nouvelleCarte, this.adminCourant, prixVente.getValue());
+                if (radioPeuCommune.isSelected()) {
+                    for (nombreCarteCreee = 0; nombreCarteCreee < nombreCarteVoulue; nombreCarteCreee++) {
+                        nouvelleCarte = CartePeuCommune.creerCarte(joueurSelectionne, this.sd.marche, true);
+                        this.sd.marche.ajouterCarteAVendre(nouvelleCarte, this.adminCourant, prixVente.getValue());
+                    }
                 }
-            }
-            if (radioRare.isSelected()) {
-                for (nombreCarteCreee = 0; nombreCarteCreee < nombreCarteVoulue; nombreCarteCreee++) {
-                    nouvelleCarte = CarteRare.creerCarte(joueurSelectionne, this.sd.marche, true);
-                    this.sd.marche.ajouterCarteAVendre(nouvelleCarte, this.adminCourant, prixVente.getValue());
+                if (radioRare.isSelected()) {
+                    for (nombreCarteCreee = 0; nombreCarteCreee < nombreCarteVoulue; nombreCarteCreee++) {
+                        nouvelleCarte = CarteRare.creerCarte(joueurSelectionne, this.sd.marche, true);
+                        this.sd.marche.ajouterCarteAVendre(nouvelleCarte, this.adminCourant, prixVente.getValue());
+                    }
                 }
+
+            } catch (ExceptionRareteDepasse e) {
+                Utils.ouvrirFenetreErreur("Creation de carte", e.getMessage());
             }
 
-        } catch (ExceptionRareteDepasse e) {
-            Utils.ouvrirFenetreErreur("Creation de carte", e.getMessage());
+            resultCreationCarte.setText(nombreCarteCreee + " carte" + conjugueNom(nombreCarteCreee) + " de " +
+                    joueurSelectionne.denomination() + " ont été créée" + conjugueNom(nombreCarteCreee) + ".");
+        } else {
+            resultCreationCarte.setText("Veuillez selection un joueur dans le tableau.");
         }
-
-        resultCreationCarte.setText(nombreCarteCreee + " carte" + conjugueNom(nombreCarteCreee) + " de " +
-                joueurSelectionne.denomination() + " ont été créée" + conjugueNom(nombreCarteCreee) + ".");
     }
 
 
@@ -189,7 +193,6 @@ public class AdminController implements Initializable {
 
         miseEnVenteBtn.setText("Mettre en vente " + nombreCarte.getValue().toString() + " carte");
 
-        tableauCarte.getSelectionModel().select(0);
 
         //  Initialisation des colonnes du tableau des joueurs
         prenom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().prenom));

@@ -45,7 +45,7 @@ public class MatchHebdo {
 
         final String cheminVersFichier = "src/main/resources/com/javafootball/data/ext/2022_" + this.indicateurSemaine() + "_Nantes.csv";
         File dataFile = new File(cheminVersFichier);
-        EquipeJeu sesCartes = uti.sonEquipe;
+        EquipeJeu sesCartes = uti.equipe;
 
         boolean joueurTrouve = false;
         Scanner myReader = new Scanner(dataFile);

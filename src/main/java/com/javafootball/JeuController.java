@@ -174,7 +174,7 @@ public class JeuController implements Initializable {
 
 
         if (this.utilisateurCourant.aSoumisEquipe()) {
-            List<Carte> equipeListe = this.utilisateurCourant.sonEquipe.compositionCarte;
+            List<Carte> equipeListe = this.utilisateurCourant.equipe.compositionCarte;
 
             Carte goal = equipeListe.get(0);
             Carte joueurDeCamp1 = equipeListe.get(1);
@@ -298,7 +298,7 @@ public class JeuController implements Initializable {
 
         try {
             EquipeJeu.equipeValide(propositionEquipe);
-            this.utilisateurCourant.sonEquipe.setEquipe(propositionEquipe);
+            this.utilisateurCourant.equipe.setEquipe(propositionEquipe);
             this.sd.matchHebdo.ajoutJoueur(this.utilisateurCourant);
             succes.setText("L'équipe à bien été enregistrée !");
 
@@ -322,29 +322,31 @@ public class JeuController implements Initializable {
         // Listener appliquant un comportement à chaque changement de selection de ligne dans le tableau
         tableauPerso.getSelectionModel().selectedItemProperty().addListener((observableValue, cartePrecedente, carteCourante) -> {
             carteSelectionne = carteCourante;
-            Joueur joueurCourant = carteCourante.joueur;
-            Image imageFondCarte = new Image(carteCourante.lienFondCarte);
+            if (carteCourante != null) {
+                Joueur joueurCourant = carteCourante.joueur;
+                Image imageFondCarte = new Image(carteCourante.lienFondCarte);
 
-            BackgroundImage bImg = new BackgroundImage(imageFondCarte,
-                    BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT,
-                    BackgroundPosition.CENTER,
-                    new BackgroundSize(400, 500, false, false, false, false));
-            Background bGround = new Background(bImg);
-            nomJoueurPersoLbl.setText(joueurCourant.denomination());
-            if (carteCourante instanceof CarteRare) {
-                nomJoueurPersoLbl.setTextFill(jaune);
-                postePersoLbl.setTextFill(jaune);
-                raretePersoLbl.setTextFill(jaune);
-            } else {
-                nomJoueurPersoLbl.setTextFill(noir);
-                postePersoLbl.setTextFill(noir);
-                raretePersoLbl.setTextFill(noir);
+                BackgroundImage bImg = new BackgroundImage(imageFondCarte,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        new BackgroundSize(400, 500, false, false, false, false));
+                Background bGround = new Background(bImg);
+                nomJoueurPersoLbl.setText(joueurCourant.denomination());
+                if (carteCourante instanceof CarteRare) {
+                    nomJoueurPersoLbl.setTextFill(jaune);
+                    postePersoLbl.setTextFill(jaune);
+                    raretePersoLbl.setTextFill(jaune);
+                } else {
+                    nomJoueurPersoLbl.setTextFill(noir);
+                    postePersoLbl.setTextFill(noir);
+                    raretePersoLbl.setTextFill(noir);
+                }
+                postePersoLbl.setText(joueurCourant.poste.getAbreviationSimplifie());
+                raretePersoLbl.setText(carteCourante.rareteLabel);
+                fondCartePerso.setBackground(bGround);
+                photoJoueurPerso.setImage(new Image(carteCourante.joueur.lienPhoto));
             }
-            postePersoLbl.setText(joueurCourant.poste.getAbreviationSimplifie());
-            raretePersoLbl.setText(carteCourante.rareteLabel);
-            fondCartePerso.setBackground(bGround);
-            photoJoueurPerso.setImage(new Image(carteCourante.joueur.lienPhoto));
         });
 
         // Initialisation des colonnes du tableau de vente dans la boutique
