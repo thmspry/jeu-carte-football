@@ -18,10 +18,10 @@ public class CarteRare extends Carte {
         this.rareteLabel = "Rare";
     }
 
-    public static Carte creerCarte(Joueur joueur, Marche marcheActuel) throws ExceptionRareteDepasse{
+    public static Carte creerCarte(Joueur joueur, Marche marcheActuel, boolean considererMarge) throws ExceptionRareteDepasse{
         if (joueur.compteurRare < maxExemplaire) {
             // verification qu'il reste au moins la carte réservée aux récompenses hebdo
-            if(marcheActuel.resteAuMoinsRare(2)) {
+            if(!considererMarge || marcheActuel.resteAuMoinsRare(2)) {
             Carte nouvelleCarte;
             joueur.compteurRare++;
             nouvelleCarte = new CarteRare(joueur, joueur.compteurRare);
@@ -30,7 +30,7 @@ public class CarteRare extends Carte {
                 throw new ExceptionRareteDepasse("Il ne reste plus qu'une carte rare créable sur tout le set de joueur, elle est réservée a la récompense hebdo du 1er mailleur joueur.");
             }
         }
-        throw new ExceptionRareteDepasse("Nombre de carte de cette rareté du joueur depassé");
+        throw new ExceptionRareteDepasse("La limite de " + maxExemplaire + " cartes rare de ce joueur à été atteinte.");
 
     }
 
@@ -40,7 +40,7 @@ public class CarteRare extends Carte {
         while(true) {
             Joueur j = Marche.getJoueurAleatoire(listeJoueur);
             try {
-                return creerCarte(j, marcheActuel);
+                return creerCarte(j, marcheActuel, false);
             } catch (ExceptionRareteDepasse e) {
                 e.printStackTrace();
                 listeJoueur.remove(j);
@@ -53,6 +53,6 @@ public class CarteRare extends Carte {
 
     @Override
     public String toString() {
-        return super.toString() + ";R";
+        return super.toString() + ", Rare";
     }
 }

@@ -25,11 +25,7 @@ abstract public class Carte {
 
     @Override
     public String toString() {
-        return joueur.toString() + ";" + this.numero;
-    }
-
-    public String toStringVerbeux() {
-        return joueur.toStringVerbeux() + " n°" + this.numero;
+        return joueur.toString() + ", n°" + this.numero;
     }
 
 

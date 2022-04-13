@@ -23,23 +23,23 @@ public class Marche {
 
     public boolean resteAuMoinsCommune(int montantMinimumDispo) {
         int dispoCommune = 0;
-        for(Joueur j : this.joueursExistant) {
+        for (Joueur j : this.joueursExistant) {
             dispoCommune += CarteCommune.maxExemplaire - j.compteurCommune;
         }
         return dispoCommune >= montantMinimumDispo;
     }
 
-    public  boolean resteAuMoinsPeuCommune(int montantMinimumDispo) {
+    public boolean resteAuMoinsPeuCommune(int montantMinimumDispo) {
         int dispoPeuCommune = 0;
-        for(Joueur j : this.joueursExistant) {
+        for (Joueur j : this.joueursExistant) {
             dispoPeuCommune += CartePeuCommune.maxExemplaire - j.compteurPeuCommune;
         }
         return dispoPeuCommune >= montantMinimumDispo;
     }
 
-    public  boolean resteAuMoinsRare(int montantMinimumDispo) {
+    public boolean resteAuMoinsRare(int montantMinimumDispo) {
         int dispoRare = 0;
-        for(Joueur j : this.joueursExistant) {
+        for (Joueur j : this.joueursExistant) {
             dispoRare += CarteRare.maxExemplaire - j.compteurRare;
         }
         return dispoRare >= montantMinimumDispo;

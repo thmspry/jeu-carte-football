@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
@@ -17,8 +18,11 @@
 <SplitPane dividerPositions="0.6572939866369709" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafootball.AdminController">
    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
       <FlowPane alignment="CENTER" hgap="30.0" orientation="VERTICAL" prefHeight="455.0" prefWidth="1080.0">
-         <Button mnemonicParsing="false" onAction="#seDeconnecter" text="Se deconnecter" />
-         <Label fx:id="errorCreationCarte" text="Mise en vente d'une nouvelle carte">
+         <Button mnemonicParsing="false" onAction="#seDeconnecter" text="Se deconnecter">
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor></Button>
+         <Label text="Mise en vente d'une nouvelle carte">
             <font>
                <Font size="24.0" />
             </font>
@@ -31,7 +35,7 @@
                <TableColumn fx:id="equipe" prefWidth="121.0" text="Équipe" />
             </columns>
          </TableView>
-         <FlowPane alignment="CENTER_LEFT" prefHeight="333.0" prefWidth="494.0" vgap="50.0">
+         <FlowPane alignment="CENTER_LEFT" hgap="150.0" prefHeight="333.0" prefWidth="494.0" vgap="50.0">
             <FlowPane hgap="20.0" prefHeight="178.0" prefWidth="493.0">
                <Label text="Rareté :" />
                <RadioButton fx:id="radioCommune" mnemonicParsing="false" selected="true" style="-fx-background-color: lightgrey; -fx-padding: 10px;">
@@ -40,60 +44,90 @@
                   </toggleGroup>
                   <graphic>
                      <FlowPane alignment="CENTER" minHeight="126.0" minWidth="90.0" prefWidth="90.0" vgap="10.0">
-                        <ImageView fx:id="imageCommune" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true"
-                                   preserveRatio="true"/>
+                        <ImageView fx:id="imageCommune" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
                         <Label text="Commun">
                            <font>
-                              <Font size="14.0"/>
+                              <Font size="14.0" />
                            </font>
                         </Label>
                      </FlowPane>
                   </graphic>
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
                </RadioButton>
                <RadioButton fx:id="radioPeuCommune" mnemonicParsing="false" style="-fx-background-color: #f6e5a5; -fx-padding: 10px;" toggleGroup="$rarete">
                   <graphic>
                      <FlowPane alignment="CENTER" minHeight="126.0" minWidth="90.0" prefWidth="90.0" vgap="10.0">
-                        <ImageView fx:id="imagePeuCommune" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true"
-                                   preserveRatio="true"/>
+                        <ImageView fx:id="imagePeuCommune" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
                         <Label text="Peu commun">
                            <font>
-                              <Font size="14.0"/>
+                              <Font size="14.0" />
                            </font>
                         </Label>
                      </FlowPane>
-                  </graphic></RadioButton>
+                  </graphic>
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor></RadioButton>
                <RadioButton fx:id="radioRare" mnemonicParsing="false" style="-fx-padding: 10px; -fx-background-color: #ef9ffc;" toggleGroup="$rarete">
                   <graphic>
                      <FlowPane alignment="CENTER" minWidth="90.0" prefWidth="90.0" vgap="10.0">
-                        <ImageView fx:id="imageRare" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true"
-                                   preserveRatio="true"/>
+                        <ImageView fx:id="imageRare" fitHeight="126.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" />
                         <Label text="Rare">
                            <font>
-                              <Font size="14.0"/>
+                              <Font size="14.0" />
                            </font>
                         </Label>
                      </FlowPane>
-                  </graphic></RadioButton>
+                  </graphic>
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor></RadioButton>
             </FlowPane>
-            <FlowPane alignment="BOTTOM_LEFT" hgap="20.0" prefHeight="19.0">
+            <FlowPane alignment="BOTTOM_LEFT" hgap="20.0" prefHeight="2.0" prefWidth="248.0">
                <Label text="Prix :" />
                <Spinner fx:id="prixVente" editable="true" />
                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                   <Image url="@zimdim_coin.png" />
                </ImageView>
             </FlowPane>
-            <Button mnemonicParsing="false" onAction="#mettreEnVente" text="Mettre en vente la carte" />
+            <FlowPane hgap="20.0" prefHeight="8.0" prefWidth="220.0">
+               <Label text="Nombre :"/>
+               <Spinner fx:id="nombreCarte" editable="true"/>
+            </FlowPane>
+            <FlowPane alignment="CENTER" hgap="150.0" prefHeight="25.0" prefWidth="491.0">
+               <Button fx:id="miseEnVenteBtn" mnemonicParsing="false" onAction="#mettreEnVente"
+                       text="Mettre en vente X carte(s)">
+                  <cursor>
+                     <Cursor fx:constant="HAND"/>
+                  </cursor>
+               </Button>
+               <Label fx:id="resultCreationCarte"/>
+            </FlowPane>
          </FlowPane>
       </FlowPane>
    </AnchorPane>
    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-      <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="200.0" prefHeight="164.0" prefWidth="1080.0" rowValignment="TOP" vgap="60.0">
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="150.0" prefHeight="164.0" prefWidth="1080.0" rowValignment="TOP" vgap="60.0">
          <FlowPane hgap="80.0" prefHeight="43.0" prefWidth="465.0">
-            <Button mnemonicParsing="false" onAction="#importerFichier" text="Importer les résultats de le semaine" />
+            <Button mnemonicParsing="false" onAction="#importerFichier" text="Importer les résultats de le semaine">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <Label fx:id="nomFichier" text="Aucun fichier sélectionné." />
          </FlowPane>
-         <Label fx:id="errorSemaine" text="Label" />
-         <Button mnemonicParsing="false" onAction="#passerSemaineSuivante" text="Passer à la semaine suivante" />
+         <Label fx:id="messageSemaine" text="Label" />
+         <Button mnemonicParsing="false" onAction="#passerSemaineSuivante" prefHeight="57.0" prefWidth="196.0" text="Passer à la semaine suivante">
+            <font>
+               <Font size="14.0" />
+            </font>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor></Button>
       </FlowPane>
    </AnchorPane>
 </SplitPane>

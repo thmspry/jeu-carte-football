@@ -173,7 +173,7 @@ public class JeuController implements Initializable {
         jdc3Cb.getItems().addAll(this.utilisateurCourant.listeCarte);
 
 
-        if(this.utilisateurCourant.aSoumisEquipe()) {
+        if (this.utilisateurCourant.aSoumisEquipe()) {
             List<Carte> equipeListe = this.utilisateurCourant.sonEquipe.compositionCarte;
 
             Carte goal = equipeListe.get(0);
@@ -257,11 +257,7 @@ public class JeuController implements Initializable {
             tableauBoutique.getItems().remove(venteSelectionnee);
             tableauPerso.getItems().add(carteEnJeu);*/
         } catch (ExceptionTransaction e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Achat d'une carte");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            Utils.ouvrirFenetreErreur("Achat d'une carte", e.getMessage());
         }
     }
 
@@ -307,11 +303,7 @@ public class JeuController implements Initializable {
             succes.setText("L'équipe à bien été enregistrée !");
 
         } catch (ExceptionEquipeNonValide e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Erreur de constitution de l'équipe");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            Utils.ouvrirFenetreErreur("Constitution de l'équipe", e.getMessage());
         }
 
     }
@@ -352,7 +344,7 @@ public class JeuController implements Initializable {
             postePersoLbl.setText(joueurCourant.poste.getAbreviationSimplifie());
             raretePersoLbl.setText(carteCourante.rareteLabel);
             fondCartePerso.setBackground(bGround);
-            photoJoueurBoutique.setImage(new Image(carteCourante.joueur.lienPhoto));
+            photoJoueurPerso.setImage(new Image(carteCourante.joueur.lienPhoto));
         });
 
         // Initialisation des colonnes du tableau de vente dans la boutique
@@ -368,31 +360,33 @@ public class JeuController implements Initializable {
         // Listener appliquant un comportement à chaque changement de selection de ligne dans le tableau
         tableauBoutique.getSelectionModel().selectedItemProperty().addListener((observableValue, ventePrecedente, venteCourante) -> {
             venteSelectionnee = venteCourante;
-            Joueur joueurCourant = venteCourante.carteAVendre.joueur;
+            if (venteCourante != null) {
+                Joueur joueurCourant = venteCourante.carteAVendre.joueur;
 
-            Image imageFondCarte = new Image(venteCourante.carteAVendre.lienFondCarte);
-            BackgroundImage bImg = new BackgroundImage(imageFondCarte,
-                    BackgroundRepeat.NO_REPEAT,
-                    BackgroundRepeat.NO_REPEAT,
-                    BackgroundPosition.CENTER,
-                    new BackgroundSize(400, 500, false, false, false, false));
-            Background bGround = new Background(bImg);
-            nomJoueurBoutiqueLbl.setText(joueurCourant.denomination());
-            if (venteCourante.carteAVendre instanceof CarteRare) {
-                nomJoueurBoutiqueLbl.setTextFill(jaune);
-                posteBoutiqueLbl.setTextFill(jaune);
-                rareteBoutiqueLbl.setTextFill(jaune);
-            } else {
-                nomJoueurBoutiqueLbl.setTextFill(noir);
-                posteBoutiqueLbl.setTextFill(noir);
-                rareteBoutiqueLbl.setTextFill(noir);
+                Image imageFondCarte = new Image(venteCourante.carteAVendre.lienFondCarte);
+                BackgroundImage bImg = new BackgroundImage(imageFondCarte,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        new BackgroundSize(400, 500, false, false, false, false));
+                Background bGround = new Background(bImg);
+                nomJoueurBoutiqueLbl.setText(joueurCourant.denomination());
+                if (venteCourante.carteAVendre instanceof CarteRare) {
+                    nomJoueurBoutiqueLbl.setTextFill(jaune);
+                    posteBoutiqueLbl.setTextFill(jaune);
+                    rareteBoutiqueLbl.setTextFill(jaune);
+                } else {
+                    nomJoueurBoutiqueLbl.setTextFill(noir);
+                    posteBoutiqueLbl.setTextFill(noir);
+                    rareteBoutiqueLbl.setTextFill(noir);
+                }
+                posteBoutiqueLbl.setText(joueurCourant.poste.getAbreviationSimplifie());
+                vendeurBoutiqueLbl.setText("Vendeur : " + venteCourante.getPseudoVendeur());
+                rareteBoutiqueLbl.setText(venteCourante.carteAVendre.rareteLabel);
+                fondCarteBoutique.setBackground(bGround);
+                prixVenteBoutique.setText("Prix : " + separeMilliers(venteCourante.prix));
+                photoJoueurBoutique.setImage(new Image(venteCourante.carteAVendre.joueur.lienPhoto));
             }
-            posteBoutiqueLbl.setText(joueurCourant.poste.getAbreviationSimplifie());
-            vendeurBoutiqueLbl.setText("Vendeur : " + venteCourante.getPseudoVendeur());
-            rareteBoutiqueLbl.setText(venteCourante.carteAVendre.rareteLabel);
-            fondCarteBoutique.setBackground(bGround);
-            prixVenteBoutique.setText("Prix : " + separeMilliers(venteCourante.prix));
-            photoJoueurBoutique.setImage(new Image(venteCourante.carteAVendre.joueur.lienPhoto));
         });
 
         //  Initialisation du spinner (champs pour le prix)

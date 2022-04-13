@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -82,7 +83,13 @@
                      <Label fx:id="raretePersoLbl" />
                   </FlowPane>
                   <Spinner fx:id="prixVentePerso" editable="true" />
-                  <Button mnemonicParsing="false" onAction="#vendre" text="Vendre" />
+                  <Button mnemonicParsing="false" onAction="#vendre" text="Vendre">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
                </FlowPane>
             </FlowPane>
          </AnchorPane>
@@ -139,7 +146,13 @@
                            <Image url="@zimdim_coin.png" />
                         </ImageView>
                      </FlowPane>
-                     <Button mnemonicParsing="false" onAction="#acheter" text="Acheter" />
+                     <Button mnemonicParsing="false" onAction="#acheter" text="Acheter">
+                        <font>
+                           <Font size="14.0" />
+                        </font>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor></Button>
                   </FlowPane>
                </FlowPane>
             </FlowPane>
@@ -149,10 +162,10 @@
          <AnchorPane>
             <FlowPane alignment="CENTER" hgap="10.0" prefHeight="544.0" prefWidth="1080.0" vgap="20.0">
                <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="400.0" prefWidth="298.0" vgap="50.0">
-                  <ComboBox fx:id="gkCb" prefWidth="150.0" promptText="Gardien" />
-                  <ComboBox fx:id="jdc1Cb" prefWidth="150.0" promptText="Joueur de champ 1" />
-                  <ComboBox fx:id="jdc2Cb" prefWidth="150.0" promptText="Joueur de champ 2" />
-                  <ComboBox fx:id="jdc3Cb" prefWidth="150.0" promptText="Joueur de champ 3" />
+                  <ComboBox fx:id="gkCb" prefHeight="25.0" prefWidth="235.0" promptText="Gardien" />
+                  <ComboBox fx:id="jdc1Cb" prefHeight="25.0" prefWidth="235.0" promptText="Joueur de champ 1" />
+                  <ComboBox fx:id="jdc2Cb" prefWidth="235.0" promptText="Joueur de champ 2" />
+                  <ComboBox fx:id="jdc3Cb" prefWidth="235.0" promptText="Joueur de champ 3" />
                </FlowPane>
                <AnchorPane fx:id="fondTerrain" minHeight="346.0" minWidth="735.0" prefHeight="346.0" prefWidth="735.0">
                   <FlowPane fx:id="jdc2Fond" alignment="CENTER" layoutX="229.0" layoutY="14.0" prefHeight="205.0" prefWidth="278.0">
@@ -184,7 +197,10 @@
                      </Label>
                   </FlowPane>
                </AnchorPane>
-               <Button mnemonicParsing="false" onAction="#soumettreEquipe" text="Enregistrer l'équipe de la semaine" />
+               <Button mnemonicParsing="false" onAction="#soumettreEquipe" text="Enregistrer l'équipe de la semaine">
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor></Button>
                <Label fx:id="succes" />
             </FlowPane>
          </AnchorPane>

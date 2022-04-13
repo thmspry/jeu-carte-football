@@ -42,10 +42,6 @@ abstract public class Joueur {
 
     @Override
     public String toString() {
-        return this.nom + ";" + this.prenom + ";" + this.equipe.nom + ";" + this.poste.getAbreviation();
-    }
-
-    public String toStringVerbeux() {
         return this.prenom + " " + this.nom + ", " + this.equipe.nom + ", " + this.poste.getAbreviation();
     }
 

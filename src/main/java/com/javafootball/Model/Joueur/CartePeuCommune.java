@@ -18,8 +18,8 @@ public class CartePeuCommune extends Carte {
         this.rareteLabel = "Peu commune";
     }
 
-    public static Carte creerCarte(Joueur joueur, Marche marcheActuel) throws ExceptionRareteDepasse {
-        if (joueur.compteurPeuCommune < maxExemplaire) {
+    public static Carte creerCarte(Joueur joueur, Marche marcheActuel, boolean considererMarge) throws ExceptionRareteDepasse {
+        if (considererMarge || joueur.compteurPeuCommune < maxExemplaire) {
             // verification qu'il reste au moins la carte réservée aux récompenses hebdo
             if (marcheActuel.resteAuMoinsPeuCommune(2)) {
                 Carte nouvelleCarte;
@@ -30,7 +30,7 @@ public class CartePeuCommune extends Carte {
                 throw new ExceptionRareteDepasse("Il ne reste plus qu'une carte peu commune créable sur tout le set de joueur, elle est réservée a la récompense hebdo du 2ème mailleur joueur.");
             }
         }
-        throw new ExceptionRareteDepasse("Nombre de carte de cette rareté du joueur depassé");
+        throw new ExceptionRareteDepasse("La limite de " + maxExemplaire + " cartes peu communes de ce joueur à été atteinte.");
     }
 
     public static Carte creerCarteAleatoire(Marche marcheActuel) throws ExceptionRareteDepasse {
@@ -39,7 +39,7 @@ public class CartePeuCommune extends Carte {
         while(true) {
             Joueur j = Marche.getJoueurAleatoire(listeJoueur);
             try {
-                return creerCarte(j, marcheActuel);
+                return creerCarte(j, marcheActuel, false);
             } catch (ExceptionRareteDepasse e) {
                 e.printStackTrace();
                 listeJoueur.remove(j);
@@ -52,6 +52,6 @@ public class CartePeuCommune extends Carte {
 
     @Override
     public String toString() {
-        return super.toString() + ";P";
+        return super.toString() + ", Peu commune";
     }
 }

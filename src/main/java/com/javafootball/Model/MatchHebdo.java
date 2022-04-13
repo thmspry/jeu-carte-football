@@ -40,42 +40,38 @@ public class MatchHebdo {
         return indicateurSemaine;
     }
 
-    private double scoreUtilisateur(UtilisateurJoueur uti) {
+    private double scoreUtilisateur(UtilisateurJoueur uti) throws FileNotFoundException {
         double scoreTotal = 0;
 
         final String cheminVersFichier = "src/main/resources/com/javafootball/data/ext/2022_" + this.indicateurSemaine() + "_Nantes.csv";
         File dataFile = new File(cheminVersFichier);
-        try {
-            EquipeJeu sesCartes = uti.sonEquipe;
+        EquipeJeu sesCartes = uti.sonEquipe;
 
-            boolean joueurTrouve = false;
-            Scanner myReader = new Scanner(dataFile);
+        boolean joueurTrouve = false;
+        Scanner myReader = new Scanner(dataFile);
 
-            while (myReader.hasNextLine() && !joueurTrouve) {
-                String row = myReader.nextLine();
-                String[] splittedRow = row.split(",");
-                String nom = splittedRow[1];
+        while (myReader.hasNextLine() && !joueurTrouve) {
+            String row = myReader.nextLine();
+            String[] splittedRow = row.split(",");
+            String nom = splittedRow[1];
 
-                for (Carte c : sesCartes.compositionCarte) {
-                    String nomPrenom = c.joueur.denomination();
+            for (Carte c : sesCartes.compositionCarte) {
+                String nomPrenom = c.joueur.denomination();
 
-                    if (nom.equals(nomPrenom)) {
-                        String scoreString = splittedRow[3];
-                        double scoreCarte = Double.parseDouble(scoreString) * c.coefficient;
-                        scoreTotal += scoreCarte;
-                    }
+                if (nom.equals(nomPrenom)) {
+                    String scoreString = splittedRow[2];
+                    double scoreCarte = Double.parseDouble(scoreString) * c.coefficient;
+                    scoreTotal += scoreCarte;
                 }
-
             }
 
-            myReader.close();
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
         }
+
+        myReader.close();
         return scoreTotal;
     }
 
-    public void calculScoreAllJoueur() {
+    public void calculScoreAllJoueur() throws FileNotFoundException {
         for (UtilisateurJoueur utilisateurJoueur : joueurInscrit) {
             utilisateurJoueur.scoreDeLaSemaine = scoreUtilisateur(utilisateurJoueur);
         }
@@ -83,33 +79,33 @@ public class MatchHebdo {
 
     public void chercher3Meilleurs() {
         joueurInscrit.sort((o1, o2) -> {
-            double diff = o1.scoreDeLaSemaine - o2.scoreDeLaSemaine;
+            double diff = o2.scoreDeLaSemaine - o1.scoreDeLaSemaine;
             return (int) diff;
         });
-        for(int i = 0; i < joueurInscrit.size() && i < 3; i++) {
+        for (int i = 0; i < joueurInscrit.size() && i < 3; i++) {
             lesGagnants.add(joueurInscrit.get(i));
         }
     }
 
 
     public void recompenseGagnant(Marche marche) throws ExceptionRareteDepasse {
-        if(!lesGagnants.isEmpty()) {
+        if (!lesGagnants.isEmpty()) {
             Carte cartePour1er = CarteRare.creerCarteAleatoire(marche);
             lesGagnants.get(0).recevoirCarte(cartePour1er);
         }
 
-        if(lesGagnants.size() > 1) {
+        if (lesGagnants.size() > 1) {
             Carte cartePour2eme = CartePeuCommune.creerCarteAleatoire(marche);
             lesGagnants.get(1).recevoirCarte(cartePour2eme);
         }
 
-        if(lesGagnants.size() > 2) {
+        if (lesGagnants.size() > 2) {
             Carte cartepour3eme = CarteCommune.creerCarteAleatoire(marche);
             lesGagnants.get(2).recevoirCarte(cartepour3eme);
         }
     }
 
-    public void passerSemaineSuivante(Marche marche) throws ExceptionRareteDepasse {
+    public void passerSemaineSuivante(Marche marche) throws ExceptionRareteDepasse, FileNotFoundException {
         calculScoreAllJoueur();
         chercher3Meilleurs();
         recompenseGagnant(marche);

@@ -20,6 +20,6 @@ public class Vente {
 
     @Override
     public String toString() {
-        return carteAVendre.toStringVerbeux() + ";" + getPseudoVendeur() + ";" + prix;
+        return carteAVendre.toString() + ";" + getPseudoVendeur() + ";" + prix;
     }
 }

@@ -2,10 +2,10 @@ package com.javafootball;
 
 import com.javafootball.Model.Exception.ExceptionRareteDepasse;
 import com.javafootball.Model.Joueur.*;
-import com.javafootball.Model.Marche;
 import com.javafootball.Model.MatchHebdo;
 import com.javafootball.Model.SystemeDonnee;
 import com.javafootball.Model.Utilisateur.Admin;
+import com.javafootball.Model.Utils;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +21,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -37,9 +38,13 @@ public class AdminController implements Initializable {
     @FXML
     RadioButton radioRare;
     @FXML
-    Label errorCreationCarte;
+    Label resultCreationCarte;
     @FXML
     Spinner<Integer> prixVente;
+    @FXML
+    Spinner<Integer> nombreCarte;
+    @FXML
+    Button miseEnVenteBtn;
 
     @FXML
     TableView<Joueur> tableauCarte;
@@ -60,7 +65,7 @@ public class AdminController implements Initializable {
     ImageView imageRare;
 
     @FXML
-    Label errorSemaine;
+    Label messageSemaine;
 
     private SystemeDonnee sd;
     private Admin adminCourant;
@@ -74,7 +79,6 @@ public class AdminController implements Initializable {
         this.sd = sd;
         this.tableauCarte.getItems().addAll(this.sd.marche.joueursExistant);
     }
-
 
 
     @FXML
@@ -111,47 +115,61 @@ public class AdminController implements Initializable {
     public void passerSemaineSuivante(ActionEvent event) {
         try {
             this.sd.matchHebdo.passerSemaineSuivante(this.sd.marche);
+            messageSemaine.setText("Recompenses hebdo envoyée");
+            this.sd.matchHebdo = new MatchHebdo();
         } catch (ExceptionRareteDepasse e) {
-            errorSemaine.setText(e.getMessage());
+            Utils.ouvrirFenetreErreur("Cartes épuisées", e.getMessage());
+        } catch (FileNotFoundException e) {
+            Utils.ouvrirFenetreErreur("Ouverture fichier", "Le fichier de résultat hebodmadaire n'a pas pu être lu :" + e.getMessage());
         }
+    }
 
-        this.sd.matchHebdo = new MatchHebdo();
+    private String conjugueNom(int nombre) {
+        if (nombre > 1) {
+            return "s";
+        } else {
+            return "";
+        }
     }
 
     @FXML
     void mettreEnVente(ActionEvent event) {
         Joueur joueurSelectionne = tableauCarte.getSelectionModel().getSelectedItem();
-        Carte nouvelleCarte = null;
+        Carte nouvelleCarte;
+        int nombreCarteVoulue = nombreCarte.getValue();
+        int nombreCarteCreee = 0;
 
-        // TODO : Factoriser les if d'une certaine manière
-        if (radioCommune.isSelected()) {
-            try {
-                nouvelleCarte = CarteCommune.creerCarte(joueurSelectionne, this.sd.marche);
-                errorCreationCarte.setText("Carte créée");
-            } catch (ExceptionRareteDepasse e) {
-                errorCreationCarte.setText("La limite de " + CarteCommune.maxExemplaire + " cartes de ce joueur à été atteinte.");
+        resultCreationCarte.setText("");
+
+        try {
+
+            // TODO : Factoriser d'une certaine manière
+
+            if (radioCommune.isSelected()) {
+                for (nombreCarteCreee = 0; nombreCarteCreee < nombreCarteVoulue; nombreCarteCreee++) {
+                    nouvelleCarte = CarteCommune.creerCarte(joueurSelectionne, this.sd.marche, true);
+                    this.sd.marche.ajouterCarteAVendre(nouvelleCarte, this.adminCourant, prixVente.getValue());
+                }
             }
-        }
-        if (radioPeuCommune.isSelected()) {
-            try {
-                nouvelleCarte = CartePeuCommune.creerCarte(joueurSelectionne, this.sd.marche);
-                errorCreationCarte.setText("Carte créée");
-            } catch (ExceptionRareteDepasse e) {
-                errorCreationCarte.setText("La limite de " + CartePeuCommune.maxExemplaire + " cartes de ce joueur à été atteinte.");
+            if (radioPeuCommune.isSelected()) {
+                for (nombreCarteCreee = 0; nombreCarteCreee < nombreCarteVoulue; nombreCarteCreee++) {
+                    nouvelleCarte = CartePeuCommune.creerCarte(joueurSelectionne, this.sd.marche, true);
+                    this.sd.marche.ajouterCarteAVendre(nouvelleCarte, this.adminCourant, prixVente.getValue());
+                }
             }
-        }
-        if (radioRare.isSelected()) {
-            try {
-                nouvelleCarte = CarteRare.creerCarte(joueurSelectionne, this.sd.marche);
-                errorCreationCarte.setText("Carte créée");
-            } catch (ExceptionRareteDepasse e) {
-                errorCreationCarte.setText("La limite de " + CarteRare.maxExemplaire + " cartes de ce joueur à été atteinte.");
+            if (radioRare.isSelected()) {
+                for (nombreCarteCreee = 0; nombreCarteCreee < nombreCarteVoulue; nombreCarteCreee++) {
+                    nouvelleCarte = CarteRare.creerCarte(joueurSelectionne, this.sd.marche, true);
+                    this.sd.marche.ajouterCarteAVendre(nouvelleCarte, this.adminCourant, prixVente.getValue());
+                }
             }
+
+        } catch (ExceptionRareteDepasse e) {
+            Utils.ouvrirFenetreErreur("Creation de carte", e.getMessage());
         }
 
-        if (nouvelleCarte != null) {
-            this.sd.marche.ajouterCarteAVendre(nouvelleCarte, this.adminCourant, prixVente.getValue());
-        }
+        resultCreationCarte.setText(nombreCarteCreee + " carte" + conjugueNom(nombreCarteCreee) + " de " +
+                joueurSelectionne.denomination() + " ont été créée" + conjugueNom(nombreCarteCreee) + ".");
     }
 
 
@@ -161,6 +179,17 @@ public class AdminController implements Initializable {
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 2000000);
         valueFactory.setValue(0);
         prixVente.setValueFactory(valueFactory);
+
+        //  Initialisation du spinner (champs pour le nombre de cartes)
+        SpinnerValueFactory<Integer> valueFactory2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CarteCommune.maxExemplaire);
+        valueFactory2.setValue(1);
+        nombreCarte.setValueFactory(valueFactory2);
+        nombreCarte.getEditor().textProperty().addListener((observableValue, s, nouvelleValeur) ->
+                miseEnVenteBtn.setText("Mettre en vente " + nouvelleValeur + " carte" + conjugueNom(Integer.parseInt(nouvelleValeur))));
+
+        miseEnVenteBtn.setText("Mettre en vente " + nombreCarte.getValue().toString() + " carte");
+
+        tableauCarte.getSelectionModel().select(0);
 
         //  Initialisation des colonnes du tableau des joueurs
         prenom.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().prenom));
