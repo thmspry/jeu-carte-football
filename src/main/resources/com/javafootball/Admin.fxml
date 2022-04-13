@@ -93,17 +93,16 @@
                </ImageView>
             </FlowPane>
             <FlowPane hgap="20.0" prefHeight="8.0" prefWidth="220.0">
-               <Label text="Nombre :"/>
-               <Spinner fx:id="nombreCarte" editable="true"/>
+               <Label text="Nombre :" />
+               <Spinner fx:id="nombreCarte" editable="true" />
             </FlowPane>
             <FlowPane alignment="CENTER" hgap="150.0" prefHeight="25.0" prefWidth="491.0">
-               <Button fx:id="miseEnVenteBtn" mnemonicParsing="false" onAction="#mettreEnVente"
-                       text="Mettre en vente X carte(s)">
+               <Button fx:id="miseEnVenteBtn" mnemonicParsing="false" onAction="#mettreEnVente" text="Mettre en vente X carte(s)">
                   <cursor>
-                     <Cursor fx:constant="HAND"/>
+                     <Cursor fx:constant="HAND" />
                   </cursor>
                </Button>
-               <Label fx:id="resultCreationCarte"/>
+               <Label fx:id="resultCreationCarte" />
             </FlowPane>
          </FlowPane>
       </FlowPane>
