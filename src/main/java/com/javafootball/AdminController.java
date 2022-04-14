@@ -1,5 +1,6 @@
 package com.javafootball;
 
+import com.javafootball.Model.Exception.ExceptionFichier;
 import com.javafootball.Model.Exception.ExceptionRareteDepasse;
 import com.javafootball.Model.Joueur.*;
 import com.javafootball.Model.MatchHebdo;
@@ -29,8 +30,6 @@ import java.util.ResourceBundle;
 public class AdminController implements Initializable {
 
 
-    @FXML
-    Label nomFichier;
     @FXML
     RadioButton radioCommune;
     @FXML
@@ -67,6 +66,11 @@ public class AdminController implements Initializable {
     @FXML
     Label messageSemaine;
 
+    @FXML
+    Label nomFichierMatch;
+    @FXML
+    Label nomFichierResultat;
+
     private SystemeDonnee sd;
     private Admin adminCourant;
 
@@ -78,6 +82,11 @@ public class AdminController implements Initializable {
     public void setSystemeDonnee(SystemeDonnee sd) {
         this.sd = sd;
         this.tableauCarte.getItems().addAll(this.sd.marche.joueursExistant);
+        int nombreFichierMatch = this.sd.matchHebdoSemaineProchaine.nombreFichierMatch();
+        nomFichierMatch.setText(nombreFichierMatch + " fichier" + conjugueNom(nombreFichierMatch) + " ajouté" + conjugueNom(nombreFichierMatch) + ".");
+
+        int nombreFichierResultat = this.sd.matchHebdoSemaineProchaine.nombreFichierResultat();
+        nomFichierResultat.setText(nombreFichierResultat + " fichier" + conjugueNom(nombreFichierResultat) + " ajouté" + conjugueNom(nombreFichierResultat) + ".");
     }
 
 
@@ -99,14 +108,24 @@ public class AdminController implements Initializable {
     }
 
     @FXML
-    void importerFichier(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        File file = fileChooser.showOpenDialog(stage);
-        if (file == null) {
-            nomFichier.setText("Aucun fichier sélectionné.");
+    public void importerFichierMatch(ActionEvent event) {
+        File fileMatch = Utils.ouvrirFenetreFichier(event, "Ajouter un fichier de match");
+        if (fileMatch == null) {
+            nomFichierMatch.setText("Aucun fichier sélectionné.");
         } else {
-            nomFichier.setText(file.getName() + " sélectionné.");
+            nomFichierMatch.setText(fileMatch.getName() + " sélectionné.");
+            this.sd.matchHebdoSemaineProchaine.ajouterFichierMatch(fileMatch);
+
+        }
+    }
+
+    public void importerFichierResultat(ActionEvent event) {
+        File fileResultat = Utils.ouvrirFenetreFichier(event, "Ajouter un fichier de résultats");
+        if (fileResultat == null) {
+            nomFichierResultat.setText("Aucun fichier sélectionné.");
+        } else {
+            nomFichierResultat.setText(fileResultat.getName() + " sélectionné.");
+            this.sd.matchHebdoSemaineProchaine.ajouterFichierResultat(fileResultat);
         }
     }
 
@@ -114,13 +133,14 @@ public class AdminController implements Initializable {
     @FXML
     public void passerSemaineSuivante(ActionEvent event) {
         try {
-            this.sd.matchHebdo.passerSemaineSuivante(this.sd.marche);
-            messageSemaine.setText("Recompenses hebdo envoyée");
-            this.sd.matchHebdo = new MatchHebdo();
+            this.sd.passerSemaineSuivante();
+            messageSemaine.setText("Recompenses hebdo envoyée. Nous sommes maintenant en semaine n°" + (this.sd.matchHebdoSemaineProchaine.getNumSemaine()-1) + ".");
         } catch (ExceptionRareteDepasse e) {
             Utils.ouvrirFenetreErreur("Cartes épuisées", e.getMessage());
         } catch (FileNotFoundException e) {
-            Utils.ouvrirFenetreErreur("Ouverture fichier", "Le fichier de résultat hebodmadaire n'a pas pu être lu :" + e.getMessage());
+            Utils.ouvrirFenetreErreur("Ouverture fichier", "Le fichier de résultat hebdomadaire n'a pas pu être lu :" + e.getMessage());
+        } catch (ExceptionFichier e) {
+            Utils.ouvrirFenetreErreur("Fichiers semaine prochaine", e.getMessage());
         }
     }
 
@@ -129,6 +149,14 @@ public class AdminController implements Initializable {
             return "s";
         } else {
             return "";
+        }
+    }
+
+    private String conjugueEtre(int nombre) {
+        if(nombre > 1) {
+            return "ont";
+        } else {
+            return "a";
         }
     }
 
@@ -170,7 +198,7 @@ public class AdminController implements Initializable {
             }
 
             resultCreationCarte.setText(nombreCarteCreee + " carte" + conjugueNom(nombreCarteCreee) + " de " +
-                    joueurSelectionne.denomination() + " ont été créée" + conjugueNom(nombreCarteCreee) + ".");
+                    joueurSelectionne.denomination() + " " + conjugueEtre(nombreCarteCreee) + " été créée" + conjugueNom(nombreCarteCreee) + ".");
         } else {
             resultCreationCarte.setText("Veuillez selection un joueur dans le tableau.");
         }
@@ -188,8 +216,7 @@ public class AdminController implements Initializable {
         SpinnerValueFactory<Integer> valueFactory2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, CarteCommune.maxExemplaire);
         valueFactory2.setValue(1);
         nombreCarte.setValueFactory(valueFactory2);
-        nombreCarte.getEditor().textProperty().addListener((observableValue, s, nouvelleValeur) ->
-                miseEnVenteBtn.setText("Mettre en vente " + nouvelleValeur + " carte" + conjugueNom(Integer.parseInt(nouvelleValeur))));
+        nombreCarte.getEditor().textProperty().addListener((observableValue, s, nouvelleValeur) -> miseEnVenteBtn.setText("Mettre en vente " + nouvelleValeur + " carte" + conjugueNom(Integer.parseInt(nouvelleValeur))));
 
         miseEnVenteBtn.setText("Mettre en vente " + nombreCarte.getValue().toString() + " carte");
 

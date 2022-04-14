@@ -108,16 +108,27 @@
       </FlowPane>
    </AnchorPane>
    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-      <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="150.0" prefHeight="164.0" prefWidth="1080.0" rowValignment="TOP" vgap="60.0">
-         <FlowPane hgap="80.0" prefHeight="43.0" prefWidth="465.0">
-            <Button mnemonicParsing="false" onAction="#importerFichier" text="Importer les résultats de le semaine">
+      <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="150.0" orientation="VERTICAL" prefHeight="164.0" prefWidth="1080.0" rowValignment="TOP" vgap="60.0">
+         <FlowPane hgap="80.0" prefHeight="43.0" prefWidth="521.0">
+            <Button mnemonicParsing="false" onAction="#importerFichierMatch" text="Ajouter match de la semaine">
                <font>
                   <Font size="14.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Label fx:id="nomFichier" text="Aucun fichier sélectionné." />
+            <Label fx:id="nomFichierMatch" text="Aucun fichier sélectionné." />
+         </FlowPane>
+         <FlowPane hgap="80.0" prefHeight="43.0" prefWidth="521.0">
+            <Button mnemonicParsing="false" onAction="#importerFichierResultat" text="Ajouter résultat de la semaine">
+               <font>
+                  <Font size="14.0"/>
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND"/>
+               </cursor>
+            </Button>
+            <Label fx:id="nomFichierResultat" text="Aucun fichier sélectionné."/>
          </FlowPane>
          <Label fx:id="messageSemaine" text="Label" />
          <Button mnemonicParsing="false" onAction="#passerSemaineSuivante" prefHeight="57.0" prefWidth="196.0" text="Passer à la semaine suivante">

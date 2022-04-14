@@ -133,6 +133,11 @@ public class JeuController implements Initializable {
     @FXML
     Label succes;
 
+    @FXML
+    Label matchsSemaineDerniere;
+    @FXML
+    Label matchsSemaineProchaine;
+
 
     Vente venteSelectionnee;
     Carte carteSelectionne;
@@ -153,6 +158,7 @@ public class JeuController implements Initializable {
     void setSystemeDonnee(SystemeDonnee sd) {
         this.sd = sd;
         majOngletBoutique();
+        majOngletMatch();
     }
 
     // Méthodes permettant de mettre à jour la vue après modification des données du système
@@ -203,6 +209,28 @@ public class JeuController implements Initializable {
     private void majOngletBoutique() {
         tableauBoutique.getItems().clear();
         tableauBoutique.getItems().addAll(this.sd.marche.carteAVendre);
+    }
+
+    private void majOngletMatch() {
+        matchsSemaineDerniere.setText("");
+        matchsSemaineProchaine.setText("");
+        try {
+            List<String> matchsSemaineDerniereListe = this.sd.matchHebdoSemaineDerniere.matchSemaine();
+            for(String match : matchsSemaineDerniereListe) {
+                matchsSemaineDerniere.setText(matchsSemaineDerniere.getText() + "\n" + match);
+            }
+        } catch (FileNotFoundException e) {
+            matchsSemaineDerniere.setText("Aucun match recensé");
+        }
+
+        try {
+            List<String> matchsSemaineProchaineListe = this.sd.matchHebdoSemaineProchaine.matchSemaine();
+            for(String match : matchsSemaineProchaineListe) {
+                matchsSemaineProchaine.setText(matchsSemaineProchaine.getText() + "\n" + match);
+            }
+        } catch (FileNotFoundException e) {
+            matchsSemaineProchaine.setText("Aucun match recensé");
+        }
     }
 
 
@@ -299,7 +327,7 @@ public class JeuController implements Initializable {
         try {
             EquipeJeu.equipeValide(propositionEquipe);
             this.utilisateurCourant.equipe.setEquipe(propositionEquipe);
-            this.sd.matchHebdo.ajoutJoueur(this.utilisateurCourant);
+            this.sd.matchHebdoSemaineProchaine.ajoutJoueur(this.utilisateurCourant);
             succes.setText("L'équipe à bien été enregistrée !");
 
         } catch (ExceptionEquipeNonValide e) {

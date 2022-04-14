@@ -1,5 +1,7 @@
 package com.javafootball.Model;
 
+import com.javafootball.Model.Exception.ExceptionFichier;
+import com.javafootball.Model.Exception.ExceptionRareteDepasse;
 import com.javafootball.Model.Utilisateur.Admin;
 import com.javafootball.Model.Utilisateur.Utilisateur;
 import com.javafootball.Model.Utilisateur.UtilisateurJoueur;
@@ -15,12 +17,14 @@ import java.util.Scanner;
 
 public class SystemeDonnee {
     public Marche marche;
-    public MatchHebdo matchHebdo;
+    public MatchHebdo matchHebdoSemaineDerniere;
+    public MatchHebdo matchHebdoSemaineProchaine;
     public HashMap<String, Utilisateur> utilisateurs;
 
     public SystemeDonnee() {
         this.marche = new Marche();
-        this.matchHebdo = new MatchHebdo();
+        this.matchHebdoSemaineDerniere = new MatchHebdo();
+        this.matchHebdoSemaineProchaine = new MatchHebdo();
         this.utilisateurs = new HashMap<>();
     }
 
@@ -158,5 +162,11 @@ public class SystemeDonnee {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void passerSemaineSuivante() throws ExceptionRareteDepasse, FileNotFoundException, ExceptionFichier {
+        this.matchHebdoSemaineProchaine.passerSemaineSuivante(this.marche);
+        this.matchHebdoSemaineDerniere = this.matchHebdoSemaineProchaine;
+        this.matchHebdoSemaineProchaine = new MatchHebdo();
     }
 }

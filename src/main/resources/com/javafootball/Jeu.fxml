@@ -43,7 +43,7 @@
          </FlowPane>
       </FlowPane>
    </FlowPane>
-   <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" tabMinWidth="250.0">
+   <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="573.0" prefWidth="1080.0" tabClosingPolicy="UNAVAILABLE" tabMinWidth="250.0">
       <Tab text="Mes cartes">
          <AnchorPane>
             <FlowPane alignment="TOP_CENTER" hgap="150.0" orientation="VERTICAL" prefHeight="530.0" prefWidth="1067.0">
@@ -206,7 +206,38 @@
          </AnchorPane>
       </Tab>
       <Tab text="Matchs">
-         <AnchorPane />
+         <AnchorPane>
+            <FlowPane layoutX="3.0" layoutY="4.0" prefHeight="544.0" prefWidth="1080.0">
+               <FlowPane alignment="TOP_CENTER" minHeight="540.0" minWidth="351.0" orientation="VERTICAL"
+                         prefHeight="540.0" prefWidth="351.0" vgap="30.0">
+                  <Label alignment="CENTER" prefHeight="35.0" prefWidth="360.0" text="Semaine dernière">
+                     <font>
+                        <Font size="24.0"/>
+                     </font>
+                  </Label>
+                  <Label fx:id="matchsSemaineDerniere" alignment="TOP_CENTER" minWidth="349.0" prefHeight="472.0"
+                         prefWidth="349.0" text="Aucun match recensé">
+                     <font>
+                        <Font size="18.0"/>
+                     </font>
+                  </Label>
+               </FlowPane>
+               <FlowPane alignment="TOP_CENTER" minHeight="540.0" minWidth="351.0" orientation="VERTICAL"
+                         prefHeight="540.0" prefWidth="351.0" vgap="30.0">
+                  <Label alignment="CENTER" prefHeight="35.0" prefWidth="360.0" text="Semaine prochaine">
+                     <font>
+                        <Font size="24.0"/>
+                     </font>
+                  </Label>
+                  <Label fx:id="matchsSemaineProchaine" alignment="TOP_CENTER" minWidth="349.0" prefHeight="472.0"
+                         prefWidth="349.0" text="Aucun match recensé">
+                     <font>
+                        <Font size="18.0"/>
+                     </font>
+                  </Label>
+               </FlowPane>
+            </FlowPane>
+         </AnchorPane>
       </Tab>
    </TabPane>
 </FlowPane>
