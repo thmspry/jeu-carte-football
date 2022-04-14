@@ -144,6 +144,31 @@ public class MatchHebdo {
         }
     }
 
+    public String getPremierGagnant() {
+        if(!this.lesGagnants.isEmpty()) {
+            return this.lesGagnants.get(0).pseudo;
+        } else {
+            return null;
+        }
+    }
+
+    public String getDeuxiemeGagnant() {
+        if(this.lesGagnants.size() > 1) {
+            return this.lesGagnants.get(1).pseudo;
+        } else {
+            return null;
+        }
+    }
+
+    public String getTroisiemeGagnant() {
+        if(this.lesGagnants.size() > 2) {
+            return this.lesGagnants.get(2).pseudo;
+        } else {
+            return null;
+        }
+    }
+
+
 
     public boolean comporteFichiersMatch() {
         return !this.fichiersMatchs.isEmpty();

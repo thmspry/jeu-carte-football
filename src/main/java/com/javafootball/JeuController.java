@@ -137,6 +137,12 @@ public class JeuController implements Initializable {
     Label matchsSemaineDerniere;
     @FXML
     Label matchsSemaineProchaine;
+    @FXML
+    Label premier;
+    @FXML
+    Label deuxieme;
+    @FXML
+    Label troisieme;
 
 
     Vente venteSelectionnee;
@@ -216,7 +222,7 @@ public class JeuController implements Initializable {
         matchsSemaineProchaine.setText("");
         try {
             List<String> matchsSemaineDerniereListe = this.sd.matchHebdoSemaineDerniere.matchSemaine();
-            for(String match : matchsSemaineDerniereListe) {
+            for (String match : matchsSemaineDerniereListe) {
                 matchsSemaineDerniere.setText(matchsSemaineDerniere.getText() + "\n" + match);
             }
         } catch (FileNotFoundException e) {
@@ -225,12 +231,22 @@ public class JeuController implements Initializable {
 
         try {
             List<String> matchsSemaineProchaineListe = this.sd.matchHebdoSemaineProchaine.matchSemaine();
-            for(String match : matchsSemaineProchaineListe) {
+            for (String match : matchsSemaineProchaineListe) {
                 matchsSemaineProchaine.setText(matchsSemaineProchaine.getText() + "\n" + match);
             }
         } catch (FileNotFoundException e) {
             matchsSemaineProchaine.setText("Aucun match recensé");
         }
+
+
+        String nomPremier = this.sd.matchHebdoSemaineDerniere.getPremierGagnant();
+        String nomDeuxieme = this.sd.matchHebdoSemaineDerniere.getDeuxiemeGagnant();
+        String nomTroisieme = this.sd.matchHebdoSemaineDerniere.getTroisiemeGagnant();
+        if(nomPremier != null) { premier.setText("1.  " + nomPremier); }
+        if(nomDeuxieme != null) { deuxieme.setText("2.  " + nomDeuxieme); }
+        if(nomTroisieme != null) { troisieme.setText("3.  " + nomTroisieme); }
+
+
     }
 
 
