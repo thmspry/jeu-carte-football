@@ -47,6 +47,8 @@ public class JeuController implements Initializable {
     @FXML
     TableView<Vente> tableauBoutique;
     @FXML
+    Label numeroCarteBoutique;
+    @FXML
     TableColumn<Vente, String> prenomBoutique;
     @FXML
     TableColumn<Vente, String> nomBoutique;
@@ -79,6 +81,8 @@ public class JeuController implements Initializable {
 
     @FXML
     TableView<Carte> tableauPerso;
+    @FXML
+    Label numeroCartePerso;
     @FXML
     TableColumn<Carte, String> prenomPerso;
     @FXML
@@ -390,6 +394,7 @@ public class JeuController implements Initializable {
                 raretePersoLbl.setText(carteCourante.rareteLabel);
                 fondCartePerso.setBackground(bGround);
                 photoJoueurPerso.setImage(new Image(carteCourante.joueur.lienPhoto));
+                numeroCartePerso.setText(String.valueOf(carteCourante.numero));
             }
         });
 
@@ -407,7 +412,8 @@ public class JeuController implements Initializable {
         tableauBoutique.getSelectionModel().selectedItemProperty().addListener((observableValue, ventePrecedente, venteCourante) -> {
             venteSelectionnee = venteCourante;
             if (venteCourante != null) {
-                Joueur joueurCourant = venteCourante.carteAVendre.joueur;
+                Carte carteCourant = venteCourante.carteAVendre;
+                Joueur joueurCourant = carteCourant.joueur;
 
                 Image imageFondCarte = new Image(venteCourante.carteAVendre.lienFondCarte);
                 BackgroundImage bImg = new BackgroundImage(imageFondCarte,
@@ -432,6 +438,7 @@ public class JeuController implements Initializable {
                 fondCarteBoutique.setBackground(bGround);
                 prixVenteBoutique.setText("Prix : " + separeMilliers(venteCourante.prix));
                 photoJoueurBoutique.setImage(new Image(venteCourante.carteAVendre.joueur.lienPhoto));
+                numeroCarteBoutique.setText(String.valueOf(carteCourant.numero));
             }
         });
 

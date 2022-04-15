@@ -26,7 +26,7 @@
          <Image url="@zimdim_football_cropped.png" />
       </ImageView>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" hgap="100.0">
-         <Label fx:id="pseudo" text="pseudo">
+         <Label fx:id="pseudo" maxHeight="35.0" maxWidth="138.0" prefHeight="35.0" prefWidth="138.0" text="pseudo">
             <font>
                <Font size="24.0" />
             </font>
@@ -59,20 +59,28 @@
                </TableView>
                <FlowPane alignment="CENTER" hgap="40.0" prefHeight="200.0" prefWidth="200.0">
                   <FlowPane fx:id="fondCartePerso" alignment="TOP_CENTER" orientation="VERTICAL" prefHeight="500.0" prefWidth="400.0">
-                     <Label fx:id="postePersoLbl" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="228.0" textAlignment="CENTER">
+                     <Label fx:id="numeroCartePerso" alignment="CENTER" prefHeight="27.0" prefWidth="263.0">
+                        <FlowPane.margin>
+                           <Insets top="70.0" />
+                        </FlowPane.margin>
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="postePersoLbl" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="239.0" textAlignment="CENTER">
                         <font>
                            <Font name="System Bold" size="24.0" />
                         </font>
                         <FlowPane.margin>
-                           <Insets top="70.0" />
-                        </FlowPane.margin>
-                     </Label>
-                     <ImageView fx:id="photoJoueurPerso" fitHeight="149.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
-                        <FlowPane.margin>
                            <Insets />
                         </FlowPane.margin>
+                     </Label>
+                     <ImageView fx:id="photoJoueurPerso" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                        <FlowPane.margin>
+                           <Insets left="40.0" />
+                        </FlowPane.margin>
                      </ImageView>
-                     <Label fx:id="nomJoueurPersoLbl" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="231.0" textAlignment="CENTER">
+                     <Label fx:id="nomJoueurPersoLbl" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="294.0" textAlignment="CENTER">
                         <font>
                            <Font name="System Bold" size="24.0" />
                         </font>
@@ -80,7 +88,13 @@
                            <Insets top="10.0" />
                         </FlowPane.margin>
                      </Label>
-                     <Label fx:id="raretePersoLbl" />
+                     <Label fx:id="raretePersoLbl" alignment="CENTER" prefHeight="18.0" prefWidth="262.0" textAlignment="CENTER">
+                        <FlowPane.margin>
+                           <Insets top="10.0" />
+                        </FlowPane.margin>
+                        <font>
+                           <Font size="14.0" />
+                        </font></Label>
                   </FlowPane>
                   <Spinner fx:id="prixVentePerso" editable="true" />
                   <Button mnemonicParsing="false" onAction="#vendre" text="Vendre">
@@ -111,9 +125,17 @@
                </TableView>
                <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
                   <FlowPane fx:id="fondCarteBoutique" alignment="TOP_CENTER" orientation="VERTICAL" prefHeight="500.0" prefWidth="400.0">
-                     <Label fx:id="vendeurBoutiqueLbl">
+                     <Label fx:id="vendeurBoutiqueLbl" alignment="CENTER" prefHeight="27.0" prefWidth="294.0">
                         <font>
                            <Font name="System Italic" size="18.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="numeroCarteBoutique" alignment="CENTER" prefHeight="18.0" prefWidth="285.0">
+                        <FlowPane.margin>
+                           <Insets top="10.0" />
+                        </FlowPane.margin>
+                        <font>
+                           <Font name="System Bold" size="18.0" />
                         </font>
                      </Label>
                      <Label fx:id="posteBoutiqueLbl" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="280.0" textAlignment="CENTER">
@@ -121,12 +143,12 @@
                            <Font name="System Bold" size="24.0" />
                         </font>
                         <FlowPane.margin>
-                           <Insets top="40.0" />
+                           <Insets />
                         </FlowPane.margin>
                      </Label>
                      <ImageView fx:id="photoJoueurBoutique" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                         <FlowPane.margin>
-                           <Insets left="30.0" />
+                           <Insets left="70.0" top="10.0" />
                         </FlowPane.margin>
                      </ImageView>
                      <Label fx:id="nomJoueurBoutiqueLbl" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="257.0" textAlignment="CENTER">
@@ -137,7 +159,13 @@
                            <Insets top="10.0" />
                         </FlowPane.margin>
                      </Label>
-                     <Label fx:id="rareteBoutiqueLbl" />
+                     <Label fx:id="rareteBoutiqueLbl" prefHeight="18.0" prefWidth="304.0">
+                        <font>
+                           <Font name="System Italic" size="14.0" />
+                        </font>
+                        <FlowPane.margin>
+                           <Insets top="10.0" />
+                        </FlowPane.margin></Label>
                   </FlowPane>
                   <FlowPane alignment="CENTER" hgap="100.0" prefHeight="40.0">
                      <FlowPane alignment="CENTER_RIGHT" columnHalignment="RIGHT" prefHeight="24.0" prefWidth="181.0">
@@ -215,46 +243,40 @@
                      </font>
                   </Label>
                   <FlowPane hgap="4.0" prefHeight="336.0" prefWidth="657.0">
-                     <FlowPane alignment="CENTER" prefHeight="191.0" prefWidth="183.0"
-                               style="-fx-border-color: lightgrey;" vgap="30.0">
+                     <FlowPane alignment="CENTER" prefHeight="191.0" prefWidth="183.0" style="-fx-border-color: lightgrey;" vgap="30.0">
                         <Label alignment="CENTER" prefHeight="17.0" prefWidth="344.0" text="Matchs">
                            <font>
-                              <Font size="18.0"/>
+                              <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="matchsSemaineDerniere" alignment="TOP_CENTER" minWidth="336.0" prefHeight="271.0"
-                               prefWidth="336.0" text="Aucun match recensé">
+                        <Label fx:id="matchsSemaineDerniere" alignment="TOP_CENTER" minWidth="336.0" prefHeight="271.0" prefWidth="336.0" text="Aucun match recensé">
                            <font>
-                              <Font size="18.0"/>
+                              <Font size="18.0" />
                            </font>
                         </Label>
                      </FlowPane>
-                     <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="418.0" prefWidth="304.0"
-                               style="-fx-border-color: lightgrey;" vgap="60.0">
+                     <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="418.0" prefWidth="304.0" style="-fx-border-color: lightgrey;" vgap="60.0">
                         <Label alignment="CENTER" prefHeight="27.0" prefWidth="209.0" text="Gagnants">
                            <font>
-                              <Font size="18.0"/>
+                              <Font size="18.0" />
                            </font>
                            <FlowPane.margin>
-                              <Insets bottom="30.0"/>
+                              <Insets bottom="30.0" />
                            </FlowPane.margin>
                         </Label>
-                        <Label fx:id="premier" alignment="CENTER" prefHeight="30.0" prefWidth="213.0"
-                               style="-fx-background-color: rgb(255,223,0); -fx-padding: 5px;" text="Pas de premier">
+                        <Label fx:id="premier" alignment="CENTER" prefHeight="30.0" prefWidth="213.0" style="-fx-background-color: rgb(255,223,0); -fx-padding: 5px;" text="Pas de premier">
                            <font>
-                              <Font size="14.0"/>
+                              <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="deuxieme" alignment="CENTER" prefWidth="213.0"
-                               style="-fx-background-color: rgb(211,211,211); -fx-padding: 5px;" text="Pas de deuxième">
+                        <Label fx:id="deuxieme" alignment="CENTER" prefWidth="213.0" style="-fx-background-color: rgb(211,211,211); -fx-padding: 5px;" text="Pas de deuxième">
                            <font>
-                              <Font size="14.0"/>
+                              <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="troisieme" alignment="CENTER" prefWidth="213.0"
-                               style="-fx-background-color: rgb(184,115,51); -fx-padding: 5px;" text="Pas de troisième">
+                        <Label fx:id="troisieme" alignment="CENTER" prefWidth="213.0" style="-fx-background-color: rgb(184,115,51); -fx-padding: 5px;" text="Pas de troisième">
                            <font>
-                              <Font size="14.0"/>
+                              <Font size="14.0" />
                            </font>
                         </Label>
                      </FlowPane>
