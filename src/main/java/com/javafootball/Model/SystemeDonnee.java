@@ -1,5 +1,6 @@
 package com.javafootball.Model;
 
+import com.javafootball.Model.Exception.ExceptionConnexion;
 import com.javafootball.Model.Exception.ExceptionFichier;
 import com.javafootball.Model.Exception.ExceptionRareteDepasse;
 import com.javafootball.Model.Utilisateur.Admin;
@@ -28,48 +29,40 @@ public class SystemeDonnee {
         this.utilisateurs = new HashMap<>();
     }
 
-    /**
-     * Vérifie le couple de pseudo mot de passe dans la liste de l'utilisateur
-     * @param pseudo : le pseudo de l'utilisateur
-     * @param motDePasse : le mot de passe de l'utilisateur
-     * @return -1 si le pseudo n'apparait pas dans la liste
-     *          0 si le pseudo apparait, mais le mot de passe n'est pas bon
-     *          1 si le couple est bon
-     */
-    public int verifCoupleLogin(String pseudo, String motDePasse) {
-        Utilisateur resUti = utilisateurs.get(pseudo);
-        if(resUti != null) {
-            if(resUti.motDePasse.equals(motDePasse)) {
-                return 1;
-            } else {
-                return 0;
+    public Utilisateur verifCoupleLogin(String pseudo, String motDePasse) throws ExceptionConnexion {
+
+        if (this.utilisateurs.containsKey(pseudo)) {
+            Utilisateur resUti = utilisateurs.get(pseudo);
+            if (resUti.motDePasse.equals(motDePasse)) {
+                return resUti;
             }
+            throw new ExceptionConnexion("Le mot de passe n'est pas le bon");
         }
-        return -1;
+        throw new ExceptionConnexion("Ce compte n'existe pas");
     }
 
     /**
      * Ajoute un utilisateur dans la liste d'utilisateur, ainsi que dans le fichier de sauvegarde
+     *
      * @param nouvelUtilisateur : l'utilisateur à ajouter
-     * @return true si ça s'est bien passé, false sinon
      */
-    public boolean enregistrerUtilisateur(Utilisateur nouvelUtilisateur, String cheminVersFichier) throws IOException {
-        if(this.utilisateurs.get(nouvelUtilisateur.pseudo) == null) {
+    public void enregistrerUtilisateur(Utilisateur nouvelUtilisateur, String cheminVersFichier) throws IOException, ExceptionConnexion {
+        if (!this.utilisateurs.containsKey(nouvelUtilisateur.pseudo)) {
             this.utilisateurs.put(nouvelUtilisateur.pseudo, nouvelUtilisateur);
             FileWriter fw = new FileWriter(cheminVersFichier, true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(nouvelUtilisateur.toString());
             bw.newLine();
             bw.close();
-            return true;
         } else {
-            return false;
+            throw new ExceptionConnexion("Ce pseudo est déjà utilisé");
         }
     }
 
 
     /**
      * Lit le fichier de données des utilisateurs pour renseigner sa HahsMap d'utilisateur
+     *
      * @param cheminVersFichier : le chemin d'accès vers le fichier de données
      */
     public void parseUtilisateur(String cheminVersFichier) {
@@ -78,16 +71,15 @@ public class SystemeDonnee {
             if (dataFile.createNewFile()) {
                 System.out.println("Le fichier " + dataFile.getName() + " à été créé");
             } else {
-                System.out.println("Le fichier de bd sur le utilisateur est déjà présent.");
                 try {
                     Scanner myReader = new Scanner(dataFile);
                     while (myReader.hasNextLine()) {
                         String row = myReader.nextLine();
-                        String [] splittedRow = row.split(";");
+                        String[] splittedRow = row.split(";");
                         Utilisateur nouvelUtilisateur;
                         String pseudo = splittedRow[0];
                         String motDePasse = splittedRow[1];
-                        if(splittedRow.length > 2) {    // Cas utilsateur joueur
+                        if (splittedRow.length > 2) {    // Cas utilsateur joueur
                             nouvelUtilisateur = new UtilisateurJoueur(pseudo, motDePasse, Integer.parseInt(splittedRow[2]));
                         } else {    // Cas d'un admin
                             nouvelUtilisateur = new Admin(pseudo, motDePasse);
@@ -109,9 +101,10 @@ public class SystemeDonnee {
 
     /**
      * Remplace une ligne spécifique d'un fichier par une autre
+     *
      * @param numeroLigne : le numéro de la ligne
-     * @param data : chaine de caractère à écrire à la plce
-     * @param chemin : chemin d'accès vers le fichier
+     * @param data        : chaine de caractère à écrire à la plce
+     * @param chemin      : chemin d'accès vers le fichier
      * @throws IOException : Exeption d'ouverture de fichier
      */
     private void remplacerLigne(int numeroLigne, String data, String chemin) throws IOException {

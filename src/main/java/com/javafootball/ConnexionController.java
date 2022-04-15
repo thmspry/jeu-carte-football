@@ -1,5 +1,6 @@
 package com.javafootball;
 
+import com.javafootball.Model.Exception.ExceptionConnexion;
 import com.javafootball.Model.SystemeDonnee;
 import com.javafootball.Model.Utilisateur.Admin;
 import com.javafootball.Model.Utilisateur.Utilisateur;
@@ -41,55 +42,53 @@ public class ConnexionController implements Initializable {
     @FXML
     protected void inscription() {
         try {
-            if(sd.enregistrerUtilisateur(new UtilisateurJoueur(pseudoField.getText(), motDePasseField.getText()), cheminVersFichierUtilisateurs)) {
-                errorLbl.setText("Inscription réussie");
-            } else {
-                errorLbl.setText("Le pseudo existe déjà, inscription impossible");
-            }
+            sd.enregistrerUtilisateur(new UtilisateurJoueur(pseudoField.getText(), motDePasseField.getText()), cheminVersFichierUtilisateurs);
+            errorLbl.setText("Inscription réussie");
         } catch (IOException e) {
             System.out.println("Un erreur est survenue lors de l'écriture dans le fichier de sauvegarde des utilisateurs.");
             e.printStackTrace();
+        } catch (ExceptionConnexion e) {
+            errorLbl.setText("Le pseudo existe déjà, inscription impossible");
         }
     }
 
     @FXML
     protected void connexion(ActionEvent event) throws IOException {
-        int resultatRecherche = this.sd.verifCoupleLogin(pseudoField.getText(), motDePasseField.getText());
-        switch (resultatRecherche) {
-            case -1 -> errorLbl.setText("Ce compte n'existe pas");
-            case 0 -> errorLbl.setText("Le mot de passe n'est pas le bon");
-            case 1 -> {
-                FXMLLoader fxmlLoader;
-                Utilisateur utilisateurConnexion = sd.utilisateurs.get(pseudoField.getText());
-                String nomVue = utilisateurConnexion.nomVue;
-                fxmlLoader = new FXMLLoader(getClass().getResource(nomVue));
 
-                Parent root = fxmlLoader.load();
+        try {
+            Utilisateur utilisateur = this.sd.verifCoupleLogin(pseudoField.getText(), motDePasseField.getText());
+            FXMLLoader fxmlLoader;
+            String nomVue = utilisateur.nomVue;
+            fxmlLoader = new FXMLLoader(getClass().getResource(nomVue));
 
-                if(utilisateurConnexion instanceof UtilisateurJoueur) {
-                    JeuController jeuController = fxmlLoader.getController();
-                    jeuController.setUtilisateurCourant((UtilisateurJoueur) utilisateurConnexion);
-                    jeuController.setSystemeDonnee(this.sd);
-                } else {
-                    AdminController adminController = fxmlLoader.getController();
-                    adminController.setUtilisateurCourant((Admin) utilisateurConnexion);
-                    adminController.setSystemeDonnee(this.sd);
-                }
+            Parent root = fxmlLoader.load();
 
-                Scene scene = new Scene(root, 1080, 720);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setTitle("Zimdim Football");
-                stage.setScene(scene);
-                stage.show();
+            if (utilisateur instanceof UtilisateurJoueur) {
+                JeuController jeuController = fxmlLoader.getController();
+                jeuController.setUtilisateurCourant((UtilisateurJoueur) utilisateur);
+                jeuController.setSystemeDonnee(this.sd);
+            } else {
+                AdminController adminController = fxmlLoader.getController();
+                adminController.setUtilisateurCourant((Admin) utilisateur);
+                adminController.setSystemeDonnee(this.sd);
             }
+
+            Scene scene = new Scene(root, 1080, 720);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setTitle("Zimdim Football");
+            stage.setScene(scene);
+            stage.show();
+        } catch (ExceptionConnexion e) {
+            errorLbl.setText(e.getMessage());
         }
+
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        if(sd == null) {
+        if (sd == null) {
             sd = new SystemeDonnee();
             sd.parseUtilisateur(cheminVersFichierUtilisateurs);
             sd.marche.parseJoueurEquipe(cheminVersFichierJoueurs);
