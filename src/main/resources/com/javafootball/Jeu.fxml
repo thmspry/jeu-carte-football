@@ -264,17 +264,17 @@
                               <Insets bottom="30.0" />
                            </FlowPane.margin>
                         </Label>
-                        <Label fx:id="premier" alignment="CENTER" prefHeight="30.0" prefWidth="213.0" style="-fx-background-color: rgb(255,223,0); -fx-padding: 5px;" text="Pas de premier">
+                        <Label fx:id="premier" alignment="CENTER" ellipsisString="[...]" prefHeight="30.0" prefWidth="213.0" style="-fx-background-color: rgb(255,223,0); -fx-padding: 5px;" text="Pas de premier" textOverrun="CENTER_ELLIPSIS">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="deuxieme" alignment="CENTER" prefWidth="213.0" style="-fx-background-color: rgb(211,211,211); -fx-padding: 5px;" text="Pas de deuxième">
+                        <Label fx:id="deuxieme" alignment="CENTER" ellipsisString="[...]" prefWidth="213.0" style="-fx-background-color: rgb(211,211,211); -fx-padding: 5px;" text="Pas de deuxième" textOverrun="CENTER_ELLIPSIS">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="troisieme" alignment="CENTER" prefWidth="213.0" style="-fx-background-color: rgb(184,115,51); -fx-padding: 5px;" text="Pas de troisième">
+                        <Label fx:id="troisieme" alignment="CENTER" ellipsisString="[...]" prefWidth="213.0" style="-fx-background-color: rgb(184,115,51); -fx-padding: 5px;" text="Pas de troisième" textOverrun="CENTER_ELLIPSIS">
                            <font>
                               <Font size="14.0" />
                            </font>

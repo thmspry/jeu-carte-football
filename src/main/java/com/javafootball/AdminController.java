@@ -134,7 +134,7 @@ public class AdminController implements Initializable {
     public void passerSemaineSuivante(ActionEvent event) {
         try {
             this.sd.passerSemaineSuivante();
-            messageSemaine.setText("Recompenses hebdo envoyée. Nous sommes maintenant en semaine n°" + (this.sd.matchHebdoSemaineProchaine.getNumSemaine()-1) + ".");
+            messageSemaine.setText("Une semaine est passée. Recompenses hebdo envoyées.");
         } catch (ExceptionRareteDepasse e) {
             Utils.ouvrirFenetreErreur("Cartes épuisées", e.getMessage());
         } catch (FileNotFoundException e) {

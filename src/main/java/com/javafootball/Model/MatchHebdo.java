@@ -144,25 +144,25 @@ public class MatchHebdo {
         }
     }
 
-    public String getPremierGagnant() {
+    public UtilisateurJoueur getPremierGagnant() {
         if(!this.lesGagnants.isEmpty()) {
-            return this.lesGagnants.get(0).pseudo;
+            return this.lesGagnants.get(0);
         } else {
             return null;
         }
     }
 
-    public String getDeuxiemeGagnant() {
+    public UtilisateurJoueur getDeuxiemeGagnant() {
         if(this.lesGagnants.size() > 1) {
-            return this.lesGagnants.get(1).pseudo;
+            return this.lesGagnants.get(1);
         } else {
             return null;
         }
     }
 
-    public String getTroisiemeGagnant() {
+    public UtilisateurJoueur getTroisiemeGagnant() {
         if(this.lesGagnants.size() > 2) {
-            return this.lesGagnants.get(2).pseudo;
+            return this.lesGagnants.get(2);
         } else {
             return null;
         }

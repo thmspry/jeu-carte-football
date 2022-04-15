@@ -243,12 +243,12 @@ public class JeuController implements Initializable {
         }
 
 
-        String nomPremier = this.sd.matchHebdoSemaineDerniere.getPremierGagnant();
-        String nomDeuxieme = this.sd.matchHebdoSemaineDerniere.getDeuxiemeGagnant();
-        String nomTroisieme = this.sd.matchHebdoSemaineDerniere.getTroisiemeGagnant();
-        if(nomPremier != null) { premier.setText("1.  " + nomPremier); }
-        if(nomDeuxieme != null) { deuxieme.setText("2.  " + nomDeuxieme); }
-        if(nomTroisieme != null) { troisieme.setText("3.  " + nomTroisieme); }
+        UtilisateurJoueur utilisateurPremier = this.sd.matchHebdoSemaineDerniere.getPremierGagnant();
+        UtilisateurJoueur utilisateurDeuxieme = this.sd.matchHebdoSemaineDerniere.getDeuxiemeGagnant();
+        UtilisateurJoueur utilisateurTroisieme = this.sd.matchHebdoSemaineDerniere.getTroisiemeGagnant();
+        if(utilisateurPremier != null) { premier.setText("1.  " + utilisateurPremier.pseudo + " : " + utilisateurPremier.scoreDeLaSemaine + " points"); }
+        if(utilisateurDeuxieme != null) { deuxieme.setText("2.  " + utilisateurDeuxieme.pseudo + " : " + utilisateurDeuxieme.scoreDeLaSemaine + " points"); }
+        if(utilisateurTroisieme != null) { troisieme.setText("3.  " + utilisateurTroisieme.pseudo + " : " + utilisateurTroisieme.scoreDeLaSemaine + " points"); }
 
 
     }
