@@ -1,8 +1,5 @@
 package com.javafootball;
 
-import com.javafootball.Model.Equipe;
-import com.javafootball.Model.Joueur.Joueur;
-import com.javafootball.Model.Joueur.JoueurGardien;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -17,7 +14,7 @@ public class Application extends javafx.application.Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("Connexion.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1080, 720);
         stage.setTitle("Zimdim Football");
-        stage.getIcons().add(new Image(Objects.requireNonNull(Application.class.getResourceAsStream("zimdim_coin.png"))));
+        stage.getIcons().add(new Image(Objects.requireNonNull(Application.class.getResourceAsStream("images/zimdim_coin.png"))));
         stage.setScene(scene);
         stage.show();
     }

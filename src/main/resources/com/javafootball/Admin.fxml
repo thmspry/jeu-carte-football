@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.6572939866369709" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.javafootball.AdminController">
+<SplitPane dividerPositions="0.6572939866369709" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafootball.AdminController">
    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
       <FlowPane alignment="CENTER" hgap="30.0" orientation="VERTICAL" prefHeight="455.0" prefWidth="1080.0">
          <Button mnemonicParsing="false" onAction="#seDeconnecter" text="Se deconnecter">
@@ -89,7 +89,7 @@
                <Label text="Prix :" />
                <Spinner fx:id="prixVente" editable="true" />
                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                  <Image url="@zimdim_coin.png" />
+                  <Image url="@images/zimdim_coin.png" />
                </ImageView>
             </FlowPane>
             <FlowPane hgap="20.0" prefHeight="8.0" prefWidth="220.0">
@@ -122,13 +122,13 @@
          <FlowPane hgap="80.0" prefHeight="43.0" prefWidth="521.0">
             <Button mnemonicParsing="false" onAction="#importerFichierResultat" text="Ajouter résultat de la semaine">
                <font>
-                  <Font size="14.0"/>
+                  <Font size="14.0" />
                </font>
                <cursor>
-                  <Cursor fx:constant="HAND"/>
+                  <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label fx:id="nomFichierResultat" text="Aucun fichier sélectionné."/>
+            <Label fx:id="nomFichierResultat" text="Aucun fichier sélectionné." />
          </FlowPane>
          <Label fx:id="messageSemaine" text="Label" />
          <Button mnemonicParsing="false" onAction="#passerSemaineSuivante" prefHeight="57.0" prefWidth="196.0" text="Passer à la semaine suivante">
