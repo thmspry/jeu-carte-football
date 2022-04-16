@@ -80,6 +80,7 @@ public class AdminController implements Initializable {
     public void setSystemeDonnee(SystemeDonnee sd) {
         this.sd = sd;
         this.tableauCarte.getItems().addAll(this.sd.marche.joueursExistant);
+
         int nombreFichierMatch = this.sd.matchHebdoSemaineProchaine.nombreFichierMatch();
         nomFichierMatch.setText(nombreFichierMatch + " fichier" + conjugueNom(nombreFichierMatch) + " ajouté" + conjugueNom(nombreFichierMatch) + ".");
 
@@ -100,7 +101,6 @@ public class AdminController implements Initializable {
 
         Scene scene = new Scene(root, 1080, 720);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle("Zimdim Football");
         stage.setScene(scene);
         stage.show();
     }

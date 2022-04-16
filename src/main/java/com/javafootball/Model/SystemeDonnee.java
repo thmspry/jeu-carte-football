@@ -114,21 +114,6 @@ public class SystemeDonnee {
     }
 
     /**
-     * Remplace une ligne spécifique d'un fichier par une autre
-     *
-     * @param numeroLigne : le numéro de la ligne
-     * @param data        : chaine de caractère à écrire à la plce
-     * @param chemin      : chemin d'accès vers le fichier
-     * @throws IOException : Exeption d'ouverture de fichier
-     */
-    private void remplacerLigne(int numeroLigne, String data, String chemin) throws IOException {
-        Path path = Paths.get(chemin);
-        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-        lines.set(numeroLigne - 1, data);
-        Files.write(path, lines, StandardCharsets.UTF_8);
-    }
-
-    /**
      * Mets à jour les champs de solde d'argent dans le fichier .csv après une transaction validé
      *
      * @param vendeur  : L'utilisateur ayant vendu une carte
@@ -164,8 +149,8 @@ public class SystemeDonnee {
         }
 
         try {
-            remplacerLigne(ligneVendeur, vendeur.toString(), cheminVersFichier);
-            remplacerLigne(ligneAcheteur, acheteur.toString(), cheminVersFichier);
+            Utils.remplacerLigne(ligneVendeur, vendeur.toString(), cheminVersFichier);
+            Utils.remplacerLigne(ligneAcheteur, acheteur.toString(), cheminVersFichier);
         } catch (IOException e) {
             e.printStackTrace();
         }

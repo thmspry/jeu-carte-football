@@ -25,6 +25,7 @@ abstract public class Utilisateur {
         return Objects.equals(pseudo, that.pseudo);
     }
 
+
     /**
      * Méthode permettant de réaliser la transaction d'une offre
      * L'utilisateur courant va acheter la carte vendue par le vendeur passé en paramètre

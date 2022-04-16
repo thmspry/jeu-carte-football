@@ -276,7 +276,6 @@ public class JeuController implements Initializable {
 
         Scene scene = new Scene(root, 1080, 720);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle("Zimdim Football");
         stage.setScene(scene);
         stage.show();
         this.utilisateurCourant = null;
@@ -296,9 +295,6 @@ public class JeuController implements Initializable {
             majOngletBoutique();
             majInfoUtilisateur();
             majOngletEquipe();
-            /*montantArgent.setText(separeMilliers(this.utilisateurCourant.argent));
-            tableauBoutique.getItems().remove(venteSelectionnee);
-            tableauPerso.getItems().add(carteEnJeu);*/
         } catch (ExceptionTransaction e) {
             Utils.ouvrirFenetreErreur("Achat d'une carte", e.getMessage());
         }
@@ -314,9 +310,6 @@ public class JeuController implements Initializable {
         majOngletCarte();
         majOngletBoutique();
         majOngletEquipe();
-        /*
-        tableauPerso.getItems().remove(carteSelectionne);
-        tableauBoutique.getItems().add(nouvelleVente);*/
     }
 
     @FXML

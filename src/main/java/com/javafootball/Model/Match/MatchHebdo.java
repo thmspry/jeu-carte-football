@@ -108,7 +108,7 @@ public class MatchHebdo {
      * Calcul du score de chaque joueur ayant soumis une équipe pour la semaine
      * @throws FileNotFoundException : le fichier de résultat n'a pas été trouvé
      */
-    public void calculScoreAllJoueur() throws FileNotFoundException {
+    private void calculScoreAllJoueur() throws FileNotFoundException {
         for (UtilisateurJoueur utilisateurJoueur : utilisateursInscrits) {
             utilisateurJoueur.scoreDeLaSemaine = scoreUtilisateur(utilisateurJoueur);
         }
@@ -117,7 +117,7 @@ public class MatchHebdo {
     /**
      * Ajoute à la liste des gagnants les trois meilleurs utilisateurs de la semaine suivant leur score
      */
-    public void chercher3Meilleurs() {
+    private void chercher3Meilleurs() {
         utilisateursInscrits.sort((o1, o2) -> {
             double diff = o2.scoreDeLaSemaine - o1.scoreDeLaSemaine;
             return (int) diff;
@@ -135,20 +135,20 @@ public class MatchHebdo {
      * @param marche : la marché actuel
      * @throws ExceptionRareteDepasse : motif d'exception de rareté
      */
-    public void recompenseGagnant(Marche marche) throws ExceptionRareteDepasse {
-        if (!lesGagnants.isEmpty()) {
+    private void recompenseGagnant(Marche marche) throws ExceptionRareteDepasse {
+        if (getPremierGagnant() != null) {
             Carte cartePour1er = CarteRare.creerCarteAleatoire(marche);
-            lesGagnants.get(0).recevoirCarte(cartePour1er);
+            getPremierGagnant().recevoirCarte(cartePour1er);
         }
 
-        if (lesGagnants.size() > 1) {
+        if (getDeuxiemeGagnant() != null) {
             Carte cartePour2eme = CartePeuCommune.creerCarteAleatoire(marche);
-            lesGagnants.get(1).recevoirCarte(cartePour2eme);
+            getDeuxiemeGagnant().recevoirCarte(cartePour2eme);
         }
 
-        if (lesGagnants.size() > 2) {
+        if (getTroisiemeGagnant() != null) {
             Carte cartepour3eme = CarteCommune.creerCarteAleatoire(marche);
-            lesGagnants.get(2).recevoirCarte(cartepour3eme);
+            getTroisiemeGagnant().recevoirCarte(cartepour3eme);
         }
     }
 
@@ -187,7 +187,7 @@ public class MatchHebdo {
     }
 
     public UtilisateurJoueur getDeuxiemeGagnant() {
-        if(this.lesGagnants.size() > 1) {
+        if(this.lesGagnants.size() >= 2) {
             return this.lesGagnants.get(1);
         } else {
             return null;
@@ -195,7 +195,7 @@ public class MatchHebdo {
     }
 
     public UtilisateurJoueur getTroisiemeGagnant() {
-        if(this.lesGagnants.size() > 2) {
+        if(this.lesGagnants.size() >= 3) {
             return this.lesGagnants.get(2);
         } else {
             return null;

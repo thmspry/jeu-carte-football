@@ -75,7 +75,6 @@ public class ConnexionController implements Initializable {
 
             Scene scene = new Scene(root, 1080, 720);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setTitle("Zimdim Football");
             stage.setScene(scene);
             stage.show();
         } catch (ExceptionConnexion e) {
