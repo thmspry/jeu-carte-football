@@ -1,8 +1,9 @@
-package com.javafootball.Model;
+package com.javafootball.Model.Match;
 
 import com.javafootball.Model.Exception.ExceptionFichier;
 import com.javafootball.Model.Exception.ExceptionRareteDepasse;
 import com.javafootball.Model.Joueur.*;
+import com.javafootball.Model.Marche.Marche;
 import com.javafootball.Model.Utilisateur.UtilisateurJoueur;
 
 import java.io.File;

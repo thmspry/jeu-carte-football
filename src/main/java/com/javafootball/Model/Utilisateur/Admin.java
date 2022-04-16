@@ -1,7 +1,7 @@
 package com.javafootball.Model.Utilisateur;
 
 import com.javafootball.Model.Joueur.Carte;
-import com.javafootball.Model.Vente;
+import com.javafootball.Model.Marche.Vente;
 
 public class Admin extends Utilisateur{
 

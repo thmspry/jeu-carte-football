@@ -3,6 +3,8 @@ package com.javafootball.Model;
 import com.javafootball.Model.Exception.ExceptionConnexion;
 import com.javafootball.Model.Exception.ExceptionFichier;
 import com.javafootball.Model.Exception.ExceptionRareteDepasse;
+import com.javafootball.Model.Marche.Marche;
+import com.javafootball.Model.Match.MatchHebdo;
 import com.javafootball.Model.Utilisateur.Admin;
 import com.javafootball.Model.Utilisateur.Utilisateur;
 import com.javafootball.Model.Utilisateur.UtilisateurJoueur;

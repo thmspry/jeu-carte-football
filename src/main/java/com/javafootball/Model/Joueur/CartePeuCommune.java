@@ -1,7 +1,7 @@
 package com.javafootball.Model.Joueur;
 
 import com.javafootball.Model.Exception.ExceptionRareteDepasse;
-import com.javafootball.Model.Marche;
+import com.javafootball.Model.Marche.Marche;
 
 import java.util.ArrayList;
 import java.util.List;

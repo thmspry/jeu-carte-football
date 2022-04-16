@@ -3,7 +3,6 @@ package com.javafootball;
 import com.javafootball.Model.Exception.ExceptionFichier;
 import com.javafootball.Model.Exception.ExceptionRareteDepasse;
 import com.javafootball.Model.Joueur.*;
-import com.javafootball.Model.MatchHebdo;
 import com.javafootball.Model.SystemeDonnee;
 import com.javafootball.Model.Utilisateur.Admin;
 import com.javafootball.Model.Utils;
@@ -18,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;

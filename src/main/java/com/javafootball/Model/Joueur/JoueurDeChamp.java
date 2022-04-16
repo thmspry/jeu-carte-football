@@ -1,6 +1,5 @@
 package com.javafootball.Model.Joueur;
 
-import com.javafootball.Model.Equipe;
 import com.javafootball.Model.Exception.ExceptionPoste;
 
 public class JoueurDeChamp extends Joueur {

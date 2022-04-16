@@ -3,7 +3,7 @@ package com.javafootball.Model.Utilisateur;
 
 import com.javafootball.Model.Exception.ExceptionTransaction;
 import com.javafootball.Model.Joueur.Carte;
-import com.javafootball.Model.Vente;
+import com.javafootball.Model.Marche.Vente;
 
 import java.util.Objects;
 

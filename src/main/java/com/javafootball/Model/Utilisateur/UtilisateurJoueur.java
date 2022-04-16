@@ -1,8 +1,8 @@
 package com.javafootball.Model.Utilisateur;
 
-import com.javafootball.Model.EquipeJeu;
+import com.javafootball.Model.Match.EquipeJeu;
 import com.javafootball.Model.Joueur.Carte;
-import com.javafootball.Model.Vente;
+import com.javafootball.Model.Marche.Vente;
 
 import java.util.ArrayList;
 import java.util.List;

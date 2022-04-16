@@ -1,6 +1,4 @@
-package com.javafootball.Model;
-
-import com.javafootball.Model.Joueur.Joueur;
+package com.javafootball.Model.Joueur;
 
 import java.util.ArrayList;
 import java.util.List;

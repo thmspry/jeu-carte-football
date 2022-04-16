@@ -1,7 +1,5 @@
 package com.javafootball.Model.Joueur;
 
-import com.javafootball.Model.Equipe;
-
 import java.util.Objects;
 
 abstract public class Joueur {

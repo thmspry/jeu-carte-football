@@ -1,4 +1,4 @@
-package com.javafootball.Model;
+package com.javafootball.Model.Marche;
 
 import com.javafootball.Model.Joueur.Carte;
 import com.javafootball.Model.Utilisateur.Utilisateur;

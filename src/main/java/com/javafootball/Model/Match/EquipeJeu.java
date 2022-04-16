@@ -1,4 +1,4 @@
-package com.javafootball.Model;
+package com.javafootball.Model.Match;
 
 import com.javafootball.Model.Exception.*;
 import com.javafootball.Model.Joueur.Carte;
