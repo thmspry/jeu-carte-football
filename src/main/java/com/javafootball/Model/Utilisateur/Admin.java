@@ -1,7 +1,7 @@
 package com.javafootball.Model.Utilisateur;
 
 import com.javafootball.Model.Joueur.Carte;
-import com.javafootball.Model.Marche.Vente;
+import com.javafootball.Model.Marche.Offre;
 
 public class Admin extends Utilisateur{
 
@@ -18,7 +18,7 @@ public class Admin extends Utilisateur{
     }
 
     @Override
-    boolean aLesMoyens(Vente vente) {
+    boolean aLesMoyens(Offre offre) {
         return true;
     }
 

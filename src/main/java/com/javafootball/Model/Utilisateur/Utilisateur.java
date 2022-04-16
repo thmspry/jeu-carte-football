@@ -3,7 +3,7 @@ package com.javafootball.Model.Utilisateur;
 
 import com.javafootball.Model.Exception.ExceptionTransaction;
 import com.javafootball.Model.Joueur.Carte;
-import com.javafootball.Model.Marche.Vente;
+import com.javafootball.Model.Marche.Offre;
 
 import java.util.Objects;
 
@@ -26,22 +26,22 @@ abstract public class Utilisateur {
     }
 
     /**
-     * Méthode permettant de réaliser une vente
+     * Méthode permettant de réaliser la transaction d'une offre
      * L'utilisateur courant va acheter la carte vendue par le vendeur passé en paramètre
-     * @param vente : la vente mise en jeu
+     * @param offre : l'offre mise en jeu
      */
-    public void faireTransaction(Vente vente) throws ExceptionTransaction {
-        Utilisateur vendeur = vente.vendeur;
-        int montantTransaction = vente.prix;
-        Carte carteEnJeu = vente.carteAVendre;
+    public void faireTransaction(Offre offre) throws ExceptionTransaction {
+        Utilisateur vendeur = offre.vendeur;
+        int montantTransaction = offre.prix;
+        Carte carteEnJeu = offre.carteAVendre;
 
         // Il peut acheter s'il a asser d'argent, et que ce n'est pas sa carte
-        if (this.aLesMoyens(vente) && !this.equals(vendeur)) {
+        if (this.aLesMoyens(offre) && !this.equals(vendeur)) {
             this.depenserArgent(montantTransaction);
             this.recevoirCarte(carteEnJeu);
 
-            vente.vendeur.perdreCarte(carteEnJeu);
-            vente.vendeur.recevoirArgent(montantTransaction);
+            offre.vendeur.perdreCarte(carteEnJeu);
+            offre.vendeur.recevoirArgent(montantTransaction);
         } else if (this.equals(vendeur)) {
             throw new ExceptionTransaction("Vous ne pouvez pas acheter votre propre carte.");
         } else {
@@ -49,7 +49,12 @@ abstract public class Utilisateur {
         }
     }
 
-    abstract boolean aLesMoyens(Vente vente);
+    /**
+     * Determiner si l'utilisateur a les moyens d'acheter la carte présente dans l'offre
+     * @param offre : l'offre prise en compte
+     * @return : true s'il a les moyens, false sinon
+     */
+    abstract boolean aLesMoyens(Offre offre);
 
     public abstract void recevoirCarte(Carte carte);
 

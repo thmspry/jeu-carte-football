@@ -18,10 +18,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Classe regroupant toutes les données utilisées dans les vues.
+ * Elle ne sera instanciée qu'une fois, au démarrage du jeu.
+ * L'objet instancié sera alors transmis entre les vues durant tout le déroulé de la navigation.
+ */
 public class SystemeDonnee {
     public Marche marche;
-    public MatchHebdo matchHebdoSemaineDerniere;
-    public MatchHebdo matchHebdoSemaineProchaine;
+    public MatchHebdo matchHebdoSemaineDerniere;    // Match hebdomadaire de la semaine passée
+    public MatchHebdo matchHebdoSemaineProchaine;   // Match hebdomadaire de la semaine en cours/qui va arriver
     public HashMap<String, Utilisateur> utilisateurs;
 
     public SystemeDonnee() {
@@ -31,6 +36,13 @@ public class SystemeDonnee {
         this.utilisateurs = new HashMap<>();
     }
 
+    /**
+     * Vérifie si le couple login-mot de passe entré est le bon
+     * @param pseudo : pseudo de connexion
+     * @param motDePasse : mot de passe du compte
+     * @return : l'utilisateur comportant le couple dans le cas où il est bon
+     * @throws ExceptionConnexion : erreur différente suivant les valeurs entrées
+     */
     public Utilisateur verifCoupleLogin(String pseudo, String motDePasse) throws ExceptionConnexion {
 
         if (this.utilisateurs.containsKey(pseudo)) {
@@ -83,7 +95,7 @@ public class SystemeDonnee {
                         String motDePasse = splittedRow[1];
                         if (splittedRow.length > 2) {    // Cas utilsateur joueur
                             nouvelUtilisateur = new UtilisateurJoueur(pseudo, motDePasse, Integer.parseInt(splittedRow[2]));
-                        } else {    // Cas d'un admin
+                        } else {    // Cas d'un admin (un admin n'a pas de solde d'argent, donc il n'a que deux champs sur sa ligne)
                             nouvelUtilisateur = new Admin(pseudo, motDePasse);
                         }
                         utilisateurs.put(pseudo, nouvelUtilisateur);
@@ -160,8 +172,8 @@ public class SystemeDonnee {
     }
 
     public void passerSemaineSuivante() throws ExceptionRareteDepasse, FileNotFoundException, ExceptionFichier {
-        this.matchHebdoSemaineProchaine.passerSemaineSuivante(this.marche);
-        this.matchHebdoSemaineDerniere = this.matchHebdoSemaineProchaine;
-        this.matchHebdoSemaineProchaine = new MatchHebdo();
+        this.matchHebdoSemaineProchaine.passerSemaineSuivante(this.marche); // Procédure pour passer à la semaine d'après (calcul score, etc...)
+        this.matchHebdoSemaineDerniere = this.matchHebdoSemaineProchaine;   // Une semaine est passée, l'ancienne semaine prochaine est donc la nouvelle semaine dernière
+        this.matchHebdoSemaineProchaine = new MatchHebdo();                 // Une nouvelle semaine débute
     }
 }

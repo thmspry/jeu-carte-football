@@ -1,8 +1,5 @@
 package com.javafootball.Model.Joueur;
 
-
-import com.javafootball.Model.Exception.ExceptionRareteDepasse;
-
 abstract public class Carte {
     public int numero;
     public Joueur joueur;

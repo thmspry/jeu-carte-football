@@ -4,7 +4,7 @@ import com.javafootball.Model.*;
 import com.javafootball.Model.Exception.ExceptionEquipeNonValide;
 import com.javafootball.Model.Exception.ExceptionTransaction;
 import com.javafootball.Model.Joueur.*;
-import com.javafootball.Model.Marche.Vente;
+import com.javafootball.Model.Marche.Offre;
 import com.javafootball.Model.Match.EquipeJeu;
 import com.javafootball.Model.Utilisateur.UtilisateurJoueur;
 import javafx.beans.property.SimpleStringProperty;
@@ -40,25 +40,25 @@ public class JeuController implements Initializable {
     Label pseudo;
 
     @FXML
-    TableView<Vente> tableauBoutique;
+    TableView<Offre> tableauBoutique;
     @FXML
     Label numeroCarteBoutique;
     @FXML
-    TableColumn<Vente, String> prenomBoutique;
+    TableColumn<Offre, String> prenomBoutique;
     @FXML
-    TableColumn<Vente, String> nomBoutique;
+    TableColumn<Offre, String> nomBoutique;
     @FXML
-    TableColumn<Vente, String> rareteBoutique;
+    TableColumn<Offre, String> rareteBoutique;
     @FXML
-    TableColumn<Vente, String> posteBoutique;
+    TableColumn<Offre, String> posteBoutique;
     @FXML
-    TableColumn<Vente, String> numeroBoutique;
+    TableColumn<Offre, String> numeroBoutique;
     @FXML
-    TableColumn<Vente, String> equipeBoutique;
+    TableColumn<Offre, String> equipeBoutique;
     @FXML
-    TableColumn<Vente, String> prixBoutique;
+    TableColumn<Offre, String> prixBoutique;
     @FXML
-    TableColumn<Vente, String> vendeurBoutique;
+    TableColumn<Offre, String> vendeurBoutique;
     @FXML
     FlowPane fondCarteBoutique;
     @FXML
@@ -144,7 +144,7 @@ public class JeuController implements Initializable {
     Label troisieme;
 
 
-    Vente venteSelectionnee;
+    Offre offreSelectionnee;
     Carte carteSelectionne;
 
     SystemeDonnee sd;
@@ -286,10 +286,10 @@ public class JeuController implements Initializable {
     @FXML
     public void acheter(ActionEvent actionEvent) {
         try {
-            this.utilisateurCourant.faireTransaction(venteSelectionnee);
-            this.sd.majFichierUtilisateurApresVente(venteSelectionnee.vendeur, this.utilisateurCourant);
+            this.utilisateurCourant.faireTransaction(offreSelectionnee);
+            this.sd.majFichierUtilisateurApresVente(offreSelectionnee.vendeur, this.utilisateurCourant);
 
-            this.sd.marche.carteAVendre.remove(venteSelectionnee);
+            this.sd.marche.carteAVendre.remove(offreSelectionnee);
 
             // Mise à jour de la vue
             majOngletCarte();
@@ -308,7 +308,7 @@ public class JeuController implements Initializable {
     public void vendre(ActionEvent actionEvent) {
         int montant = prixVentePerso.getValue();
 
-        Vente nouvelleVente = this.sd.marche.ajouterCarteAVendre(carteSelectionne, this.utilisateurCourant, montant);
+        this.sd.marche.ajouterCarteAVendre(carteSelectionne, this.utilisateurCourant, montant);
         this.utilisateurCourant.listeCarte.remove(carteSelectionne);
 
         majOngletCarte();
@@ -385,7 +385,7 @@ public class JeuController implements Initializable {
                     postePersoLbl.setTextFill(noir);
                     raretePersoLbl.setTextFill(noir);
                 }
-                postePersoLbl.setText(joueurCourant.poste.getAbreviationSimplifie());
+                postePersoLbl.setText(joueurCourant.denominationPoste());
                 raretePersoLbl.setText(carteCourante.rareteLabel);
                 fondCartePerso.setBackground(bGround);
                 photoJoueurPerso.setImage(new Image(carteCourante.joueur.lienPhoto));
@@ -405,7 +405,7 @@ public class JeuController implements Initializable {
 
         // Listener appliquant un comportement à chaque changement de selection de ligne dans le tableau
         tableauBoutique.getSelectionModel().selectedItemProperty().addListener((observableValue, ventePrecedente, venteCourante) -> {
-            venteSelectionnee = venteCourante;
+            offreSelectionnee = venteCourante;
             if (venteCourante != null) {
                 Carte carteCourant = venteCourante.carteAVendre;
                 Joueur joueurCourant = carteCourant.joueur;
@@ -427,7 +427,7 @@ public class JeuController implements Initializable {
                     posteBoutiqueLbl.setTextFill(noir);
                     rareteBoutiqueLbl.setTextFill(noir);
                 }
-                posteBoutiqueLbl.setText(joueurCourant.poste.getAbreviationSimplifie());
+                posteBoutiqueLbl.setText(joueurCourant.denominationPoste());
                 vendeurBoutiqueLbl.setText("Vendeur : " + venteCourante.getPseudoVendeur());
                 rareteBoutiqueLbl.setText(venteCourante.carteAVendre.rareteLabel);
                 fondCarteBoutique.setBackground(bGround);

@@ -12,23 +12,19 @@ import java.util.*;
 
 public class MatchHebdo {
     public static int semaineCompteur = 1;
-    public int semaine;
-    public List<File> fichiersMatchs;
-    public List<File> fichiersResultats;
-    private final List<UtilisateurJoueur> joueurInscrit;
-    private final List<UtilisateurJoueur> lesGagnants;
+    public int semaine; // Numéro de la semaine
+    public List<File> fichiersMatchs;       // Liste de fichier décrivant les matchs à venir pour la semaine
+    public List<File> fichiersResultats;    // Liste de fichier décrivant le score de joueur ayant participé à un match
+    private final List<UtilisateurJoueur> utilisateursInscrits;    // Liste des utilisateurs ayant soumis une équipe pour la semaine
+    private final List<UtilisateurJoueur> lesGagnants;             // Liste des gagnants de la semaine
 
     public MatchHebdo() {
         this.semaine = semaineCompteur;
-        this.joueurInscrit = new ArrayList<>();
+        this.utilisateursInscrits = new ArrayList<>();
         this.lesGagnants = new ArrayList<>();
         this.fichiersMatchs = new ArrayList<>();
         this.fichiersResultats = new ArrayList<>();
         semaineCompteur++;
-    }
-
-    public int getNumSemaine() {
-        return semaine;
     }
 
     public int nombreFichierMatch() {
@@ -48,9 +44,14 @@ public class MatchHebdo {
     }
 
     public void ajoutJoueur(UtilisateurJoueur joueur) {
-        joueurInscrit.add(joueur);
+        utilisateursInscrits.add(joueur);
     }
 
+    /**
+     * Donne une liste de chaine represent chacune un match prévu pour la semaine
+     * @return la liste des chaines
+     * @throws FileNotFoundException : le fichier des matchs n'a pas été trouvé
+     */
     public List<String> matchSemaine() throws FileNotFoundException {
         List<String> matchs = new ArrayList<>();
         for(File fichierMatch : this.fichiersMatchs) {
@@ -66,23 +67,31 @@ public class MatchHebdo {
         return matchs;
     }
 
+    /**
+     * Calcul du score d'un utilisateur suivant son équipe et les résultats de la semaine
+     * @param uti : l'utilisateur
+     * @return le score de l'utilisateur pour la semaine
+     * @throws FileNotFoundException : le fichier de résultat n'a pas été trouvé
+     */
     private double scoreUtilisateur(UtilisateurJoueur uti) throws FileNotFoundException {
         double scoreTotal = 0;
-        for (File fichierResultat : this.fichiersResultats) {
+        for (File fichierResultat : this.fichiersResultats) {   // Pour chaque fichier de résultat d'équipe fourni
             EquipeJeu sesCartes = uti.equipe;
 
             Scanner myReader = new Scanner(fichierResultat);
 
-            while (myReader.hasNextLine()) {
+            while (myReader.hasNextLine()) {    // On parcours le fichier ligne par ligne
                 String row = myReader.nextLine();
                 String[] splittedRow = row.split(",");
-                String nom = splittedRow[1];
+                String prenomNomFichier = splittedRow[1]; // Concatenation du prénom et du nom du joueur dans le fichier
 
-                for (Carte c : sesCartes.compositionCarte) {
+                for (Carte c : sesCartes.compositionCarte) {    // Pour chaque carte de l'équipe de l'utilisateur
                     String nomPrenom = c.joueur.denomination();
 
-                    if (nom.equals(nomPrenom)) {
+                    if (prenomNomFichier.equals(nomPrenom)) {   // Un joueur du fichier de résultat est présent dans l'équipe de l'utilisateur
                         String scoreString = splittedRow[2];
+                        /* "Les points obtenus par une carte sont proportionnels à la performance du joueur
+                        lors de son match et à un facteur dépendant de la rareté de cette carte." */
                         double scoreCarte = Double.parseDouble(scoreString) * c.coefficient;
                         scoreTotal += scoreCarte;
                     }
@@ -95,25 +104,37 @@ public class MatchHebdo {
         return scoreTotal;
     }
 
+    /**
+     * Calcul du score de chaque joueur ayant soumis une équipe pour la semaine
+     * @throws FileNotFoundException : le fichier de résultat n'a pas été trouvé
+     */
     public void calculScoreAllJoueur() throws FileNotFoundException {
-        for (UtilisateurJoueur utilisateurJoueur : joueurInscrit) {
+        for (UtilisateurJoueur utilisateurJoueur : utilisateursInscrits) {
             utilisateurJoueur.scoreDeLaSemaine = scoreUtilisateur(utilisateurJoueur);
         }
     }
 
+    /**
+     * Ajoute à la liste des gagnants les trois meilleurs utilisateurs de la semaine suivant leur score
+     */
     public void chercher3Meilleurs() {
-        joueurInscrit.sort((o1, o2) -> {
+        utilisateursInscrits.sort((o1, o2) -> {
             double diff = o2.scoreDeLaSemaine - o1.scoreDeLaSemaine;
             return (int) diff;
         });
 
-        // Foreach personnalisé (au cas où il y a moins de trois joueurs inscrits)
-        for (int i = 0; i < joueurInscrit.size() && i < 3; i++) {
-            lesGagnants.add(joueurInscrit.get(i));
+        // Foreach personnalisé (au cas où il y a moins de trois joueurs ayant soumis une équipe pour la semaine)
+        for (int i = 0; i < utilisateursInscrits.size() && i < 3; i++) {
+            lesGagnants.add(utilisateursInscrits.get(i));
         }
     }
 
 
+    /**
+     * Envoie au gagnant leur récompense respective
+     * @param marche : la marché actuel
+     * @throws ExceptionRareteDepasse : motif d'exception de rareté
+     */
     public void recompenseGagnant(Marche marche) throws ExceptionRareteDepasse {
         if (!lesGagnants.isEmpty()) {
             Carte cartePour1er = CarteRare.creerCarteAleatoire(marche);
@@ -131,7 +152,19 @@ public class MatchHebdo {
         }
     }
 
+    /**
+     * Execute toutes les étapes permettant de passer à la semaine suivante
+     * @param marche : le marché actuel
+     * @throws ExceptionRareteDepasse : motif d'exception de rareté
+     * @throws FileNotFoundException : certains fichiers n'ont pas été trouvés
+     * @throws ExceptionFichier : certains fichiers n'ont pas été fournis
+     */
     public void passerSemaineSuivante(Marche marche) throws ExceptionRareteDepasse, FileNotFoundException, ExceptionFichier {
+        /* Pour passer à la semaine suivante, il faut :
+            - importer les fichiers recensant les matchs à venir pour informer les utilisateurs
+            - importer les fichiers de résultats de la semaine des équipes pour calculer le score des joueurs
+                et les récompenser en conséquence.
+        */
         if (comporteFichiersMatch() && comporteFichiersResultat()) {
             calculScoreAllJoueur();
             chercher3Meilleurs();
@@ -170,11 +203,18 @@ public class MatchHebdo {
     }
 
 
-
+    /**
+     * Determine si au moins un fichier recesant les matchs de la semaine a été fourni
+     * @return : le boolean décrivant la situation
+     */
     public boolean comporteFichiersMatch() {
         return !this.fichiersMatchs.isEmpty();
     }
 
+    /**
+     * Determine si au moins un fichier de résultat d'une équipe a été fourni
+     * @return : le boolean décrivant la situation
+     */
     public boolean comporteFichiersResultat() {
         return !this.fichiersResultats.isEmpty();
     }

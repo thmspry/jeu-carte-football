@@ -11,16 +11,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Marche {
-    public List<Vente> carteAVendre;
-    public List<Joueur> joueursExistant;
+    public List<Offre> carteAVendre;        // Liste de Ventes, disponible dans la boutique
+    public List<Joueur> joueursExistant;    // Tous les joueurs existant sur le marché, ayant des cartes disponible dans la boutique ou non
     List<Equipe> equipesExistante;
 
     public Marche() {
         this.carteAVendre = new ArrayList<>();
-        joueursExistant = new ArrayList<>();
+        this.joueursExistant = new ArrayList<>();
         this.equipesExistante = new ArrayList<>();
     }
 
+    /**
+     * Méthode determinant s'il reste au moins un certain nombre de cartes Commune prêtes à être vendue
+     * @param montantMinimumDispo : le montant minimum
+     * @return : le boolean décrivant la situation
+     */
     public boolean resteAuMoinsCommune(int montantMinimumDispo) {
         int dispoCommune = 0;
         for (Joueur j : this.joueursExistant) {
@@ -45,12 +50,11 @@ public class Marche {
         return dispoRare >= montantMinimumDispo;
     }
 
-    public static Joueur getJoueurAleatoire(List<Joueur> joueurList) {
-        Random rand = new Random();
-        return joueurList.get(rand.nextInt(joueurList.size()));
-    }
 
-
+    /**
+     * Parse un fichier de données comportant le nom des joueurs, leur équipe et leur poste
+     * @param cheminVersFichier : le chemin vers le fichier à parser
+     */
     public void parseJoueurEquipe(String cheminVersFichier) {
         File dataFile = new File(cheminVersFichier);
         if (dataFile.exists()) {
@@ -60,12 +64,12 @@ public class Marche {
                 Equipe equipeCourante = new Equipe("equipefactice");
 
                 while (myReader.hasNextLine()) {
-                    String row = myReader.nextLine();
-                    String[] splittedRow = row.split(";");
+                    String row = myReader.nextLine();   // Ligne courante
+                    String[] splittedRow = row.split(";");  // Separation des champ avec le séparateur
 
-                    String[] prenomNomJoueur = splittedRow[0].split(" ");
-                    String prenomJoueur = prenomNomJoueur[0];
-                    String nomJoueur = switch (prenomNomJoueur.length) {
+                    String[] prenomNomJoueur = splittedRow[0].split(" ");   // Separation du champ prénom + nom
+                    String prenomJoueur = prenomNomJoueur[0];   // Le prénom sera le premier element du champ
+                    String nomJoueur = switch (prenomNomJoueur.length) {    // Le nom de famille sera toutes les chaines de caratères qui suivent le prénom
                         case 1 -> "";                   // Joueur sans nom de famille (joueur avec surnom)
                         case 2 -> prenomNomJoueur[1];   // Joueur avec un seul nom de famille
                         default ->                      // Joueur avec plusieurs noms de famille
@@ -73,7 +77,6 @@ public class Marche {
                     };
 
                     String poste = splittedRow[1];
-                    Joueur nouveauJoueur;
 
                     String nomEquipe = splittedRow[2];
                     if (!equipeExiste(nomEquipe)) {
@@ -81,9 +84,10 @@ public class Marche {
                         this.equipesExistante.add(equipeCourante);
                     }
 
+                    Joueur nouveauJoueur;
                     if (poste.equals("G")) { // Le joueur est un gardien
                         nouveauJoueur = new JoueurGardien(prenomJoueur, nomJoueur, equipeCourante);
-                    } else {
+                    } else {    // Le joueur est un joueur de champ
                         nouveauJoueur = new JoueurDeChamp(prenomJoueur, nomJoueur, Poste.getPoste(poste), equipeCourante);
                     }
 
@@ -108,10 +112,15 @@ public class Marche {
     }
 
 
-    public Vente ajouterCarteAVendre(Carte c, Utilisateur vendeur, int prix) {
-        Vente nouvelleVente = new Vente(c, vendeur, prix);
-        carteAVendre.add(nouvelleVente);
-        return nouvelleVente;
+    /**
+     * Ajoute une nouvelle offre dans la boutique
+     * @param carte : la varte a vendre
+     * @param vendeur : le vendeur de la carte
+     * @param prix : le prix fixé pour l'offre
+     */
+    public void ajouterCarteAVendre(Carte carte, Utilisateur vendeur, int prix) {
+        Offre nouvelleOffre = new Offre(carte, vendeur, prix);
+        carteAVendre.add(nouvelleOffre);
     }
 
     public boolean equipeExiste(String nomEquipe) {

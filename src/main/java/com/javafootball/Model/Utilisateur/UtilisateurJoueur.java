@@ -2,7 +2,7 @@ package com.javafootball.Model.Utilisateur;
 
 import com.javafootball.Model.Match.EquipeJeu;
 import com.javafootball.Model.Joueur.Carte;
-import com.javafootball.Model.Marche.Vente;
+import com.javafootball.Model.Marche.Offre;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ public class UtilisateurJoueur extends Utilisateur {
     public double scoreDeLaSemaine;
 
 
+    // Constructeur utilisé pour reconstruire la liste des utilisateurs à partir du fichier de données
     public UtilisateurJoueur(String pseudo, String motDePasse, int argent) {
         super(pseudo, motDePasse);
         this.argent = argent;
@@ -44,8 +45,8 @@ public class UtilisateurJoueur extends Utilisateur {
     }
 
     @Override
-    boolean aLesMoyens(Vente vente) {
-        return vente.prix <= this.argent;
+    boolean aLesMoyens(Offre offre) {
+        return offre.prix <= this.argent;
     }
 
     @Override
@@ -60,7 +61,7 @@ public class UtilisateurJoueur extends Utilisateur {
 
     @Override
     void depenserArgent(int montant) {
-        argent -= montant;
+        this.argent -= montant;
     }
 
     @Override

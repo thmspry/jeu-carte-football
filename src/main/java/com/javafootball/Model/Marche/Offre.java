@@ -3,12 +3,12 @@ package com.javafootball.Model.Marche;
 import com.javafootball.Model.Joueur.Carte;
 import com.javafootball.Model.Utilisateur.Utilisateur;
 
-public class Vente {
+public class Offre {
     public Carte carteAVendre;
     public Utilisateur vendeur;
     public int prix;
 
-    public Vente(Carte carteAVendre, Utilisateur vendeur, int prix) {
+    public Offre(Carte carteAVendre, Utilisateur vendeur, int prix) {
         this.carteAVendre = carteAVendre;
         this.vendeur = vendeur;
         this.prix = prix;
