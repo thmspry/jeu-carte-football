@@ -31,7 +31,7 @@ public class ConnexionController implements Initializable {
     private SystemeDonnee sd;
 
     final String cheminVersFichierUtilisateurs = "src/main/resources/com/javafootball/data/utilisateurs.csv";
-    final String cheminVersFichierJoueurs = "src/main/resources/com/javafootball/data/ext/Ligue1.csv";
+    final String cheminVersFichierJoueurs = "src/main/resources/com/javafootball/data/Ligue1.csv";
 
     // Setteur pour transmettre les informations du jeu entre controllers
     void setSystemeDonne(SystemeDonnee sd) {

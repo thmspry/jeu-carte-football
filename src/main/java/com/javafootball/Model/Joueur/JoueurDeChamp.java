@@ -7,8 +7,9 @@ public class JoueurDeChamp extends Joueur {
         super(prenom, nom, equipe);
         if (poste != Poste.GOALKEEPER) {
             this.poste = poste;
+        } else {
+            throw new ExceptionPoste("Erreur de poste, il doit être different de GK pour un joueur de champs (" + poste + " donné).");
         }
-        throw new ExceptionPoste("Erreur de poste, il doit être different de GK pour un joueur de champs");
     }
 
 
