@@ -30,7 +30,7 @@ public class CarteCommune extends Carte {
     public static Carte creerCarte(Joueur joueur, Marche marcheActuel, boolean considererMarge) throws ExceptionRareteDepasse {
         if (joueur.compteurCommune < maxExemplaire) {
             // verification qu'il reste au moins la carte réservée aux récompenses hebdo
-            if (considererMarge || marcheActuel.resteAuMoinsCommune(2)) {
+            if (!considererMarge || marcheActuel.resteAuMoinsCommune(2)) {
                 Carte nouvelleCarte;
                 joueur.incrementerCompteurCommune();
                 nouvelleCarte = new CarteCommune(joueur, joueur.compteurCommune);

@@ -29,9 +29,9 @@ public class CartePeuCommune extends Carte {
      * @throws ExceptionRareteDepasse : Exception indiquant dans quel cas la limite de carte de cette rareté à été dépassée
      */
     public static Carte creerCarte(Joueur joueur, Marche marcheActuel, boolean considererMarge) throws ExceptionRareteDepasse {
-        if (considererMarge || joueur.compteurPeuCommune < maxExemplaire) {
+        if (joueur.compteurPeuCommune < maxExemplaire) {
             // verification qu'il reste au moins la carte réservée aux récompenses hebdo
-            if (marcheActuel.resteAuMoinsPeuCommune(2)) {
+            if (!considererMarge || marcheActuel.resteAuMoinsPeuCommune(2)) {
                 Carte nouvelleCarte;
                 joueur.incrementerCompteurPeuCommune();
                 nouvelleCarte = new CartePeuCommune(joueur, joueur.compteurPeuCommune);
